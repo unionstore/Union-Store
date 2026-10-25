@@ -1,0 +1,2336 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#060911">
+<title>Store</title>
+<style>
+:root{
+  --bg:#04060b;
+  --panel:#0d1320;
+  --line:#1c283d;
+  --text:#f4f7ff;
+  --muted:#8e9eb5;
+  --blue:#5b8cff;
+  --cyan:#63e6db;
+  --green:#4ade80;
+  --red:#fb7185;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html, body, * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body{margin:0;background:radial-gradient(ellipse at 80% -20%,#182a4d 0,transparent 45%),var(--bg);color:var(--text);font:14.5px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.wrap{max-width:680px;margin:auto;padding:0 14px}
+
+.top{position:sticky;top:0;z-index:25;background:rgba(4,6,11,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(28,39,59,0.8)}
+.nav{height:60px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-btn{width:40px;height:40px;border-radius:12px;background:#101726;border:1px solid #28374f;color:#eaf2ff;font-size:20px;display:grid;place-items:center;transition:all .2s cubic-bezier(0.16,1,0.3,1)}
+.nav-btn:active{transform:scale(0.92);filter:brightness(0.9)}
+
+.brand{display:flex;align-items:center;gap:8px;font-weight:900}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#5b8cff,#9a5cff);display:grid;place-items:center;font-size:14px;font-weight:800;box-shadow:0 0 15px rgba(91,140,255,.4); animation: pulseGlow 3s infinite;}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 10px rgba(91,140,255,0.4); }
+  50% { box-shadow: 0 0 22px rgba(99,230,219,0.7); }
+  100% { box-shadow: 0 0 10px rgba(91,140,255,0.4); }
+}
+
+.btn{
+  padding:12px 16px; border-radius:14px; font-weight:750;
+  transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.btn:active{transform:scale(0.95); filter:brightness(0.85); box-shadow:none;}
+.primary{background:linear-gradient(135deg,#5b8cff,#7665ff);color:white;box-shadow:0 6px 20px rgba(91,140,255,.35)}
+.primary:hover{box-shadow:0 8px 25px rgba(91,140,255,.5);filter:brightness(1.05); transform:translateY(-1px);}
+.secondary{background:#162033;color:#e9efff;border:1px solid #27374e}
+.secondary:hover{background:#1f2d45;border-color:#384f73; transform:translateY(-1px);}
+
+.announcement-bar{background:linear-gradient(90deg,#19355e,#12223d);border-bottom:1px solid #25477d;padding:6px 12px;text-align:center;font-size:11.5px;color:#cde1ff;font-weight:600;display:none}
+
+.drawer-backdrop{position:fixed;inset:0;background:rgba(2,5,12,.78);z-index:60;opacity:0;visibility:hidden;transition:all .3s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(6px)}
+.drawer-backdrop.open{opacity:1;visibility:visible}
+.drawer-card{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:#090d16;border-right:1px solid #1e2b40;z-index:61;padding:20px 16px;display:flex;flex-direction:column;transform:translateX(-105%);transition:transform .3s cubic-bezier(.16,1,.3,1);overflow-y:auto}
+.drawer-backdrop.open ~ .drawer-card, .drawer-card.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid #1a2536;margin-bottom:10px}
+.drawer-header h2{margin:0;font-size:17px;font-weight:900;color:#63e6db}
+.drawer-close-btn{width:32px;height:32px;border-radius:8px;background:#141c2c;border:1px solid #26354b;color:#cbd7ea;font-size:15px;display:grid;place-items:center}
+.drawer-menu-list{display:flex;flex-direction:column;gap:4px}
+.drawer-item{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 10px;background:transparent;border-radius:10px;color:#e4ecfa;font-weight:700;font-size:14px;transition:all .15s}
+.drawer-item:active{background:#162238}
+.drawer-item.active-menu{background:#162238;border:1px solid #263e63}
+
+.view-pane{display:none;padding:14px 0 80px}
+.view-pane.active-view{display:block;animation:fadeInUp .35s ease forwards}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.view-header{margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.view-header h2{font-size:21px;letter-spacing:-.5px;margin:0 0 4px}
+.view-header p{color:var(--muted);margin:0;font-size:12.5px}
+.header-back-btn{display:inline-flex;align-items:center;gap:6px;background:#131c2c;border:1px solid #263852;color:#d5e3f7;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:700}
+
+.wallet-box{background:linear-gradient(135deg,#132238,#0d1522);border:1px solid #233959;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.wallet-val{font-size:24px;font-weight:900;color:var(--cyan);margin:2px 0 0}
+
+.hero{padding:10px 0 16px;display:flex;flex-direction:column;gap:12px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;border:1px solid #2d4263;background:#121e33;padding:4px 10px;border-radius:999px;color:#a8c4f7;font-size:11px;font-weight:800;width:fit-content}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green); animation: pulseDot 1.5s infinite;}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+h1{font-size:26px;line-height:1.15;letter-spacing:-1px;margin:10px 0 8px}
+h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);font-size:13px;margin:0 0 12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 16px}
+.stat{padding:12px 8px;border:1px solid var(--line);background:#0b111c;border-radius:14px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.25); transition: transform 0.2s;}
+.stat:hover{transform: translateY(-2px); border-color: rgba(99,230,219,0.3);}
+.stat b{display:block;font-size:18px}
+.stat span{font-size:10.5px;color:var(--muted)}
+
+.role-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:8px;font-size:11.5px;font-weight:700;margin-bottom:12px}
+.role-badge.reseller{background:rgba(99,230,219,.15);color:var(--cyan);border:1px solid rgba(99,230,219,.3)}
+.role-badge.user{background:rgba(91,140,255,.15);color:var(--blue);border:1px solid rgba(91,140,255,.3)}
+
+.tools{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.field{
+  width:100%; background:#090e18; border:1px solid #223147; color:var(--text); padding:12px 14px; border-radius:12px; outline:none;
+  transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.field:focus{
+  border-color:var(--cyan); box-shadow:0 0 0 4px rgba(99, 230, 219, 0.15), 0 0 15px rgba(99, 230, 219, 0.2);
+  transform: translateY(-1px);
+}
+.grid{display:flex;flex-direction:column;gap:14px}
+
+.product{
+  background:linear-gradient(160deg,#121b2b,#0a101a); border:1px solid #1c2a42; border-radius:24px; padding:20px;
+  display:flex; flex-direction:column; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden;
+  box-shadow:0 12px 35px rgba(0,0,0,0.45);
+}
+.product:hover{ border-color:rgba(99, 230, 219, 0.5); transform:translateY(-3px); box-shadow:0 16px 45px rgba(99,230,219,0.12); }
+
+.product-media-container{margin:0 0 16px;border-radius:16px;overflow:hidden;border:1px solid #1f304d;background:#050811}
+.product-media-container img, .product-media-container video{display:block;width:100%;max-height:210px;object-fit:cover}
+.product-media-container .video-wrapper{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+.product-media-container .video-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;pointer-events:none}
+.yt-oneclick{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;background:transparent;color:#fff;width:100%;height:100%;z-index:2}
+.yt-oneclick .yt-play-icon{width:58px;height:42px;border-radius:12px;background:rgba(8,16,30,.78);border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:23px;box-shadow:0 5px 22px rgba(0,0,0,.35);backdrop-filter:blur(5px)}
+.yt-oneclick.is-playing{background:transparent}.yt-oneclick.is-playing .yt-play-icon{opacity:0;transition:opacity .18s}.yt-oneclick.is-playing:focus .yt-play-icon,.yt-oneclick.is-playing:hover .yt-play-icon{opacity:1}
+
+.product-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1c2a42; padding-bottom: 12px; }
+.product-title-area { display: flex; align-items: center; gap: 12px; }
+.product-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+
+.feature-list { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 16px; }
+.feature-item { 
+  display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; color: #f4f7ff; font-weight: 600; 
+  background: linear-gradient(135deg, #0a1120, #060a12); padding: 11px 14px; border-radius: 12px; 
+  border-left: 3px solid var(--cyan); border-top: 1px solid #1c2c47; border-right: 1px solid #1c2c47; border-bottom: 1px solid #1c2c47;
+  box-shadow: inset 0 1px 4px rgba(99,230,219,0.08); transition: all 0.2s; 
+}
+.feature-item:hover { border-color: var(--cyan); background: linear-gradient(135deg, #0d1628, #080d17); transform: translateX(2px); }
+.feature-item span.check { color: var(--green); font-weight: 800; font-size: 16px; text-shadow: 0 0 10px rgba(74,222,128,0.5); }
+
+.plan-picker-box { background: #080d17; border: 1px solid #1e2c45; border-radius: 14px; padding: 12px; margin-bottom: 14px; }
+.plan-picker-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 6px; }
+
+.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:4px}
+.empty{text-align:center;border:1px dashed #26354b;border-radius:16px;padding:30px 14px;color:var(--muted);font-size:13px}
+
+.list-panel{background:#0d1422;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.order-card{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid #1c283c}
+.order-card:last-child{border:0}
+.pill{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10.5px;font-weight:800}
+.pill.delivered{background:#113827;color:#86efac}
+.pill.pending{background:#3d2f16;color:#fcd34d}
+
+.key-box-display{display:flex;align-items:center;justify-content:space-between;gap:6px;background:#060a12;padding:10px 12px;border-radius:10px;border:1px dashed #63e6db;margin-top:8px}
+.key-token-val{font-family:monospace;letter-spacing:1px;color:#63e6db;font-weight:700;font-size:13px;word-break:break-all}
+.btn-copy{padding:6px 12px;background:#162438;border:1px solid #283e5f;color:#fff;border-radius:8px;font-size:11.5px;flex-shrink:0}
+.btn-copy:active{transform:scale(0.92)}
+
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(7,11,19,0.92);border-top:1px solid #1c273b;display:flex;align-items:center;justify-content:space-around;z-index:30;backdrop-filter:blur(18px)}
+.bottom-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);background:transparent;padding:6px 10px;font-size:10.5px;font-weight:700;gap:3px;transition:color .2s}
+.bottom-item.active-bottom{color:var(--blue)}
+.bottom-item span.icon{font-size:18px;line-height:1}
+
+.modal-back{
+  position:fixed; inset:0; background:rgba(2, 5, 12, 0.88); z-index:70; display:none; align-items:center; justify-content:center; padding:16px;
+  backdrop-filter:blur(14px); animation:fadeIn .3s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.modal-back.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.modal{
+  width:min(440px,100%); background:linear-gradient(155deg, rgba(14, 21, 35, 0.98), rgba(6, 10, 18, 0.99));
+  border:1px solid #233754; border-radius:24px; padding:22px;
+  box-shadow:0 35px 75px rgba(0,0,0,0.85), 0 0 40px rgba(91,140,255,0.12);
+  animation:popIn .4s cubic-bezier(0.16,1,0.3,1) forwards; position:relative; overflow:hidden;
+}
+@keyframes popIn{from{transform:scale(0.85) translateY(15px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+
+.stack{display:grid;gap:14px}
+.close-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.xbtn{background:#172233;color:#cbd7ea;border-radius:10px;width:34px;height:34px;display:grid;place-items:center;transition:all .2s}
+.xbtn:hover{background:#23354e;color:#fff}
+
+.toast{
+  position:fixed; left:50%; bottom:76px; transform:translate(-50%,20px); background:linear-gradient(135deg, #5b8cff, #7665ff);
+  color:#fff; padding:12px 20px; border-radius:14px; font-weight:800; font-size:13px; z-index:90; opacity:0; pointer-events:none;
+  transition:all .3s cubic-bezier(0.16,1,0.3,1); max-width:90vw; text-align:center; box-shadow:0 8px 25px rgba(91,140,255,0.4);
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+
+.auth-register-mode{border-color:#2a6b73!important;box-shadow:0 35px 75px rgba(0,0,0,.85),0 0 35px rgba(45,212,191,.13)!important}.auth-register-mode #authTitle{color:#4ade80!important}.auth-login-mode #authTitle{color:#63e6db!important}.auth-mode-enter{animation:popIn .28s ease both}
+.remember-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);user-select:none;cursor:pointer}
+.remember-row input{cursor:pointer;accent-color:var(--blue);width:16px;height:16px}
+
+.qr-checkout-box{display:none;text-align:center;padding:8px 4px}
+.qr-frame{background:#fff;padding:10px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,.6);margin:10px 0}
+.qr-frame img{display:block;width:180px;height:180px}
+.status-pill-scan{display:inline-flex;align-items:center;gap:6px;background:#132238;border:1px solid #233959;padding:5px 12px;border-radius:999px;font-size:11.5px;color:#63e6db}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+
+.pay-loading-overlay{display:none;padding:24px 10px;text-align:center}
+.pay-loader-ring{display:inline-block;width:46px;height:46px;border:4px solid rgba(91,140,255,0.2);border-radius:50%;border-top-color:var(--cyan);animation:spinRing 0.85s linear infinite;margin-bottom:12px}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+.pay-loader-text{font-size:14px;font-weight:700;color:var(--cyan);margin:0 0 4px}
+.pay-loader-sub{font-size:12px;color:var(--muted);margin:0}
+
+.success-modal { text-align: center; padding: 4px; }
+.success-icon-box {
+  width: 60px; height: 60px; background: rgba(74, 222, 128, 0.15); border: 2px solid var(--green);
+  border-radius: 50%; display: grid; place-items: center; margin: 0 auto 14px; color: var(--green);
+  font-size: 28px; animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#floatingSupportBtn {
+  position: fixed; bottom: 80px; right: 18px; width: 54px; height: 54px; border-radius: 50%;
+  background: linear-gradient(135deg, #5b8cff, #9a5cff); color: #fff; display: flex;
+  align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(91, 140, 255, 0.45);
+  z-index: 65; cursor: grab; touch-action: none; user-select: none; border: 1px solid rgba(255,255,255,0.2);
+  animation: floatBounce 4s ease-in-out infinite;
+}
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+#floatingSupportBtn svg { width: 26px; height: 26px; fill: #fff; display: block; }
+#floatingSupportBtn:active { cursor: grabbing; }
+
+.support-link-item {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 12px;
+  background: #141f33; border: 1px solid #253957; color: #f4f7ff; text-decoration: none; font-weight: 700; font-size: 14px; transition: all .2s;
+}
+.support-link-item:hover, .support-link-item:active { background: #1c2c47; border-color: var(--blue); transform: translateY(-1px); }
+.support-svg-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+.support-svg-icon svg { width: 24px; height: 24px; display: block; }
+
+/* Premium authentication feedback animations */
+@keyframes authSpin{to{transform:rotate(360deg)}}
+@keyframes authSuccess{0%{transform:scale(.94);opacity:.4}70%{transform:scale(1.025);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes authExit{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(8px) scale(.98)}}
+.auth-loading{pointer-events:none!important;opacity:.86!important;filter:saturate(.8)}
+.auth-spinner{display:inline-block;width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-3px;margin-right:8px;animation:authSpin .65s linear infinite}
+.auth-success-anim{animation:authSuccess .42s cubic-bezier(.16,1,.3,1)}
+.auth-exit-anim{animation:authExit .22s ease forwards}
+@media(prefers-reduced-motion:reduce){.auth-spinner{animation:none!important}.auth-success-anim,.auth-exit-anim{animation:none!important}}
+
+/* Live visual effects */
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 rgba(56,189,248,0)}50%{box-shadow:0 0 28px rgba(56,189,248,.22)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(14px) scale(.985)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes shimmerLine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+#storePromotionCard.promo-live{display:block!important;visibility:visible!important;animation:floatUp .55s ease both,glowPulse 3s ease-in-out infinite;border:1px solid rgba(56,189,248,.65)!important;background:linear-gradient(130deg,rgba(16,35,62,.98),rgba(8,15,29,.98))!important;position:relative;overflow:hidden}
+#storePromotionCard.promo-live:before{content:"SPECIAL OFFER";display:inline-block;font-size:10px;letter-spacing:1.5px;font-weight:900;color:#07111e;background:linear-gradient(90deg,#67e8f9,#93c5fd,#67e8f9);background-size:200% 100%;padding:5px 9px;border-radius:6px;margin-bottom:9px;animation:shimmerLine 4s linear infinite}
+#storePromotionMedia img,#storePromotionMedia video{display:block;width:100%;max-height:300px;object-fit:contain;filter:none!important;opacity:1!important;image-rendering:auto;border-radius:12px}
+.product-media-container img,.product-media-container video,.product-media-container iframe{filter:none!important;opacity:1!important}
+.auth-stage{animation:floatUp .32s ease both}
+.auth-mode-enter{animation:floatUp .32s ease both}
+@media(prefers-reduced-motion:reduce){#storePromotionCard.promo-live,.auth-stage,.auth-mode-enter{animation:none!important}}
+
+</style>
+</head>
+<body>
+
+<div id="ui-theme-palette" data-asset-token="fam_3710dccd201f6497" style="display:none;"></div>
+<div class="announcement-bar" id="liveAnnouncementBar">📢 <span id="announcementText"></span></div>
+
+<div id="floatingSupportBtn" title="Customer Support">
+  <svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5v-2a7 7 0 0 1 14 0v2h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9z"/></svg>
+</div>
+
+<header class="top">
+  <div class="wrap nav">
+    <div class="nav-left">
+      <button class="nav-btn" id="menuToggle" aria-label="Open menu">☰</button>
+      <button class="nav-btn hidden" id="topNavBackBtn" aria-label="Go back" onclick="window.goBack()">←</button>
+      
+      <div class="brand">
+        <div class="logo">TG</div>
+        <div id="storeHeaderTitle">TG UNION</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn primary" id="authNav">Login</button>
+      <button class="btn secondary hidden" id="signOut">Logout</button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<aside class="drawer-card" id="siteDrawer" aria-label="Navigation drawer">
+  <div class="drawer-header">
+    <div>
+      <h2 id="drawerStoreTitle">TG UNION</h2>
+    </div>
+    <button class="drawer-close-btn" id="closeDrawer" aria-label="Close menu">✕</button>
+  </div>
+
+  <div class="drawer-menu-list">
+    <button class="drawer-item active-menu" data-page="view-home">
+      <span>⌂</span><span>Dashboard / Home</span>
+    </button>
+    <button class="drawer-item" data-page="view-catalog">
+      <span>🛒</span><span>Buy Products</span>
+    </button>
+    <button class="drawer-item" data-page="view-purchase">
+      <span>🧾</span><span>Purchase Orders</span>
+    </button>
+    <button class="drawer-item" data-page="view-deposit">
+      <span>💳</span><span>Deposit / Wallet</span>
+    </button>
+    <button class="drawer-item" data-page="view-keys">
+      <span>🔑</span><span>My Keys</span>
+    </button>
+    <button class="drawer-item" data-page="view-referral">
+      <span>🎁</span><span>Referral Program</span>
+    </button>
+    <button class="drawer-item" data-page="view-about" id="drawerAboutItem" style="display:none">
+      <span>ℹ️</span><span>About Us</span>
+    </button>
+    <button class="drawer-item" data-page="view-policy" id="drawerPolicyItem" style="display:none">
+      <span>🛡️</span><span>Policy & Terms</span>
+    </button>
+
+    <div class="drawer-divider-label" style="color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:1.5px;margin:16px 8px 6px">ACCOUNT</div>
+
+    <button class="drawer-item" data-page="view-account">
+      <span>👤</span><span>My Account</span>
+    </button>
+    <button class="drawer-item" data-page="view-support">
+      <span>💬</span><span>Help & Support</span>
+    </button>
+    <button class="drawer-item" id="drawerAuthBtn" style="margin-top:10px;background:#142238;border:1px solid #233959">
+      <span>🔐</span><span id="drawerAuthText">Login / Sign Up</span>
+    </button>
+  </div>
+</aside>
+
+<main class="wrap">
+  <section class="view-pane active-view" id="view-home">
+    <div class="wallet-box">
+      <div>
+        <small style="color:var(--muted);font-size:11px;font-weight:700">WALLET BALANCE</small>
+        <div class="wallet-val" id="topWalletBalance">₹0.00</div>
+      </div>
+      <button class="btn primary" onclick="window.navigateTo('view-deposit')">+ Add Funds</button>
+    </div>
+
+    <section id="storePromotionCard" class="product hidden" style="margin:0 0 16px;padding:14px;border-color:#28466c">
+      <div id="storePromotionMedia"></div>
+      <div id="storePromotionTitle" style="font-size:17px;font-weight:900;margin:4px 0"></div>
+      <p id="storePromotionText" class="sub" style="margin:0 0 10px;white-space:pre-wrap"></p>
+      <a id="storePromotionLink" class="btn primary hidden" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none">View Offer ↗</a>
+    </section>
+
+    <div class="hero">
+      <div class="eyebrow"><i class="dot"></i> REAL-TIME INVENTORY · INSTANT KEYS</div>
+      <h1>Your next upgrade.<br><span>One simple store.</span></h1>
+      <p class="sub">Verified licenses with real-time stock and instant delivery.</p>
+      
+      <div style="display:flex;gap:8px">
+        <button class="btn primary" style="flex:1" onclick="window.navigateTo('view-catalog')">Explore Store ↓</button>
+        <button class="btn secondary" style="flex:1" onclick="window.navigateTo('view-referral')">Refer & Earn 🎁</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="statCatalogCount">—</b><span>Panels</span></div>
+      <div class="stat"><b id="statUserOrders">0</b><span>Orders</span></div>
+      <div class="stat"><b id="statUserKeys">0</b><span>Keys</span></div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-catalog">
+    <div class="view-header">
+      <div>
+        <h2>Products Catalog</h2>
+        <p>Instant stock delivery with live media showcase.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+
+    <div id="roleBadgeContainer">
+      <span class="role-badge user" id="activeRoleBadge">Pricing: Standard User</span>
+    </div>
+
+    <div class="tools">
+      <input id="search" class="field" placeholder="Search catalog..." autocomplete="off">
+      <select id="category" class="field"><option value="all">All categories</option></select>
+    </div>
+    
+    <div class="grid" id="products">
+      <div class="empty">Connecting to product registry…</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-purchase">
+    <div class="view-header">
+      <div>
+        <h2>My Orders</h2>
+        <p>Order history and fulfillment status.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel" id="purchaseOrdersList">
+      <div class="empty">Sign in to view orders.</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-deposit">
+    <div class="view-header">
+      <div>
+        <h2>Wallet Deposit</h2>
+        <p>Funds auto-credit immediately upon verified UPI payment[cite: 1].</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    
+    <div class="list-panel stack" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;color:var(--muted)">Current Balance:</span>
+        <b style="font-size:20px;color:var(--cyan)" id="depositPageBalance">₹0.00</b>
+      </div>
+      
+      <label style="font-size:11.5px;color:var(--muted);margin-top:6px">Top-up Amount (₹)</label>
+      <input class="field" id="depositAmountInput" type="number" placeholder="Enter amount (e.g. 100, 500)" min="1">
+      
+      <button class="btn primary" id="generateDepositQrBtn" style="padding:12px;font-size:14px">Generate Top-Up QR</button>
+    </div>
+
+    <!-- DEPOSIT HISTORY CARD BUTTON -->
+    <div class="list-panel" style="margin-bottom:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:all 0.2s;" onclick="window.navigateTo('view-deposit-history')">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div style="width:40px; height:40px; border-radius:10px; background:rgba(99,230,219,0.15); display:grid; place-items:center; color:var(--cyan)">🕒</div>
+        <div>
+          <b style="font-size:14px; color:#fff">Deposit History</b>
+          <div style="font-size:11.5px; color:var(--muted)">View all deposits and payment status</div>
+        </div>
+      </div>
+      <span style="color:var(--cyan); font-size:18px; font-weight:800">➔</span>
+    </div>
+
+    <div class="pay-loading-overlay" id="depositLoaderAnim">
+      <div class="pay-loader-ring"></div>
+      <div class="pay-loader-text">Connecting Gateway Securely...</div>
+      <p class="pay-loader-sub">Generating dynamic UPI payment session[cite: 1]</p>
+    </div>
+
+    <div class="list-panel qr-checkout-box" id="depositQrBox" style="margin-bottom:14px">
+      <div class="status-pill-scan">
+        <span class="pulse-dot"></span> <span id="depositStatusPillText">Waiting for payment confirmation...</span>
+      </div>
+      <div style="margin: 8px 0; font-size: 13px; font-weight: 700; color: var(--cyan);" id="depositTimerDisplay">QR Expires in: 05:00</div>
+      <div class="qr-frame">
+        <img id="liveDepositQrImage" src="" alt="Deposit QR">
+      </div>
+      <div style="font-size:22px;font-weight:900;color:#63e6db;margin-bottom:4px" id="depositPayableAmount">₹0.00</div>
+      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI App or QR. Click Check Status if not credited automatically[cite: 1]!</p>
+      <div class="stack">
+        <a id="directDepositUpiBtn" class="btn primary" href="#" style="text-decoration:none;display:none;padding:11px">Open in UPI App</a>
+        <button class="btn secondary" id="checkDepositStatusManualBtn" style="border-color:#2a4468;color:#63e6db;padding:11px">⚡ Check Payment Status</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-deposit-history">
+    <div class="view-header">
+      <div>
+        <h2>Deposit History</h2>
+        <p>All your past wallet top-up transactions.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel" id="depositHistoryListFull">
+      <div class="empty">No recent deposits found.</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-keys">
+    <div class="view-header">
+      <div>
+        <h2>My Keys</h2>
+        <p>All your delivered license keys in one place.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+
+    <div class="stats" style="margin-bottom:14px">
+      <div class="stat"><b id="statUserKeysCount" style="color:var(--cyan)">03</b><span>TOTAL KEYS</span></div>
+      <div class="stat"><b id="statUserProductsCount" style="color:var(--green)">02</b><span>PRODUCTS</span></div>
+    </div>
+
+    <div class="list-panel stack" id="userKeysList" style="background:transparent; border:0; padding:0">
+      <div class="empty">No delivered license keys available yet.</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-referral">
+    <div class="view-header">
+      <div>
+        <h2>Referral Program</h2>
+        <p>Invite friends and earn commission on every successful key delivery.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel stack">
+      <label style="font-size:11.5px;color:var(--muted)">Your Unique Referral Link</label>
+      <div style="display:flex;gap:6px">
+        <input id="userReferralLinkInput" class="field" readonly style="font-family:monospace;font-size:12px">
+        <button class="btn primary" onclick="window.copyReferralLink()">📋 Copy</button>
+      </div>
+      
+      <label style="font-size:11.5px;color:var(--muted);margin-top:10px">Your Referral Code</label>
+      <div style="display:flex;gap:6px"><input id="userReferralCodeInput" class="field" readonly style="font-family:monospace"><button class="btn secondary" onclick="window.copyReferralCode()">Copy Code</button></div>
+      <div class="grid" style="margin-top:10px">
+        <div class="stat"><b id="userStatRefTotal">0</b><span>Total Referrals</span></div>
+        <div class="stat"><b id="userStatRefKeys">0</b><span>Keys Delivered</span></div>
+        <div class="stat" style="grid-column:span 2"><b id="userStatRefCommission" style="color:var(--cyan)">₹0.00</b><span>Commission Earned</span></div>
+      </div>
+      <h3 style="margin:18px 0 8px;font-size:15px">Your Referred Users</h3>
+      <div id="referredUsersList" class="stack"><div class="empty">Sign in to view your referrals.</div></div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-about">
+    <div class="view-header">
+      <div>
+        <h2>About Us</h2>
+        <p>Learn more about our platform and mission.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel stack" id="aboutPageContainer">
+      <div id="aboutPageBanner" style="display:none; border-radius:14px; overflow:hidden; margin-bottom:12px"></div>
+      <div id="aboutPageContent" style="white-space:pre-line; color:var(--muted)">Loading...</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-policy">
+    <div class="view-header">
+      <div>
+        <h2>Policy & Terms</h2>
+        <p>Terms of service and refund guidelines.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel stack" id="policyPageContainer">
+      <div id="policyPageBanner" style="display:none; border-radius:14px; overflow:hidden; margin-bottom:12px"></div>
+      <div id="policyPageContent" style="white-space:pre-line; color:var(--muted)">Loading...</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-account">
+    <div class="view-header">
+      <div>
+        <h2>Account Credentials</h2>
+        <p>Verified profile & store settings.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel" id="accountDetailsPane">
+      <div class="empty">Sign in to view account credentials.</div>
+    </div>
+  </section>
+
+  <section class="view-pane" id="view-support">
+    <div class="view-header">
+      <div>
+        <h2>Help & Support</h2>
+        <p>Official assistance channels.</p>
+      </div>
+      <button class="header-back-btn" onclick="window.goBack()">← Back</button>
+    </div>
+    <div class="list-panel stack">
+      <button class="btn primary" style="width:100%;padding:12px" onclick="window.openSupportModal()">Open Support Desk ↗</button>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-bar">
+  <button class="bottom-item active-bottom" onclick="window.navigateTo('view-home')">
+    <span class="icon">⌂</span><span>Home</span>
+  </button>
+  <button class="bottom-item" onclick="window.navigateTo('view-catalog')">
+    <span class="icon">🛒</span><span>Store</span>
+  </button>
+  <button class="bottom-item" onclick="window.navigateTo('view-purchase')">
+    <span class="icon">🧾</span><span>Orders</span>
+  </button>
+  <button class="bottom-item" onclick="window.navigateTo('view-deposit')">
+    <span class="icon">💳</span><span>Wallet</span>
+  </button>
+  <button class="bottom-item" onclick="window.navigateTo('view-keys')">
+    <span class="icon">🔑</span><span>Keys</span>
+  </button>
+</nav>
+
+<div class="modal-back" id="announcementPopupModal">
+  <div class="modal">
+    <div class="close-row">
+      <div><h3 style="margin:0" id="annPopupTitle">Announcement</h3></div>
+      <button class="xbtn" onclick="window.closeModal('announcementPopupModal')">✕</button>
+    </div>
+    <div class="stack">
+      <div id="annPopupMediaContainer"></div>
+      <div id="annPopupContent" style="font-size:13.5px;color:var(--muted);white-space:pre-line"></div>
+      <button class="btn primary" onclick="window.closeModal('announcementPopupModal')">Got It</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="successPopupModal">
+  <div class="modal success-modal">
+    <div class="success-icon-box">✓</div>
+    <h3 style="margin:0 0 6px;color:#fff;font-size:20px" id="successPopupTitle">Payment Successful!</h3>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 16px" id="successPopupDesc">Payment verify ho gaya hai.</p>
+    <div id="successPopupExtra" class="notice" style="margin-bottom:16px;text-align:left;font-family:monospace;word-break:break-all"></div>
+    <button class="btn primary" style="width:100%;padding:12px" id="successPopupActionBtn">View Details</button>
+  </div>
+</div>
+
+<div class="modal-back" id="supportModal">
+  <div class="modal">
+    <div class="close-row">
+      <div><h3 style="margin:0">Contact Support</h3><small style="color:var(--muted)">Select your platform</small></div>
+      <button class="xbtn" onclick="window.closeModal('supportModal')">✕</button>
+    </div>
+    <div class="stack" id="multiSupportButtonsContainer">
+      <a class="support-link-item" href="https://t.me/union_x_support" target="_blank">
+        <span class="support-svg-icon">
+          <svg viewBox="0 0 24 24"><path fill="#24A1DE" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+        </span>
+        <span>Telegram Support</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="authModal">
+  <div class="modal">
+    <div class="close-row">
+      <div><h3 id="authTitle" style="margin:0;font-size:18px;font-weight:900;color:#63e6db">Welcome Back</h3></div>
+      <button class="xbtn" onclick="window.closeModal('authModal')">✕</button>
+    </div>
+    <div class="stack">
+      <button class="btn secondary" id="googleSignInBtn" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#141f33;border-color:#2a3e5f">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/><path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/></svg>
+        <span style="font-weight:700">Continue with Google</span>
+      </button>
+      <div style="text-align:center;color:var(--muted);font-size:11px;margin:2px 0">OR EMAIL ADDRESS</div>
+      <input class="field" id="authEmail" type="email" placeholder="Enter email address" required autocomplete="email">
+      <div id="registerReferralWrap" style="display:none;animation:floatUp .35s ease both">
+        <label for="registerReferralCode" style="display:block;font-size:11.5px;color:var(--muted);margin:2px 0 6px">Referral Code <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+        <input class="field" id="registerReferralCode" type="text" placeholder="Enter referral code" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <div style="font-size:10.5px;color:var(--muted);margin-top:5px">If someone invited you, enter their referral code.</div>
+      </div>
+      <div style="position:relative"><input class="field" id="authPassword" type="password" placeholder="Enter password" required autocomplete="current-password" style="padding-right:82px;width:100%"><button type="button" id="toggleAuthPassword" class="btn quiet" style="position:absolute;right:4px;top:4px;padding:7px 9px;font-size:11px">Show</button></div>
+      <label class="remember-row"><input type="checkbox" id="rememberLoginCheckbox" checked><span>Remember me on this device</span></label>
+      <div id="authModeHint" style="font-size:11px;color:var(--muted);text-align:center">Sign in to continue to your account.</div>
+      <button class="btn primary" id="authSubmit" style="padding:12px">Sign In</button>
+      <button class="btn quiet" id="switchAuth" style="font-size:12px;color:var(--cyan)">Create an account</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="buyModal">
+  <div class="modal">
+    <div class="close-row">
+      <div><h3 style="margin:0; font-size:18px; font-weight:900; color:#fff;">Complete Order</h3></div>
+      <button class="xbtn" onclick="window.closeModal('buyModal')">✕</button>
+    </div>
+    
+    <div id="buyInitialState">
+      <div style="background:linear-gradient(145deg, #111a2d, #090e18); border:1px solid #1f314d; border-radius:18px; padding:16px; margin-bottom:14px; position:relative; box-shadow:0 8px 24px rgba(0,0,0,0.3)">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px">
+          <div>
+            <div style="font-size:18px; font-weight:900; color:#fff; letter-spacing:-0.3px;" id="summaryProdName">Product Name</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;" id="summaryCatSub">Panel Category</div>
+          </div>
+          <span style="background:rgba(91,140,255,0.15); color:var(--blue); border:1px solid rgba(91,140,255,0.3); padding:4px 10px; border-radius:8px; font-size:10.5px; font-weight:800; text-transform:uppercase;" id="summaryPlanTag">NON ROOT</span>
+        </div>
+        
+        <div style="font-size:12.5px; color:var(--cyan); font-weight:700; margin-top:8px; display:flex; align-items:center; gap:6px;">
+          <span>🕒</span> <span id="summaryPlanNameText">Plan: 6 Hours</span>
+        </div>
+
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #1c293d; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:10.5px; font-weight:800; color:var(--muted); letter-spacing:0.5px">TOTAL PAYABLE</div>
+            <div style="font-size:11px; color:#8e9eb5;">Including applicable discounts</div>
+          </div>
+          <div style="font-size:24px; font-weight:900; color:var(--green);" id="summaryPayableVal">₹1.00</div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <label style="font-size:12px;color:var(--muted); font-weight:700">Customer Phone Number</label>
+        <div style="position:relative">
+          <span style="position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:16px;">📞</span>
+          <input class="field" id="orderPhoneNumber" type="tel" placeholder="Enter 10-digit phone number" required maxlength="10" style="padding-left:40px">
+        </div>
+        
+        <label style="font-size:12px;color:var(--muted); font-weight:700">Discount Coupon</label>
+        <div style="display:flex;gap:8px">
+          <input class="field" id="couponCodeInput" placeholder="Enter coupon code" style="text-transform:uppercase">
+          <button type="button" class="btn secondary" id="applyCouponBtn" style="padding:0 18px">Apply</button>
+        </div>
+        <div id="couponDiscountMsg" style="font-size:11.5px;color:var(--green); font-weight:700"></div>
+
+        <label class="remember-row">
+          <input type="checkbox" id="rememberPhoneCheckbox">
+          <span>Remember my phone number</span>
+        </label>
+
+        <button class="btn secondary" id="payViaWalletBtn" style="border-color:#2a4468;color:#63e6db;padding:13px; display:flex; flex-direction:column; gap:2px">
+          <div style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:14.5px; font-weight:800">
+            <span>⚡</span> <span>Buy with Wallet</span>
+          </div>
+          <div style="font-size:11px; color:var(--muted); font-weight:600">Available Balance: <span class="cur-wallet-bal">₹0.00</span></div>
+        </button>
+
+        <button class="btn primary" id="generateUpiQrBtn" style="padding:13px; font-size:14.5px; box-shadow:0 8px 25px rgba(91,140,255,0.4)">
+          🛡️ Pay Securely with UPI
+        </button>
+        <button class="btn secondary" onclick="window.closeModal('buyModal')" style="padding:10px; background:transparent; border:0; color:var(--muted)">Cancel</button>
+      </div>
+    </div>
+
+    <div class="pay-loading-overlay" id="orderLoaderAnim">
+      <div class="pay-loader-ring"></div>
+      <div class="pay-loader-text">Creating Secure Payment Session...</div>
+      <p class="pay-loader-sub">Reserving atomic order ID & UPI Intent[cite: 1]</p>
+    </div>
+
+    <div class="qr-checkout-box" id="qrCheckoutBox">
+      <div class="status-pill-scan">
+        <span class="pulse-dot"></span> <span id="orderStatusPillText">Waiting for payment confirmation...</span>
+      </div>
+      <div style="margin: 8px 0; font-size: 13px; font-weight: 700; color: var(--cyan);" id="orderTimerDisplay">QR Expires in: 05:00</div>
+      <div class="qr-frame">
+        <img id="liveQrImage" src="" alt="Scan QR">
+      </div>
+      <div style="font-size:22px;font-weight:900;color:#63e6db;margin-bottom:4px" id="qrPayableAmount">₹0.00</div>
+      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI app or scan QR. Key auto-dispatches once confirmed[cite: 1]!</p>
+      
+      <div class="stack">
+        <a id="directUpiAppBtn" class="btn primary" href="#" style="text-decoration:none;display:none;padding:12px">Pay via UPI App</a>
+        <button class="btn secondary" id="checkOrderStatusManualBtn" style="border-color:#2a4468;color:#63e6db;padding:12px">⚡ Check Payment Status</button>
+        <button class="btn secondary" onclick="window.closeModal('buyModal')" style="padding:10px">Close Window</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut
+} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+import {getDatabase,ref,onValue,push,set,update,runTransaction} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAM1cUZQtLA9YTA3bInmwQubh7AwI7ZHWE",
+  authDomain: "tg-cheats-dcea4.firebaseapp.com",
+  databaseURL: "https://tg-cheats-dcea4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "tg-cheats-dcea4",
+  storageBucket: "tg-cheats-dcea4.firebasestorage.app",
+  messagingSenderId: "751717234257",
+  appId: "1:751717234257:web:e9135c0ab4280ac2d36a70",
+  measurementId: "G-G3F5VDTG1S"
+};
+
+const app = initializeApp(firebaseConfig), auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence).catch(e => console.error(e));
+const db = getDatabase(app);
+
+let products=[], user=null, selected=null, authMode='login', userOrders=[];
+let userRole = 'user';
+let userWalletBalance = 0;
+let navigationHistory = ['view-home'];
+let dynamicGatewayKey = "fam_3710dccd201f6497f7511ad6f49be25aaa569c57";
+let globalReferralPercentage = 10;
+let appliedDiscount = { code: null, amount: 0 };
+let allCoupons = {};
+
+let activeOrderSession = null;
+let activeDepositSession = null;
+let orderStatusCheckInFlight = false;
+let depositStatusCheckInFlight = false;
+let countdownTimerRef = null;
+
+const $ = id => document.getElementById(id);
+
+window.openDrawer = function() {
+  const backdrop = $('drawerBackdrop');
+  const card = $('siteDrawer');
+  if (backdrop) backdrop.classList.add('open');
+  if (card) card.classList.add('open');
+};
+
+window.closeDrawer = function() {
+  const backdrop = $('drawerBackdrop');
+  const card = $('siteDrawer');
+  if (backdrop) backdrop.classList.remove('open');
+  if (card) card.classList.remove('open');
+};
+
+window.toast = function(message, duration = 3000) {
+  const t = $('toast');
+  if (!t) return;
+  t.textContent = message;
+  t.classList.add('show');
+  setTimeout(() => {
+    t.classList.remove('show');
+  }, duration);
+};
+
+window.openModal = function(id){ const el = $(id); if(el) el.classList.add('open'); };
+window.closeModal = function(id){ const el = $(id); if(el) el.classList.remove('open'); };
+window.openSupportModal = function(){ window.openModal('supportModal'); };
+window.esc = function(s=''){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); };
+window.navigateTo = navigateTo;
+window.goBack = goBack;
+window.copyReferralLink = copyReferralLink;
+window.copyKeyToken = copyKeyToken;
+
+window.openSuccessPopup = function(title, desc, extraHtml, callback) {
+  $('successPopupTitle').textContent = title;
+  $('successPopupDesc').textContent = desc;
+  const extraBox = $('successPopupExtra');
+  if (extraHtml) {
+    extraBox.innerHTML = extraHtml;
+    extraBox.style.display = 'block';
+  } else {
+    extraBox.style.display = 'none';
+  }
+  const btn = $('successPopupActionBtn');
+  btn.onclick = () => {
+    window.closeModal('successPopupModal');
+    if (callback) callback();
+  };
+  window.openModal('successPopupModal');
+};
+
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+const urlParams = new URLSearchParams(window.location.search);
+const refParam = urlParams.get('ref');
+if (refParam && !localStorage.getItem('tg_ref_sponsor')) {
+  localStorage.setItem('tg_ref_sponsor', refParam.trim());
+}
+
+onValue(ref(db, 'appConfig'), s => {
+  const conf = s.val() || {};
+  if (conf.storeName) {
+    if ($('storeHeaderTitle')) $('storeHeaderTitle').textContent = conf.storeName;
+    if ($('drawerStoreTitle')) $('drawerStoreTitle').textContent = conf.storeName;
+    document.title = conf.storeName;
+  }
+  if (conf.gatewayKey) dynamicGatewayKey = conf.gatewayKey;
+  if (conf.referralPercentage !== undefined) globalReferralPercentage = Number(conf.referralPercentage);
+  const logo = document.querySelector('.brand .logo');
+  if (logo && conf.storeLogoUrl) {
+    logo.textContent = '';
+    logo.style.background = `center/cover no-repeat url("${String(conf.storeLogoUrl).replace(/["\\\\]/g, '')}")`;
+    logo.style.border = '1px solid #28466c';
+  }
+  const promo = $('storePromotionCard');
+  if (promo) {
+    const promoEnabled = conf.promoEnabled === true || conf.promoEnabled === 1 || conf.promoEnabled === 'true';
+    promo.classList.toggle('hidden', !promoEnabled);
+    promo.classList.toggle('promo-live', promoEnabled);
+    const homePane = $('view-home');
+    if (homePane && promo.parentElement !== homePane) homePane.insertBefore(promo, homePane.firstElementChild);
+    $('storePromotionTitle').textContent = conf.promoTitle || 'Special Promotion';
+    $('storePromotionText').textContent = conf.promoText || '';
+    const mediaBox = $('storePromotionMedia');
+    mediaBox.innerHTML = '';
+    if (conf.promoMediaUrl) {
+      const mediaLooksVideo = conf.promoMediaType === 'video' || /^data:video\//i.test(conf.promoMediaUrl) || /\.(mp4|webm|ogg)(\?|$)/i.test(conf.promoMediaUrl);
+      if (mediaLooksVideo) {
+        const video = document.createElement('video');
+        video.src = conf.promoMediaUrl; video.controls = true; video.playsInline = true;
+        video.style.cssText = 'width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:10px';
+        mediaBox.appendChild(video);
+      } else {
+        const image = document.createElement('img');
+        image.src = conf.promoMediaUrl; image.alt = conf.promoTitle || 'Promotion';
+        image.style.cssText = 'width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:10px';
+        mediaBox.appendChild(image);
+      }
+    }
+    const link = $('storePromotionLink');
+    if (conf.promoLink && /^https:\/\//i.test(conf.promoLink)) {
+      link.href = conf.promoLink; link.textContent = conf.promoButtonText || 'View Offer ↗';
+      link.classList.remove('hidden');
+    } else link.classList.add('hidden');
+  }
+});
+
+onValue(ref(db, 'siteContent'), s => {
+  const content = s.val() || {};
+  const aboutItem = $('drawerAboutItem');
+  const policyItem = $('drawerPolicyItem');
+
+  if (content.about && content.about.visible) {
+    if (aboutItem) aboutItem.style.display = 'flex';
+    if ($('aboutPageContent')) $('aboutPageContent').textContent = content.about.text || '';
+    const bDiv = $('aboutPageBanner');
+    if (content.about.bannerUrl) {
+      bDiv.style.display = 'block';
+      if (content.about.bannerType === 'video_file') {
+        bDiv.innerHTML = `<video src="${content.about.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+      } else {
+        bDiv.innerHTML = `<img src="${content.about.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+      }
+    } else {
+      bDiv.style.display = 'none';
+    }
+  } else {
+    if (aboutItem) aboutItem.style.display = 'none';
+  }
+
+  if (content.policy && content.policy.visible) {
+    if (policyItem) policyItem.style.display = 'flex';
+    if ($('policyPageContent')) $('policyPageContent').textContent = content.policy.text || '';
+    const pDiv = $('policyPageBanner');
+    if (content.policy.bannerUrl) {
+      pDiv.style.display = 'block';
+      if (content.policy.bannerType === 'video_file') {
+        pDiv.innerHTML = `<video src="${content.policy.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+      } else {
+        pDiv.innerHTML = `<img src="${content.policy.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+      }
+    } else {
+      pDiv.style.display = 'none';
+    }
+  } else {
+    if (policyItem) policyItem.style.display = 'none';
+  }
+});
+
+onValue(ref(db, 'coupons'), s => {
+  allCoupons = s.val() || {};
+});
+
+onValue(ref(db, 'popupAnnouncement'), s => {
+  const ann = s.val();
+  if (ann && ann.active) {
+    $('annPopupTitle').textContent = ann.title || 'Announcement';
+    $('annPopupContent').textContent = ann.content || '';
+    const mContainer = $('annPopupMediaContainer');
+    mContainer.innerHTML = '';
+    if (ann.mediaUrl) {
+      if (ann.mediaType === 'image' || ann.mediaType === 'file_upload') {
+        mContainer.innerHTML = `<img src="${window.esc(ann.mediaUrl)}" style="width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-bottom:12px">`;
+      } else if (ann.mediaType === 'video_file') {
+        mContainer.innerHTML = `<video src="${window.esc(ann.mediaUrl)}" controls style="width:100%;max-height:200px;border-radius:12px;margin-bottom:12px" autoplay muted></video>`;
+      } else if (ann.mediaType === 'youtube') {
+        const yt = getYouTubeEmbedUrl(ann.mediaUrl);
+        if (yt) mContainer.innerHTML = makeYouTubeOneClickPlayer(yt, "announcement-video");
+      }
+    }
+    openModal('announcementPopupModal');
+  }
+});
+
+const floatBtn = $('floatingSupportBtn');
+let isDragging = false, startX, startY, initialX, initialY, dragMoved = false;
+
+if (floatBtn) {
+  floatBtn.addEventListener('mousedown', e => {
+    isDragging = true; dragMoved = false;
+    startX = e.clientX; startY = e.clientY;
+    const r = floatBtn.getBoundingClientRect();
+    initialX = r.left; initialY = r.top;
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragMoved = true;
+    floatBtn.style.left = `${Math.max(10, Math.min(window.innerWidth - 62, initialX + dx))}px`;
+    floatBtn.style.top = `${Math.max(65, Math.min(window.innerHeight - 120, initialY + dy))}px`;
+    floatBtn.style.right = 'auto'; floatBtn.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!dragMoved) window.openSupportModal();
+  });
+
+  floatBtn.addEventListener('touchstart', e => {
+    isDragging = true; dragMoved = false;
+    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    const r = floatBtn.getBoundingClientRect();
+    initialX = r.left; initialY = r.top;
+  }, {passive: true});
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - startX, dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragMoved = true;
+    floatBtn.style.left = `${Math.max(10, Math.min(window.innerWidth - 62, initialX + dx))}px`;
+    floatBtn.style.top = `${Math.max(65, Math.min(window.innerHeight - 120, initialY + dy))}px`;
+    floatBtn.style.right = 'auto'; floatBtn.style.bottom = 'auto';
+  }, {passive: true});
+  document.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!dragMoved) window.openSupportModal();
+  });
+}
+
+function resolvePlatformUrl(platform, rawUrl) {
+  rawUrl = (rawUrl || '').trim();
+  if (platform === 'whatsapp') {
+    if (rawUrl.startsWith('http')) return rawUrl;
+    const cleanNumber = rawUrl.replace(/[^0-9]/g, '');
+    return `https://wa.me/${cleanNumber}`;
+  }
+  if (platform === 'telegram') {
+    if (rawUrl.startsWith('http')) return rawUrl;
+    const cleanUser = rawUrl.replace('@', '');
+    return `https://t.me/${cleanUser}`;
+  }
+  if (platform === 'email') {
+    if (rawUrl.startsWith('mailto:')) return rawUrl;
+    return `mailto:${rawUrl}`;
+  }
+  return rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+}
+
+function getPlatformSvg(platform) {
+  if (platform === 'telegram') {
+    return `<svg viewBox="0 0 24 24"><path fill="#24A1DE" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>`;
+  }
+  if (platform === 'whatsapp') {
+    return `<svg viewBox="0 0 24 24"><path fill="#25D366" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm0 18.15c-1.49 0-2.95-.4-4.22-1.15l-.3-.18-3.12.82.83-3.04-.2-.32a8.199 8.199 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 012.41 5.83c.02 4.54-3.68 8.24-8.2 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05 0 1.21.88 2.38 1 2.55.12.17 1.74 2.65 4.21 3.72.59.25 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.17-.48-.29z"/></svg>`;
+  }
+  if (platform === 'youtube') {
+    return `<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+  }
+  if (platform === 'email') {
+    return `<svg viewBox="0 0 24 24"><path fill="#EA4335" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`;
+  }
+  return `<svg viewBox="0 0 24 24"><path fill="#63e6db" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>`;
+}
+
+onValue(ref(db, 'supportSettings'), s => {
+  const links = s.val() || [];
+  const container = $('multiSupportButtonsContainer');
+  if (!container) return;
+  
+  if (!links.length) {
+    container.innerHTML = `
+      <a class="support-link-item" href="https://t.me/union_x_support" target="_blank">
+        <span class="support-svg-icon">${getPlatformSvg('telegram')}</span>
+        <span>Telegram Support</span>
+      </a>
+    `;
+    return;
+  }
+
+  container.innerHTML = links.map(item => {
+    const plat = item.platform || 'telegram';
+    const targetUrl = resolvePlatformUrl(plat, item.url);
+    const svgIcon = getPlatformSvg(plat);
+
+    return `
+      <a class="support-link-item" href="${window.esc(targetUrl)}" target="_blank">
+        <span class="support-svg-icon">${svgIcon}</span>
+        <span>${window.esc(item.title || 'Support')}</span>
+      </a>
+    `;
+  }).join('');
+});
+
+async function popKeyFromPlanInventory(productId, planName) {
+  const productRef = ref(db, `products/${productId}`);
+  let poppedKey = null;
+
+  await runTransaction(productRef, (currentProduct) => {
+    if (!currentProduct || !currentProduct.plans) return currentProduct;
+    const planIdx = currentProduct.plans.findIndex(p => p.name === planName);
+    if (planIdx === -1) return currentProduct;
+    const pool = currentProduct.plans[planIdx].keysPool || [];
+    if (pool.length > 0) {
+      poppedKey = pool.shift();
+      currentProduct.plans[planIdx].keysPool = pool;
+      currentProduct.plans[planIdx].stock = pool.length;
+    }
+    return currentProduct;
+  });
+  return poppedKey;
+}
+
+function getYouTubeEmbedUrl(url) {
+  if (!url) return '';
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? `https://www.youtube-nocookie.com/embed/${match[2]}?autoplay=0&controls=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&enablejsapi=1&disablekb=1&fs=0&origin=${encodeURIComponent(window.location.origin)}` : '';
+}
+
+function makeYouTubeOneClickPlayer(embedUrl, label = 'product-video') {
+  const safeUrl = window.esc(embedUrl);
+  const playerId = `ytp-${Math.random().toString(36).slice(2, 10)}`;
+  return `<div class="product-media-container" style="margin-bottom:12px"><div class="video-wrapper yt-oneclick-wrap" data-playing="false"><iframe id="${playerId}" src="${safeUrl}" title="Embedded video player" loading="lazy" tabindex="-1" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe><button class="yt-oneclick" type="button" aria-label="Play or pause video" onclick="toggleYouTubeOneClick(this, '${playerId}')"><span class="yt-play-icon">▶</span></button></div></div>`;
+}
+
+function toggleYouTubeOneClick(button, playerId) {
+  const frame = document.getElementById(playerId);
+  if (!frame || !frame.contentWindow) return;
+  const wrapper = button.closest('.yt-oneclick-wrap');
+  const playing = wrapper?.dataset.playing === 'true';
+  const command = playing ? 'pauseVideo' : 'playVideo';
+  frame.contentWindow.postMessage(JSON.stringify({event:'command',func:command,args:[]}), 'https://www.youtube-nocookie.com');
+  if (wrapper) wrapper.dataset.playing = playing ? 'false' : 'true';
+  button.classList.toggle('is-playing', !playing);
+  const icon = button.querySelector('.yt-play-icon');
+  if (icon) icon.textContent = playing ? '▶' : 'Ⅱ';
+}
+
+function navigateTo(targetViewId, isBackAction = false) {
+  if (!user && !['view-home','view-catalog','view-support'].includes(targetViewId)) {
+    if (typeof openModal === 'function') { setAuthMode('login'); openModal('authModal'); }
+    if (typeof toast === 'function') toast('Please log in to access this section');
+    return;
+  }
+  document.querySelectorAll('.view-pane').forEach(el => el.classList.remove('active-view'));
+  const activeTarget = $(targetViewId);
+  if(activeTarget) activeTarget.classList.add('active-view');
+  
+  document.querySelectorAll('.drawer-item').forEach(btn => btn.classList.toggle('active-menu', btn.dataset.page === targetViewId));
+  document.querySelectorAll('.bottom-item').forEach(btn => btn.classList.toggle('active-bottom', btn.getAttribute('onclick')?.includes(targetViewId)));
+
+  const isHome = (targetViewId === 'view-home');
+  if ($('menuToggle')) $('menuToggle').classList.toggle('hidden', !isHome);
+  if ($('topNavBackBtn')) $('topNavBackBtn').classList.toggle('hidden', isHome);
+
+  if (!isBackAction && navigationHistory[navigationHistory.length - 1] !== targetViewId) {
+    navigationHistory.push(targetViewId);
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack() {
+  if (navigationHistory.length > 1) {
+    navigationHistory.pop();
+    navigateTo(navigationHistory[navigationHistory.length - 1] || 'view-home', true);
+  } else {
+    navigateTo('view-home', true);
+  }
+}
+
+const menuToggleEl = $('menuToggle');
+if (menuToggleEl) menuToggleEl.onclick = openDrawer;
+const closeDrawerEl = $('closeDrawer');
+if (closeDrawerEl) closeDrawerEl.onclick = closeDrawer;
+const drawerBackdropEl = $('drawerBackdrop');
+if (drawerBackdropEl) drawerBackdropEl.onclick = closeDrawer;
+
+document.querySelectorAll('[data-page]').forEach(btn => {
+  btn.onclick = () => {
+    const page = btn.dataset.page;
+    closeDrawer();
+    if((page === 'view-purchase' || page === 'view-keys' || page === 'view-account' || page === 'view-deposit') && !user) {
+      $('authNav').click();
+      toast('Please sign in first');
+      return;
+    }
+    navigateTo(page);
+  };
+});
+
+function setAuthBusy(button, busy, label){
+  if(!button) return;
+  if(busy){ if(!button.dataset.originalLabel) button.dataset.originalLabel=button.innerHTML; button.disabled=true; button.classList.add('auth-loading'); button.innerHTML='<span class="auth-spinner" aria-hidden="true"></span>'+label; }
+  else { button.disabled=false; button.classList.remove('auth-loading'); if(button.dataset.originalLabel){button.innerHTML=button.dataset.originalLabel; delete button.dataset.originalLabel;} }
+}
+function authTransition(message, leaving=false){
+  const modal=$('authModal'); if(modal){ const card=modal.querySelector('.modal'); if(card){card.classList.remove('auth-success-anim','auth-exit-anim'); void card.offsetWidth; card.classList.add(leaving?'auth-exit-anim':'auth-success-anim');} }
+  if(message) toast(message);
+  if(leaving) setTimeout(()=>{ if(modal && modal.classList.contains('open')) closeModal('authModal'); },220);
+}
+function setAuthMode(mode){
+  authMode = mode;
+  const reg = mode === 'register';
+  const authCard = $('authModal')?.querySelector('.modal');
+  if (authCard) { authCard.classList.toggle('auth-register-mode', reg); authCard.classList.toggle('auth-login-mode', !reg); }
+  if ($('googleSignInBtn')) $('googleSignInBtn').innerHTML = $('googleSignInBtn').innerHTML.replace('Continue with Google', reg ? 'Sign up with Google' : 'Continue with Google');
+  $('authTitle').textContent = reg ? 'Create Account' : 'Welcome Back';
+  $('authSubmit').textContent = reg ? 'Create Account' : 'Sign In';
+  $('switchAuth').textContent = reg ? 'Already have an account? Sign In' : 'Create a new account';
+  if ($('authModeHint')) $('authModeHint').textContent = reg ? 'Create your account to save purchases and referrals.' : 'Sign in to continue to your account.';
+  if ($('authPassword')) $('authPassword').autocomplete = reg ? 'new-password' : 'current-password';
+  if ($('registerReferralWrap')) $('registerReferralWrap').style.display = reg ? 'block' : 'none';
+  if (reg && $('registerReferralCode')) {
+    const queryReferral = new URLSearchParams(window.location.search).get('ref') || '';
+    const savedReferral = localStorage.getItem('tg_ref_sponsor') || '';
+    if (!$('registerReferralCode').value) $('registerReferralCode').value = queryReferral || savedReferral;
+  }
+  const card=$('authModal')?.querySelector('.modal'); if(card){card.classList.remove('auth-success-anim'); void card.offsetWidth; card.classList.add('auth-success-anim');}
+}
+const authNavEl = $('authNav');
+if (authNavEl) authNavEl.onclick = () => { setAuthMode('login'); openModal('authModal'); };
+const drawerAuthBtnEl = $('drawerAuthBtn');
+if (drawerAuthBtnEl) drawerAuthBtnEl.onclick = () => {
+  closeDrawer();
+  if(user){ signOut(auth); } else { setAuthMode('login'); openModal('authModal'); }
+};
+const switchAuthEl = $('switchAuth');
+if (switchAuthEl) switchAuthEl.onclick = () => setAuthMode(authMode==='login'?'register':'login');
+
+const googleSignInBtnEl = $('googleSignInBtn');
+if (googleSignInBtnEl) googleSignInBtnEl.onclick = async () => {
+  setAuthBusy(googleSignInBtnEl, true, 'Connecting to Google…');
+  try {
+    await applyAuthPersistence();
+    const res = await signInWithPopup(auth, googleProvider);
+    const u = res.user;
+    onValue(ref(db, 'users/' + u.uid), async snap => {
+      const data = snap.val() || {};
+      const sponsor = (authMode === 'register' ? ($('registerReferralCode')?.value || '') : '') .trim() || localStorage.getItem('tg_ref_sponsor') || '';
+      const updatePayload = {
+        name: u.displayName || 'Customer',
+        email: u.email,
+        role: data.role || 'user',
+        walletBalance: data.walletBalance || 0,
+        lastLogin: Date.now()
+      };
+      if (sponsor && sponsor !== u.uid && !data.referredBy) {
+        updatePayload.referredBy = sponsor;
+      }
+      await update(ref(db, 'users/' + u.uid), updatePayload);
+    }, {onlyOnce: true});
+    closeModal('authModal');
+    authTransition(`Welcome, ${u.displayName || u.email}!`, true);
+  } catch(e) {
+    if(e.code !== 'auth/popup-closed-by-user') toast(e.message);
+  } finally { setAuthBusy(googleSignInBtnEl, false); }
+};
+
+const authPassToggleEl = $('toggleAuthPassword');
+if (authPassToggleEl) authPassToggleEl.onclick = () => {
+  const field = $('authPassword'); if (!field) return;
+  const show = field.type === 'password'; field.type = show ? 'text' : 'password';
+  authPassToggleEl.textContent = show ? 'Hide' : 'Show';
+};
+window.copyReferralCode = async function(){
+  const code = $('userReferralCodeInput')?.value || '';
+  if (!code) return toast('Sign in to get your referral code');
+  try { await navigator.clipboard.writeText(code); toast('Referral code copied'); }
+  catch { const el=$('userReferralCodeInput'); el.select(); document.execCommand('copy'); toast('Referral code copied'); }
+};
+async function applyAuthPersistence(){
+  const remember = $('rememberLoginCheckbox')?.checked !== false;
+  await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+}
+
+const authSubmitEl = $('authSubmit');
+if (authSubmitEl) authSubmitEl.onclick = async () => {
+  const email = $('authEmail').value.trim(), pass = $('authPassword').value;
+  if(!email || !pass) return toast('Fill all fields');
+  if(pass.length < 6) return toast('Password must be at least 6 characters');
+  setAuthBusy(authSubmitEl, true, authMode === 'register' ? 'Creating account…' : 'Signing in…');
+  try{
+    await applyAuthPersistence();
+    if(authMode === 'register') {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      const enteredReferral = ($('registerReferralCode')?.value || '').trim();
+      const sponsor = enteredReferral || localStorage.getItem('tg_ref_sponsor') || '';
+      const userPayload = {
+        email: cred.user.email,
+        role: 'user',
+        walletBalance: 0,
+        createdAt: Date.now()
+      };
+      if (sponsor && sponsor !== cred.user.uid) {
+        // Current referral codes are the referrer's Firebase UID.
+        const sponsorSnap = await new Promise((resolve, reject) => {
+          import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js').then(({ get }) => get(ref(db, 'users/' + sponsor))).then(resolve).catch(reject);
+        });
+        if (sponsorSnap.exists()) userPayload.referredBy = sponsor;
+        else if (enteredReferral) {
+          await set(ref(db, 'users/' + cred.user.uid), userPayload);
+          toast('Account created, but referral code was not recognized.');
+          authTransition('', true);
+          return;
+        }
+      }
+      await set(ref(db, 'users/' + cred.user.uid), userPayload);
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+    authTransition(authMode === 'register' ? 'Account created successfully!' : 'Login successful!', true);
+  }catch(e){
+    const code = e?.code || '';
+    const messages = {
+      'auth/invalid-credential': 'Invalid email or password. On phone, check keyboard/autofill, email spelling, and password capitalization. The website is using the same Firebase project as the admin panel.',
+      'auth/wrong-password': 'Incorrect password. Re-enter it manually or reset your password.',
+      'auth/user-not-found': 'No account exists for this email address.',
+      'auth/too-many-requests': 'Too many attempts. Wait a while and try again.',
+      'auth/network-request-failed': 'Network request failed. Check your internet connection and try again.'
+    };
+    toast(messages[code] || e.message || 'Authentication failed.');
+  } finally { setAuthBusy(authSubmitEl, false); }
+};
+
+const signOutEl = $('signOut');
+if (signOutEl) signOutEl.onclick = async () => {
+  setAuthBusy(signOutEl, true, 'Signing out…');
+  try { await signOut(auth); toast('Signed out successfully'); }
+  catch(e) { toast(e.message || 'Unable to sign out'); }
+  finally { setAuthBusy(signOutEl, false); }
+};
+
+// STRICT ISOLATED AUTH STATE LISTENER (PREVENTS ACCIDENTAL AUTO-ADMIN LOGIN)
+onAuthStateChanged(auth, u => {
+  user = u;
+  if ($('authNav')) $('authNav').classList.toggle('hidden', !!u);
+  if ($('signOut')) $('signOut').classList.toggle('hidden', !u);
+  if ($('drawerAuthText')) $('drawerAuthText').textContent = u ? 'Sign Out' : 'Login / Sign Up';
+  document.querySelectorAll('#siteDrawer .drawer-item[data-page]').forEach(btn => {
+    const publicAllowed = ['view-support'];
+    btn.style.display = (u || publicAllowed.includes(btn.dataset.page)) ? 'flex' : 'none';
+  });
+  const accountDivider = document.querySelector('#siteDrawer .drawer-divider-label');
+  if (accountDivider) accountDivider.style.display = u ? 'block' : 'none';
+  document.querySelectorAll('.bottom-bar .bottom-item').forEach(btn => { btn.style.display = u ? '' : 'none'; });
+  const homeWallet = document.querySelector('#view-home .wallet-box');
+  if (homeWallet) homeWallet.style.display = u ? '' : 'none';
+  const homeStats = document.querySelector('#view-home .stats');
+  if (homeStats) homeStats.style.display = u ? '' : 'none';
+  const homeRefer = document.querySelector('#view-home .hero button[onclick*="view-referral"]');
+  if (homeRefer) homeRefer.style.display = u ? '' : 'none';
+  const homeHero = document.querySelector('#view-home .hero');
+  if (homeHero) { const explore = homeHero.querySelector('button[onclick*="view-catalog"]'); if (explore) explore.textContent = 'Browse Products & Prices ↓'; }
+
+
+  if(u){
+    onValue(ref(db, 'users/' + u.uid), snap => {
+      const profile = snap.val() || {};
+      userRole = profile.role === 'reseller' ? 'reseller' : 'user';
+      userWalletBalance = Number(profile.walletBalance || 0);
+      
+      if ($('topWalletBalance')) $('topWalletBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
+      if ($('depositPageBalance')) $('depositPageBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
+      document.querySelectorAll('.cur-wallet-bal').forEach(el => el.textContent = `₹${userWalletBalance.toFixed(2)}`);
+
+      const badge = $('activeRoleBadge');
+      if (badge) {
+        badge.className = userRole === 'reseller' ? 'role-badge reseller' : 'role-badge user';
+        badge.textContent = userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
+      }
+
+      if ($('userReferralLinkInput')) {
+        const refLink = `${window.location.origin}${window.location.pathname}?ref=${u.uid}`;
+        $('userReferralLinkInput').value = refLink;
+        if ($('userReferralCodeInput')) $('userReferralCodeInput').value = u.uid;
+      }
+      renderProducts();
+    });
+
+    onValue(ref(db, 'users'), s => {
+      const allUsers = s.val() || {};
+      const referrals = Object.entries(allUsers).filter(([uid, usr]) => usr && usr.referredBy === u.uid && uid !== u.uid);
+      if ($('userStatRefTotal')) $('userStatRefTotal').textContent = referrals.length;
+      const list = $('referredUsersList');
+      if (list) {
+        if (!referrals.length) list.innerHTML = '<div class="empty">No referred users yet. Share your referral link to invite friends.</div>';
+        else list.innerHTML = referrals.map(([uid, usr]) => {
+          const safeUid = window.esc(uid), name = window.esc(usr.name || usr.displayName || usr.email || 'Store User');
+          return `<div class="notice" style="padding:12px"><div style="font-weight:800">${name}</div><div style="font-size:10px;color:var(--muted);font-family:monospace;word-break:break-all">UID: ${safeUid}</div><div style="display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px"><span>Delivered keys: <b id="refkeys-${safeUid}">0</b></span><span>Key amount: <b id="refamt-${safeUid}">₹0.00</b></span></div></div>`;
+        }).join('');
+        onValue(ref(db, 'orders'), orderSnap => {
+          const orderData = orderSnap.val() || {};
+          referrals.forEach(([uid]) => {
+            const mine = Object.values(orderData).filter(o => o && o.uid === uid && o.status === 'delivered');
+            const keyCount = mine.reduce((n,o) => n + Number(o.quantity || (Array.isArray(o.keys) ? o.keys.length : (o.key ? 1 : 0)) || 1), 0);
+            const amount = mine.reduce((n,o) => n + Number(o.amount || o.totalAmount || o.payableAmount || o.price || 0), 0);
+            const k=$('refkeys-'+uid), a=$('refamt-'+uid); if(k) k.textContent=keyCount; if(a) a.textContent='₹'+amount.toFixed(2);
+          });
+        }, {onlyOnce:true});
+      }
+    });
+
+    loadOrders(u);
+    loadDeposits(u);
+    if ($('accountDetailsPane')) {
+      $('accountDetailsPane').innerHTML = `
+        <div class="notice">
+          <b>Name:</b> ${window.esc(u.displayName || 'Customer')}<br><br>
+          <b>Email:</b> ${window.esc(u.email)}<br><br>
+          <b>Tier:</b> <span style="text-transform:uppercase;color:var(--cyan);font-weight:700">${userRole}</span><br><br>
+          <b>Wallet:</b> <span style="color:var(--green);font-weight:700">₹${userWalletBalance.toFixed(2)}</span><br><br>
+          <button class="btn secondary" style="width:100%" onclick="document.getElementById('signOut').click()">Sign Out</button>
+        </div>`;
+    }
+  } else {
+    userRole = 'user';
+    userWalletBalance = 0;
+    if ($('topWalletBalance')) $('topWalletBalance').textContent = '₹0.00';
+    if ($('depositPageBalance')) $('depositPageBalance').textContent = '₹0.00';
+    userOrders = [];
+    renderOrders();
+    renderKeys();
+    renderProducts();
+  }
+});
+
+function loadOrders(u){
+  onValue(ref(db, 'orders'), s => {
+    userOrders = [];
+    let deliveredKeysCount = 0;
+    let commissionTotal = 0;
+    s.forEach(c => {
+      const val = c.val();
+      if (val && val.uid === u.uid) {
+        userOrders.push({ id: c.key, ...val });
+      }
+      if (val && val.referredBy === u.uid && val.status === 'delivered') {
+        deliveredKeysCount++;
+        commissionTotal += Number(val.commissionAwarded || 0);
+      }
+    });
+    userOrders.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+    if ($('statUserOrders')) $('statUserOrders').textContent = userOrders.length;
+    if ($('userStatRefKeys')) $('userStatRefKeys').textContent = deliveredKeysCount;
+    if ($('userStatRefCommission')) $('userStatRefCommission').textContent = `₹${commissionTotal.toFixed(2)}`;
+    renderOrders();
+    renderKeys();
+  });
+}
+
+function loadDeposits(u){
+  onValue(ref(db, 'deposits'), s => {
+    const list = [];
+    s.forEach(c => {
+      const val = c.val();
+      if (val && val.uid === u.uid) list.push({ id: c.key, ...val });
+    });
+    list.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+    
+    const fullContainer = $('depositHistoryListFull');
+    if (fullContainer) {
+      if (!list.length) {
+        fullContainer.innerHTML = '<div class="empty">No deposit history found.</div>';
+      } else {
+        fullContainer.innerHTML = list.map(d => `
+          <div class="order-card">
+            <div>
+              <b>Auto Wallet Top-up</b>
+              <small style="color:var(--muted);display:block">${new Date(d.createdAt||Date.now()).toLocaleString()}</small>
+              ${d.utr ? `<small style="color:var(--green);display:block">UTR: ${window.esc(d.utr)}</small>` : ''}
+            </div>
+            <div style="text-align:right">
+              <span class="pill ${d.status==='approved'?'delivered':'pending'}">${window.esc(d.status||'pending')}</span>
+              <div style="font-weight:900;color:var(--cyan);margin-top:4px">+₹${Number(d.amount||0).toFixed(2)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+  });
+}
+
+function copyReferralLink() {
+  const linkInput = $('userReferralLinkInput');
+  if (linkInput) {
+    linkInput.select();
+    window.copyKeyToken(linkInput.value);
+  }
+}
+
+function renderOrders(){
+  const container = $('purchaseOrdersList');
+  if (!container) return;
+  if (!userOrders.length) { container.innerHTML = '<div class="empty">No purchase orders found.</div>'; return; }
+  container.innerHTML = userOrders.map(o => `
+    <div class="order-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <b style="font-size:14.5px">${window.esc(o.productName)}</b>
+          <small style="color:var(--muted);display:block">${window.esc(o.planName)} · Ph: ${window.esc(o.phone||'N/A')}</small>
+          <small style="color:var(--cyan);font-size:10px">Method: ${window.esc((o.paymentMethod||'UPI').toUpperCase())}</small>
+        </div>
+        <div style="text-align:right">
+          <span class="pill ${o.status==='delivered'?'delivered':'pending'}">${window.esc(o.status||'pending')}</span>
+          <div style="font-weight:900;margin-top:4px">₹${Number(o.amount||0).toFixed(2)}</div>
+        </div>
+      </div>
+      ${o.deliveryDetails && o.status==='delivered' ? `
+        <div class="key-box-display">
+          <span class="key-token-val">${window.esc(o.deliveryDetails)}</span>
+          <button class="btn-copy" onclick="window.copyKeyToken('${window.esc(o.deliveryDetails)}')">📋 Copy Key</button>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+function copyKeyToken(t) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(() => toast('Key token copied!')).catch(() => fallbackCopyText(t));
+  } else {
+    fallbackCopyText(t);
+  }
+}
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) toast('Key token copied!');
+    else toast('Failed to copy key');
+  } catch (err) {
+    toast('Failed to copy key');
+  }
+  document.body.removeChild(textArea);
+}
+
+function renderKeys(){
+  const container = $('userKeysList');
+  if (!container) return;
+  const keys = userOrders.filter(o => o.deliveryDetails && o.status==='delivered');
+  
+  if ($('statUserKeysCount')) $('statUserKeysCount').textContent = String(keys.length).padStart(2, '0');
+  
+  const uniqueProducts = new Set(keys.map(k => k.productName));
+  if ($('statUserProductsCount')) $('statUserProductsCount').textContent = String(uniqueProducts.size).padStart(2, '0');
+
+  if (!keys.length) { 
+    container.innerHTML = '<div class="empty">No delivered license keys available yet.</div>'; 
+    return; 
+  }
+
+  container.innerHTML = keys.map((o, idx) => `
+    <div style="background:linear-gradient(155deg, #10192a, #090e18); border:1px solid #1f304d; border-radius:20px; padding:18px; margin-bottom:14px; box-shadow:0 8px 25px rgba(0,0,0,0.3)">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px">
+        <div style="display:flex; align-items:center; gap:10px">
+          <div style="width:36px; height:36px; border-radius:10px; background:rgba(91,140,255,0.15); display:grid; place-items:center; color:var(--blue)">🔑</div>
+          <div>
+            <b style="font-size:16px; color:#fff">${window.esc(o.productName)}</b>
+            <div style="font-size:11.5px; color:var(--muted); margin-top:2px">${window.esc(o.planName)} · Key ${idx + 1} of ${keys.length}</div>
+          </div>
+        </div>
+        <span style="background:rgba(74,222,128,0.15); color:var(--green); border:1px solid rgba(74,222,128,0.3); padding:4px 10px; border-radius:8px; font-size:10.5px; font-weight:800">DELIVERED</span>
+      </div>
+
+      <div style="font-size:10.5px; color:var(--muted); text-transform:uppercase; font-weight:800; letter-spacing:0.8px; margin-bottom:6px">LICENSE KEY</div>
+      
+      <div style="background:#050811; border:1px dashed #283e5f; border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between; gap:10px">
+        <span style="font-family:monospace; color:var(--cyan); font-weight:800; font-size:13.5px; word-break:break-all">${window.esc(o.deliveryDetails)}</span>
+        <button class="btn primary" style="padding:7px 14px; font-size:11.5px; flex-shrink:0" onclick="window.copyKeyToken('${window.esc(o.deliveryDetails)}')">📋 Copy</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getPlans(p){
+  // Firebase can contain deleted/null product records or older plan formats.
+  if (!p || typeof p !== 'object') return [];
+  const r = p.plans;
+  if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
+  if (r && typeof r === 'object') return Object.entries(r).filter(([,v]) => v && typeof v === 'object').map(([id,v], i) => ({...v, id: v.id ?? id, name: String(v.name || v.title || `Plan ${i + 1}`), price: Number(v.price || 0), resellerPrice: Number(v.resellerPrice || 0), keysPool: Array.isArray(v.keysPool) ? v.keysPool : []}));
+  return [];
+}
+
+function getActivePlanPrice(pl) {
+  if (userRole === 'reseller' && pl.resellerPrice && Number(pl.resellerPrice) > 0) return Number(pl.resellerPrice);
+  return Number(pl.price || 0);
+}
+
+function renderProducts(){
+  const cat = $('category')?.value || 'all', search = $('search')?.value.toLowerCase().trim() || '';
+  const safeProducts = (Array.isArray(products) ? products : []).filter(p => p && typeof p === 'object' && p.id != null && (p.name || p.title));
+  const list = safeProducts.filter(p => p.active!==false && (!search || String(p.name || p.title || '').toLowerCase().includes(search)) && (cat==='all' || p.category===cat));
+  if ($('statCatalogCount')) $('statCatalogCount').textContent = safeProducts.filter(p => p.active!==false).length;
+
+  const prodContainer = $('products');
+  if (!prodContainer) return;
+
+  prodContainer.innerHTML = list.length ? list.map(p => {
+    const plans = getPlans(p), first = plans[0] || {name:'Default', price:0, resellerPrice:0, stock:0};
+    const firstPrice = getActivePlanPrice(first);
+    const firstStock = (first.keysPool || []).length;
+
+    let mediaHtml = '';
+    if (p.mediaType === 'image' && p.mediaUrl) {
+      mediaHtml = `<div class="product-media-container"><img src="${window.esc(p.mediaUrl)}" alt="${window.esc(p.name)}" loading="lazy"></div>`;
+    } else if (p.mediaType === 'video_file' && p.mediaUrl) {
+      mediaHtml = `<div class="product-media-container"><video src="${window.esc(p.mediaUrl)}" controls playsinline></video></div>`;
+    } else if (p.mediaType === 'youtube' && p.mediaUrl) {
+      const ytEmbed = getYouTubeEmbedUrl(p.mediaUrl);
+      if (ytEmbed) {
+        mediaHtml = makeYouTubeOneClickPlayer(ytEmbed, p.name || 'product-video');
+      }
+    }
+
+    const descLines = (p.description || 'Secure License Key').split(/\r?\n/).filter(l => l.trim().length > 0);
+    const featuresHtml = descLines.map(line => `
+      <div class="feature-item">
+        <span>${window.esc(line)}</span>
+        <span class="check">✓</span>
+      </div>
+    `).join('');
+
+    const updateChannelBtn = p.updateChannelUrl ? `
+      <a href="${window.esc(p.updateChannelUrl)}" target="_blank" class="btn secondary" style="width:100%; margin-top:8px; text-decoration:none; text-align:center; display:block; background:#142238; border-color:#2a4468; color:var(--cyan)">
+        📥 Check Update File / Channel ↗
+      </a>
+    ` : '';
+
+    return `
+      <article class="product" data-product="${window.esc(p.id)}">
+        ${mediaHtml}
+        <div class="product-header-row">
+          <div class="product-title-area">
+            <div class="product-icon">⚡</div>
+            <div>
+              <h3 style="margin:0;font-size:18px;font-weight:900;color:#fff">${window.esc(p.name)}</h3>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">${window.esc(p.category || 'Premium Panel')}</div>
+            </div>
+          </div>
+          <span style="background:rgba(99,230,219,0.12);color:var(--cyan);border:1px solid rgba(99,230,219,0.25);padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase">${window.esc(p.category || 'ACTIVE')}</span>
+        </div>
+
+        <div class="feature-list">
+          ${featuresHtml}
+        </div>
+
+        <div class="plan-picker-box">
+          <div class="plan-picker-label">CHOOSE YOUR PLAN</div>
+          <div class="planrow" style="margin:0">
+            <select class="field plan-select" style="background:#04070e;border-color:#1c2d4a;font-weight:700">
+              ${plans.map((pl,i)=>{
+                const stk = (pl.keysPool||[]).length;
+                return `<option value="${i}">${window.esc(pl.name)} — ₹${getActivePlanPrice(pl)} (${stk > 0 ? stk + ' in stock' : 'Out of stock'})</option>`;
+              }).join('')}
+            </select>
+          </div>
+        </div>
+
+        ${updateChannelBtn}
+
+        <div class="product-bottom" style="margin-top:12px">
+          <div>
+            <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:800">TOTAL PRICE</div>
+            <div class="price" style="color:var(--green)">₹<span class="price-num">${firstPrice}</span></div>
+          </div>
+          <button class="btn primary buy-btn" ${firstStock===0?'disabled':''} style="padding:11px 22px;font-size:14px;box-shadow:0 6px 20px rgba(91,140,255,0.3)">
+            Buy Now ➔
+          </button>
+        </div>
+      </article>
+    `;
+  }).join('') : '<div class="empty">No products found.</div>';
+
+  document.querySelectorAll('.product').forEach(card => {
+    const p = safeProducts.find(x => String(x.id) === String(card.dataset.product));
+    if (!p) { card.remove(); return; }
+    const plans = getPlans(p), sel = card.querySelector('.plan-select');
+    if (sel) {
+      sel.onchange = () => {
+        const pl = plans[Number(sel.value)] || plans[0] || {name:'Unavailable', price:0, resellerPrice:0, keysPool:[]};
+        const stk = Array.isArray(pl.keysPool) ? pl.keysPool.length : 0;
+        const priceEl = card.querySelector('.price-num');
+        const buttonEl = card.querySelector('.buy-btn');
+        if (priceEl) priceEl.textContent = getActivePlanPrice(pl);
+        if (buttonEl) buttonEl.disabled = (stk === 0 || plans.length === 0);
+      };
+    }
+    const buyBtn = card.querySelector('.buy-btn');
+    if (buyBtn) {
+      buyBtn.onclick = () => {
+        const pl = plans[Number(sel?.value)] || plans[0];
+        if (!pl) { toast('This product has no valid plans. Please contact support.'); return; }
+        selected = { product: p, plan: pl, activePrice: getActivePlanPrice(pl) };
+        if(!user){ $('authNav').click(); toast('Please sign in first'); return; }
+        
+        const savedPhone = localStorage.getItem('tg_saved_phone') || '';
+        $('orderPhoneNumber').value = savedPhone;
+        $('rememberPhoneCheckbox').checked = !!savedPhone;
+        $('couponCodeInput').value = '';
+        $('couponDiscountMsg').textContent = '';
+        appliedDiscount = { code: null, amount: 0 };
+
+        $('buyInitialState').style.display = 'block';
+        $('qrCheckoutBox').style.display = 'none';
+        if ($('orderLoaderAnim')) $('orderLoaderAnim').style.display = 'none';
+        updateBuySummaryDisplay();
+        openModal('buyModal');
+      };
+    }
+  });
+}
+
+function updateBuySummaryDisplay() {
+  if (!selected) return;
+  let finalPrice = selected.activePrice;
+  if (appliedDiscount.amount > 0) {
+    finalPrice = Math.max(1, selected.activePrice - appliedDiscount.amount);
+  }
+
+  $('summaryProdName').textContent = selected.product.name;
+  $('summaryCatSub').textContent = selected.product.category || 'Panel License';
+  $('summaryPlanNameText').textContent = `Plan: ${selected.plan.name}`;
+  $('summaryPayableVal').textContent = `₹${finalPrice.toFixed(2)}`;
+}
+
+const applyCouponBtnEl = $('applyCouponBtn');
+if (applyCouponBtnEl) applyCouponBtnEl.onclick = () => {
+  const code = $('couponCodeInput').value.trim().toUpperCase();
+  const msgEl = $('couponDiscountMsg');
+  if (!code) return;
+
+  const coupon = allCoupons[code];
+  if (!coupon) {
+    msgEl.style.color = 'var(--red)';
+    msgEl.textContent = 'Invalid coupon code!';
+    appliedDiscount = { code: null, amount: 0 };
+    updateBuySummaryDisplay();
+    return;
+  }
+
+  let discVal = 0;
+  if (coupon.type === 'percentage') {
+    discVal = Math.round((selected.activePrice * Number(coupon.value)) / 100);
+  } else {
+    discVal = Number(coupon.value);
+  }
+
+  appliedDiscount = { code: code, amount: discVal };
+  msgEl.style.color = 'var(--green)';
+  msgEl.textContent = `Success! Saved ₹${discVal}`;
+  updateBuySummaryDisplay();
+};
+
+onValue(ref(db, 'products'), s => {
+  products = [];
+  const categoriesSet = new Set();
+  s.forEach(c => {
+    const value = c.val();
+    if (!value || typeof value !== 'object') return;
+    const p = {id: c.key, ...value};
+    if (!p.name && p.title) p.name = p.title;
+    if (!p.name) return;
+    products.push(p);
+    if (p.category) categoriesSet.add(p.category);
+  });
+  
+  const catSelect = $('category');
+  if (catSelect) {
+    const currentVal = catSelect.value;
+    catSelect.innerHTML = '<option value="all">All categories</option>' + 
+      Array.from(categoriesSet).map(cat => `<option value="${window.esc(cat)}">${window.esc(cat)}</option>`).join('');
+    catSelect.value = currentVal;
+  }
+
+  renderProducts();
+});
+
+onValue(ref(db, 'siteNotice'), s => {
+  const val = s.val();
+  const bar = $('liveAnnouncementBar');
+  if(val && val.trim()){
+    $('announcementText').textContent = val;
+    bar.style.display = 'block';
+  } else {
+    if (bar) bar.style.display = 'none';
+  }
+});
+
+async function processReferralRewards(buyerUid, orderAmount, orderDbId) {
+  onValue(ref(db, 'users/' + buyerUid), async snap => {
+    const buyerData = snap.val() || {};
+    const sponsorUid = buyerData.referredBy;
+    if (sponsorUid && sponsorUid !== buyerUid) {
+      const commissionAmt = Number(((orderAmount * globalReferralPercentage) / 100).toFixed(2));
+      
+      onValue(ref(db, 'users/' + sponsorUid), async sSpnsr => {
+        const sponsorData = sSpnsr.val() || {};
+        const newSponsorBal = Number(sponsorData.walletBalance || 0) + commissionAmt;
+        await update(ref(db, 'users/' + sponsorUid), { walletBalance: newSponsorBal });
+        
+        await update(ref(db, 'orders/' + orderDbId), {
+          referredBy: sponsorUid,
+          commissionAwarded: commissionAmt
+        });
+      }, {onlyOnce: true});
+    }
+  }, {onlyOnce: true});
+}
+
+const payViaWalletBtnEl = $('payViaWalletBtn');
+if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
+  const phone = $('orderPhoneNumber').value.trim();
+  if(!phone || phone.length < 10) return toast('Enter 10-digit Phone Number');
+
+  let finalPayable = selected.activePrice;
+  if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
+
+  if (userWalletBalance < finalPayable) {
+    return toast(`Insufficient Balance! Required: ₹${finalPayable}, Available: ₹${userWalletBalance.toFixed(2)}`);
+  }
+
+  const currentStock = (selected.plan.keysPool || []).length;
+  if(currentStock <= 0) return toast('Selected plan is out of stock!');
+
+  const remCheckbox = $('rememberPhoneCheckbox');
+  if (remCheckbox && remCheckbox.checked) localStorage.setItem('tg_saved_phone', phone);
+
+  try {
+    const keyDispatched = await popKeyFromPlanInventory(selected.product.id, selected.plan.name);
+    if (!keyDispatched) return toast('Stock exhausted just now!');
+
+    const newBal = userWalletBalance - finalPayable;
+    await update(ref(db, 'users/' + user.uid), { walletBalance: newBal });
+
+    const r = push(ref(db, 'orders'));
+    const orderDbId = r.key;
+    await set(r, {
+      uid: user.uid,
+      email: user.email,
+      phone: phone,
+      tier: userRole,
+      productName: selected.product.name,
+      planName: selected.plan.name,
+      amount: finalPayable,
+      paymentMethod: 'wallet',
+      deliveryDetails: keyDispatched,
+      status: 'delivered',
+      createdAt: Date.now(),
+      deliveredAt: Date.now()
+    });
+
+    await processReferralRewards(user.uid, finalPayable, orderDbId);
+
+    if (appliedDiscount.code && allCoupons[appliedDiscount.code]) {
+      const cObj = allCoupons[appliedDiscount.code];
+      await update(ref(db, 'coupons/' + appliedDiscount.code), { usedCount: Number(cObj.usedCount || 0) + 1 });
+    }
+
+    closeModal('buyModal');
+    window.openSuccessPopup(
+      'License Key Dispatched!',
+      `Product: ${selected.product.name} (${selected.plan.name})`,
+      `<b>Delivered Key:</b> <code>${window.esc(keyDispatched)}</code>`,
+      () => navigateTo('view-keys')
+    );
+  } catch(e) {
+    toast('Purchase error: ' + e.message);
+  }
+};
+
+async function fetchSafeOrderStatus(orderId) {
+  if (!orderId) throw new Error('Missing gateway order ID.');
+  const primaryUrl = `https://famgateway.in/api/checkout-status.php?order_id=${encodeURIComponent(orderId)}`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 9000);
+  try {
+    // FamGateway's status polling endpoint is intended for public order-status checks.
+    // Do not send X-Api-Key here: a custom header can trigger a browser CORS preflight,
+    // which is a common cause of 'Fetch failed' on static GitHub Pages sites.
+    // Every invocation makes a fresh network request; no cached status is reused.
+    const res = await fetch(primaryUrl, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: controller.signal,
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error(`Gateway status HTTP ${res.status}`);
+    const data = await res.json();
+    const nested = data && (data.data || data.result || data);
+    if (!nested || typeof nested !== 'object') throw new Error('Invalid gateway status response.');
+    return { ...nested, status: String(nested.status || nested.payment_status || nested.order_status || '').toLowerCase() };
+  } catch (err) {
+    // Public CORS proxies are not reliable payment-verification infrastructure.
+    // Only use this fallback for CORS/network failures; never treat its response as payment proof.
+    if (err.name === 'AbortError') throw new Error('Payment gateway status request timed out. Retry shortly.');
+    if (err instanceof TypeError && /fetch/i.test(err.message || '')) {
+      throw new Error('Gateway request was blocked or unreachable (possible CORS/network issue). Try again; if it repeats, the gateway must allow this site or a backend proxy is required.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+let activePollInterval = null;
+
+function startCountdownTimer(displayElementId, onExpire) {
+  if (countdownTimerRef) clearInterval(countdownTimerRef);
+  let duration = 300;
+  const disp = $(displayElementId);
+  
+  countdownTimerRef = setInterval(() => {
+    let minutes = Math.floor(duration / 60);
+    let seconds = duration % 60;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+    if (disp) disp.textContent = `QR Expires in: ${minutes}:${seconds}`;
+
+    if (--duration < 0) {
+      clearInterval(countdownTimerRef);
+      if (onExpire) onExpire();
+    }
+  }, 1000);
+}
+
+const generateUpiQrBtnEl = $('generateUpiQrBtn');
+if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
+  const phone = $('orderPhoneNumber').value.trim();
+  if(!phone || phone.length < 10) return toast('Please enter a valid 10-digit Phone Number');
+
+  const currentStock = (selected.plan.keysPool || []).length;
+  if(currentStock <= 0) return toast('Selected plan is out of stock!');
+
+  const remCheckbox = $('rememberPhoneCheckbox');
+  if (remCheckbox && remCheckbox.checked) localStorage.setItem('tg_saved_phone', phone);
+
+  $('buyInitialState').style.display = 'none';
+  $('orderLoaderAnim').style.display = 'block';
+
+  try {
+    let finalPayable = selected.activePrice;
+    if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
+
+    const res = await fetch('https://famgateway.in/api/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': dynamicGatewayKey
+      },
+      body: JSON.stringify({
+        api_key: dynamicGatewayKey,
+        amount: finalPayable,
+        customer_name: user.displayName || 'Customer',
+        customer_email: user.email || '',
+        customer_phone: phone,
+        redirect_url: window.location.href
+      })
+    });
+
+    const result = await res.json();
+
+    if(result.status === 'success') {
+      const orderData = result.data;
+
+      const r = push(ref(db, 'orders'));
+      const dbOrderId = r.key;
+      await set(r, {
+        uid: user.uid,
+        email: user.email,
+        phone: phone,
+        tier: userRole,
+        productName: selected.product.name,
+        planName: selected.plan.name,
+        amount: finalPayable,
+        gatewayOrderId: orderData.order_id,
+        paymentMethod: 'upi',
+        status: 'payment_pending',
+        createdAt: Date.now()
+      });
+
+      activeOrderSession = {
+        gatewayOrderId: orderData.order_id,
+        dbOrderId: dbOrderId,
+        productId: selected.product.id,
+        planName: selected.plan.name,
+        productName: selected.product.name,
+        amount: finalPayable,
+        couponCode: appliedDiscount.code
+      };
+
+      $('orderLoaderAnim').style.display = 'none';
+      $('qrCheckoutBox').style.display = 'block';
+      $('liveQrImage').src = orderData.qr_url;
+      $('qrPayableAmount').textContent = `₹${orderData.payable_amount}`;
+      if ($('orderStatusPillText')) $('orderStatusPillText').textContent = 'Waiting for payment confirmation...';
+      
+      if(orderData.upi_intent) {
+        const intentUri = orderData.upi_intent;
+        $('directUpiAppBtn').href = intentUri;
+        $('directUpiAppBtn').style.display = 'block';
+        $('directUpiAppBtn').onclick = () => {
+          setTimeout(() => { window.location.href = intentUri; }, 50);
+        };
+      }
+
+      startAutoOrderFulfillmentPolling();
+      startCountdownTimer('orderTimerDisplay', () => {
+        // QR countdown ending must not stop verification: the bank may confirm late.
+        toast('QR timer ended. Payment status checks will continue every 30 seconds.');
+        const timer = $('orderTimerDisplay');
+        if (timer) timer.textContent = 'QR timer ended · Checking payment status…';
+      });
+    } else {
+      $('orderLoaderAnim').style.display = 'none';
+      $('buyInitialState').style.display = 'block';
+      toast(result.message || 'Payment Gateway error');
+    }
+  } catch(e) {
+    $('orderLoaderAnim').style.display = 'none';
+    $('buyInitialState').style.display = 'block';
+    toast('Error: ' + e.message);
+  }
+};
+
+async function checkOrderStatusExecution() {
+  if (!activeOrderSession || orderStatusCheckInFlight) return false;
+  orderStatusCheckInFlight = true;
+  try {
+  const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode } = activeOrderSession;
+
+  const statusData = await fetchSafeOrderStatus(gatewayOrderId);
+  if (!statusData) return false;
+
+  const normalizedStatus = String(statusData.status || '').toLowerCase();
+  const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus) ||
+    statusData.success === true || statusData.payment_success === true;
+
+  if (isSuccess) {
+    // Claim this order atomically so concurrent tabs cannot dispatch multiple keys.
+    const claim = await runTransaction(ref(db, 'orders/' + dbOrderId), current => {
+      if (!current || !['payment_pending','pending'].includes(String(current.status || '').toLowerCase())) return;
+      return { ...current, status: 'fulfillment_processing', processingStartedAt: Date.now() };
+    });
+    if (!claim.committed) {
+      activeOrderSession = null;
+      if (activePollInterval) clearInterval(activePollInterval);
+      return true; // Another tab/device already processed this payment.
+    }
+    if (activePollInterval) clearInterval(activePollInterval);
+    if (countdownTimerRef) clearInterval(countdownTimerRef);
+
+    const keyDispatched = await popKeyFromPlanInventory(productId, planName);
+    if (!keyDispatched) {
+      await update(ref(db, 'orders/' + dbOrderId), {
+        status: 'paid_stock_review',
+        utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
+        verifiedAt: Date.now(),
+        deliveryDetails: ''
+      });
+      activeOrderSession = null;
+      if (activePollInterval) clearInterval(activePollInterval);
+      closeModal('buyModal');
+      toast('Payment verified, but stock is unavailable. Please contact support for delivery/refund.');
+      return true;
+    }
+
+    await update(ref(db, 'orders/' + dbOrderId), {
+      status: 'delivered',
+      deliveryDetails: keyDispatched,
+      utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
+      verifiedAt: Date.now(),
+      deliveredAt: Date.now()
+    });
+
+    await processReferralRewards(user.uid, amount, dbOrderId);
+
+    if (couponCode && allCoupons[couponCode]) {
+      const cObj = allCoupons[couponCode];
+      await update(ref(db, 'coupons/' + couponCode), { usedCount: Number(cObj.usedCount || 0) + 1 });
+    }
+
+    activeOrderSession = null;
+    closeModal('buyModal');
+    window.openSuccessPopup(
+      'Payment Verified & Key Dispatched!',
+      `Product: ${productName} (${planName})`,
+      `<b>UTR:</b> ${window.esc(statusData.utr || statusData.payment_id || 'Verified')}<div class="key-box-display"><code class="key-token-val" id="successDeliveredKey">${window.esc(keyDispatched)}</code><button class="btn-copy" onclick="window.copyKeyToken(document.getElementById('successDeliveredKey').textContent)">📋 Copy Key</button></div>`,
+      () => navigateTo('view-keys')
+    );
+    return true;
+  } else if (statusData.status === 'expired') {
+    if (activePollInterval) clearInterval(activePollInterval);
+    if (countdownTimerRef) clearInterval(countdownTimerRef);
+    activeOrderSession = null;
+    toast('Payment window expired.');
+    closeModal('buyModal');
+    return true;
+  }
+  return false;
+  } finally {
+    orderStatusCheckInFlight = false;
+  }
+}
+
+function startAutoOrderFulfillmentPolling() {
+  if (activePollInterval) clearInterval(activePollInterval);
+  // Check every 30 seconds; manual check always invokes the gateway immediately.
+  activePollInterval = setInterval(async () => {
+    try { await checkOrderStatusExecution(); } catch (e) { console.warn('Auto payment check:', e); }
+  }, 30000);
+}
+
+const checkOrderStatusManualBtnEl = $('checkOrderStatusManualBtn');
+if (checkOrderStatusManualBtnEl) checkOrderStatusManualBtnEl.onclick = async () => {
+  const btn = $('checkOrderStatusManualBtn');
+  const oldLabel = btn.textContent;
+  btn.innerHTML = '<span class="pay-loader-ring" style="width:16px;height:16px;border-width:2px;margin:0 7px 0 0;vertical-align:middle"></span> Verifying Payment…';
+  btn.disabled = true;
+  btn.setAttribute('aria-busy', 'true');
+
+  try {
+    const verified = await checkOrderStatusExecution();
+    if (!verified) toast('Payment abhi confirm nahi hua. Gateway status kuch der baad update ho sakta hai.');
+  } catch(e) {
+    toast('Payment check failed: ' + e.message);
+  } finally {
+    btn.textContent = oldLabel || '⚡ Check Payment Status';
+    btn.disabled = false;
+    btn.removeAttribute('aria-busy');
+  }
+};
+
+let depositPollInterval = null;
+
+const generateDepositQrBtnEl = $('generateDepositQrBtn');
+if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
+  if(!user){ $('authNav').click(); return; }
+  const amount = Number($('depositAmountInput').value);
+  if(!amount || amount < 1) return toast('Enter a valid deposit amount');
+
+  $('depositQrBox').style.display = 'none';
+  $('depositLoaderAnim').style.display = 'block';
+
+  try {
+    const res = await fetch('https://famgateway.in/api/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': dynamicGatewayKey
+      },
+      body: JSON.stringify({
+        api_key: dynamicGatewayKey,
+        amount: amount,
+        customer_name: user.displayName || 'Customer',
+        customer_email: user.email || '',
+        redirect_url: window.location.href
+      })
+    });
+
+    const result = await res.json();
+
+    if(result.status === 'success') {
+      const orderData = result.data;
+
+      const r = push(ref(db, 'deposits'));
+      const depositDbId = r.key;
+      await set(r, {
+        uid: user.uid,
+        email: user.email,
+        amount: amount,
+        gatewayOrderId: orderData.order_id,
+        status: 'pending',
+        createdAt: Date.now()
+      });
+
+      activeDepositSession = {
+        gatewayOrderId: orderData.order_id,
+        depositDbId: depositDbId,
+        amount: amount
+      };
+
+      $('depositLoaderAnim').style.display = 'none';
+      $('depositQrBox').style.display = 'block';
+      $('liveDepositQrImage').src = orderData.qr_url;
+      $('depositPayableAmount').textContent = `₹${orderData.payable_amount}`;
+      if ($('depositStatusPillText')) $('depositStatusPillText').textContent = 'Waiting for payment confirmation...';
+      
+      if(orderData.upi_intent) {
+        const intentUri = orderData.upi_intent;
+        $('directDepositUpiBtn').href = intentUri;
+        $('directDepositUpiBtn').style.display = 'block';
+        $('directDepositUpiBtn').onclick = () => {
+          setTimeout(() => { window.location.href = intentUri; }, 50);
+        };
+      }
+
+      startAutoDepositCreditPolling();
+      startCountdownTimer('depositTimerDisplay', () => {
+        // Continue checking after the displayed QR timer ends, in case confirmation is delayed.
+        toast('QR timer ended. Payment status checks will continue every 30 seconds.');
+        const timer = $('depositTimerDisplay');
+        if (timer) timer.textContent = 'QR timer ended · Checking payment status…';
+      });
+    } else {
+      $('depositLoaderAnim').style.display = 'none';
+      toast(result.message || 'Deposit initiation failed');
+    }
+  } catch(e) {
+    $('depositLoaderAnim').style.display = 'none';
+    toast(e.message);
+  }
+};
+
+async function checkDepositStatusExecution() {
+  if (!activeDepositSession || depositStatusCheckInFlight) return false;
+  depositStatusCheckInFlight = true;
+  try {
+  const { gatewayOrderId, depositDbId, amount } = activeDepositSession;
+
+  const statusData = await fetchSafeOrderStatus(gatewayOrderId);
+  if (!statusData) return false;
+
+  const normalizedStatus = String(statusData.status || '').toLowerCase();
+  const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus) ||
+    statusData.success === true || statusData.payment_success === true;
+
+  if (isSuccess) {
+    // Atomically claim the deposit to prevent double wallet credit from parallel tabs.
+    const claim = await runTransaction(ref(db, 'deposits/' + depositDbId), current => {
+      if (!current || !['pending','processing'].includes(String(current.status || '').toLowerCase())) return;
+      if (current.status === 'processing') return;
+      return { ...current, status: 'processing', processingStartedAt: Date.now() };
+    });
+    if (!claim.committed) {
+      activeDepositSession = null;
+      if (depositPollInterval) clearInterval(depositPollInterval);
+      return true;
+    }
+    if (depositPollInterval) clearInterval(depositPollInterval);
+    if (countdownTimerRef) clearInterval(countdownTimerRef);
+
+    const updatedBal = userWalletBalance + amount;
+    const userPatch = { walletBalance: updatedBal };
+    // Upgrade only when this single verified deposit reaches the admin-set threshold.
+    const cfgSnap = await new Promise((resolve, reject) => onValue(ref(db, 'appConfig'), snap => { resolve(snap); }, { onlyOnce: true }));
+    const cfg = cfgSnap.val() || {};
+    if (cfg.autoResellerEnabled && amount >= Number(cfg.autoResellerAmount || 0)) {
+      userPatch.role = 'reseller';
+      userPatch.resellerUpgradedAt = Date.now();
+      userPatch.resellerUpgradeSource = 'single_deposit';
+    }
+    await update(ref(db, 'users/' + user.uid), userPatch);
+
+    await update(ref(db, 'deposits/' + depositDbId), {
+      status: 'approved',
+      utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
+      approvedAt: Date.now(),
+      resellerUpgradeApplied: !!userPatch.role
+    });
+
+    activeDepositSession = null;
+    $('depositQrBox').style.display = 'none';
+    $('depositAmountInput').value = '';
+
+    window.openSuccessPopup(
+      'Wallet Credited Successfully!',
+      `₹${amount} has been verified and added to your wallet balance.`,
+      `<b>New Balance:</b> ₹${updatedBal.toFixed(2)}`,
+      () => navigateTo('view-home')
+    );
+    return true;
+  } else if (statusData.status === 'expired') {
+    if (depositPollInterval) clearInterval(depositPollInterval);
+    if (countdownTimerRef) clearInterval(countdownTimerRef);
+    activeDepositSession = null;
+    $('depositQrBox').style.display = 'none';
+    toast('Payment expired. Please retry.');
+    return true;
+  }
+  return false;
+  } finally {
+    depositStatusCheckInFlight = false;
+  }
+}
+
+function startAutoDepositCreditPolling() {
+  if (depositPollInterval) clearInterval(depositPollInterval);
+  depositPollInterval = setInterval(async () => {
+    try { await checkDepositStatusExecution(); } catch (e) { console.warn('Auto deposit check:', e); }
+  }, 30000);
+}
+
+const checkDepositStatusManualBtnEl = $('checkDepositStatusManualBtn');
+if (checkDepositStatusManualBtnEl) checkDepositStatusManualBtnEl.onclick = async () => {
+  const btn = $('checkDepositStatusManualBtn');
+  btn.innerHTML = '<span class="pay-loader-ring" style="width:16px;height:16px;border-width:2px;margin:0 7px 0 0;vertical-align:middle"></span> Verifying Payment…';
+  btn.disabled = true;
+
+  try {
+    const verified = await checkDepositStatusExecution();
+    if (!verified) {
+      toast('Payment abhi confirm nahi hua. Gateway status update hone par phir check karein.');
+    }
+  } catch(e) {
+    toast('Verification check error: ' + e.message);
+  } finally {
+    btn.textContent = '⚡ Check Payment Status';
+    btn.disabled = false;
+  }
+};
+
+const searchInputEl = $('search');
+if (searchInputEl) searchInputEl.oninput = renderProducts;
+
+const categorySelectEl = $('category');
+if (categorySelectEl) categorySelectEl.onchange = renderProducts;
+</script>
+</body>
+</html>
