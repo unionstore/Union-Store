@@ -29,7 +29,7 @@ html, body, * {
   height: 0 !important;
 }
 
-body{margin:0;background:radial-gradient(ellipse at 80% -20%,#182a4d 0,transparent 45%),var(--bg);color:var(--text);font:14.5px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer;border:0}
 .wrap{max-width:680px;margin:auto;padding:0 14px}
@@ -136,6 +136,7 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 .product-title-area { display: flex; align-items: center; gap: 12px; }
 .product-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
 
+.auth-brand-row{display:flex;align-items:center;gap:10px}.auth-store-logo{width:38px;height:38px;object-fit:contain;border-radius:10px;border:1px solid #263852;background:#0b111c}
 /* Product features: show about three rows at once; scroll inside the list for the rest. */
 .feature-list {
   display: flex;
@@ -247,8 +248,8 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 }
 
 #floatingSupportBtn {
-  position: fixed !important; right: max(16px, env(safe-area-inset-right)) !important; bottom: calc(82px + env(safe-area-inset-bottom)) !important;
-  left: auto !important; top: auto !important; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
+  position: fixed !important; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom));
+  left: auto; top: auto; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
   border-radius: 50%; background: linear-gradient(135deg, #5b8cff, #7665ff); color: #fff;
   align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(91, 140, 255, 0.32);
   z-index: 65; cursor: grab; touch-action: none; user-select: none; -webkit-user-select:none; border: 1px solid rgba(255,255,255,0.2);
@@ -277,11 +278,11 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 @media(prefers-reduced-motion:reduce){.auth-spinner{animation:none!important}.auth-success-anim,.auth-exit-anim{animation:none!important}}
 
 /* Live visual effects */
-@keyframes glowPulse{0%,100%{box-shadow:0 0 0 rgba(56,189,248,0)}50%{box-shadow:0 0 28px rgba(56,189,248,.22)}}
+@keyframes glowPulse{0%,100%{box-shadow:none}}
 @keyframes floatUp{0%{opacity:0;transform:translateY(14px) scale(.985)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes shimmerLine{0%{background-position:-200% 0}100%{background-position:200% 0}}
-#storePromotionCard.promo-live:not(.hidden){display:block!important;visibility:visible!important;animation:floatUp .55s ease both,glowPulse 3s ease-in-out infinite;border:1px solid rgba(56,189,248,.65)!important;background:linear-gradient(130deg,rgba(16,35,62,.98),rgba(8,15,29,.98))!important;position:relative;overflow:hidden}
-#storePromotionCard.promo-live:before{content:"SPECIAL OFFER";display:inline-block;font-size:10px;letter-spacing:1.5px;font-weight:900;color:#07111e;background:linear-gradient(90deg,#67e8f9,#93c5fd,#67e8f9);background-size:200% 100%;padding:5px 9px;border-radius:6px;margin-bottom:9px;animation:shimmerLine 4s linear infinite}
+#storePromotionCard.promo-live:not(.hidden){display:block!important;visibility:visible!important;animation:floatUp .35s ease both;border:1px solid rgba(56,189,248,.65)!important;background:#0d1320!important;position:relative;overflow:hidden}
+#storePromotionCard.promo-live:before{content:"SPECIAL OFFER";display:inline-block;font-size:10px;letter-spacing:1.5px;font-weight:900;color:#07111e;background:linear-gradient(90deg,#67e8f9,#93c5fd,#67e8f9);background-size:200% 100%;padding:5px 9px;border-radius:6px;margin-bottom:9px;animation:none}
 #storePromotionMedia img,#storePromotionMedia video{display:block;width:100%;max-height:300px;object-fit:contain;filter:none!important;opacity:1!important;image-rendering:auto;border-radius:12px}
 .product-media-container img,.product-media-container video,.product-media-container iframe{filter:none!important;opacity:1!important}
 .auth-stage{animation:floatUp .32s ease both}
@@ -298,7 +299,7 @@ button,.btn,a,[role="button"],input,select,textarea{transition:transform var(--m
 button:hover,.btn:hover,[role="button"]:hover{filter:brightness(1.08)}
 button:active,.btn:active,[role="button"]:active{transform:scale(.97)}
 a:hover{filter:brightness(1.1)}
-input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(56,189,248,.15),0 0 22px rgba(56,189,248,.08)!important}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(99,230,219,.55);outline-offset:1px;box-shadow:none!important}
 .card,.panel,.product-card,.stat-card,.stat-box,.order-card,.product-item,.plan-card,.support-card,.promo-card,.feature-card,.glass-card,.section-card,.inventory-card,.user-card,.deposit-card,.table-wrap{transition:transform .28s var(--motion-ease),border-color .28s ease,box-shadow .28s ease;will-change:transform}
 .card:hover,.panel:hover,.product-card:hover,.stat-card:hover,.stat-box:hover,.order-card:hover,.product-item:hover,.plan-card:hover,.support-card:hover,.promo-card:hover,.feature-card:hover,.glass-card:hover,.section-card:hover,.inventory-card:hover,.user-card:hover,.deposit-card:hover{transform:translateY(-2px);border-color:rgba(56,189,248,.32);box-shadow:0 12px 32px rgba(0,0,0,.16)}
 .drawer,.sidebar,.side-panel{transition:transform .32s var(--motion-ease),opacity .25s ease}
@@ -316,8 +317,23 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
 
 
-/* Remove stray floating theme-palette capsule, including dynamically injected copies. */
-#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;min-width:0!important;min-height:0!important;opacity:0!important;}
+/* Fix: remove stray theme-palette/ghost pill that was rendering as a floating capsule. */
+#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
+
+/* Animated sign-out confirmation */
+.logout-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(2,5,12,.76);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease}
+.logout-confirm-overlay.open{opacity:1;visibility:visible}
+.logout-confirm-card{width:min(100%,360px);background:#0d1320;border:1px solid #2b3b56;border-radius:22px;padding:24px 20px 20px;text-align:center;box-shadow:0 22px 70px rgba(0,0,0,.55);transform:translateY(18px) scale(.94);transition:transform .28s cubic-bezier(.16,1,.3,1)}
+.logout-confirm-overlay.open .logout-confirm-card{transform:translateY(0) scale(1)}
+.logout-confirm-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;margin:0 auto 14px;background:#1a2940;border:1px solid #344b6b;font-size:27px}
+.logout-confirm-card h3{margin:0 0 8px;font-size:20px;color:#f4f7ff}
+.logout-confirm-card p{margin:0 0 20px;color:#9cabc0;font-size:13px;line-height:1.55}
+.logout-confirm-actions{display:flex;gap:10px}
+.logout-confirm-actions button{flex:1;min-height:44px;border-radius:12px;font-weight:800;padding:10px 12px}
+.logout-cancel{background:#172236;color:#e9efff;border:1px solid #2b3c56}
+.logout-yes{background:#e34b65;color:#fff;border:1px solid #f06b80}
+@media(prefers-reduced-motion:reduce){.logout-confirm-overlay,.logout-confirm-card{transition:none}}
+
 </style>
 </head>
 <body>
@@ -372,6 +388,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <button class="drawer-item" data-page="view-keys">
       <span>🔑</span><span>My Keys</span>
     </button>
+    <button class="drawer-item" data-page="view-seller"><span>🏆</span><span>Become a Seller</span></button>
     <button class="drawer-item" data-page="view-referral">
       <span>🎁</span><span>Referral Program</span>
     </button>
@@ -406,6 +423,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
       <button class="btn primary" onclick="window.navigateTo('view-deposit')">+ Add Funds</button>
     </div>
 
+    <section id="resellerUpgradeCard" class="product hidden" style="margin:0 0 16px;padding:16px;border-color:#263852;box-shadow:none"><div style="font-size:17px;font-weight:900">🌟 Reseller Upgrade</div><p class="sub" style="margin:7px 0 10px">Upgrade your account to unlock reseller pricing on eligible plans. Your role and available rates are shown automatically after an admin-approved upgrade.</p><button class="btn secondary" type="button" onclick="window.navigateTo('view-support')">Ask about Reseller Upgrade ↗</button></section>
     <section id="storePromotionCard" class="product hidden" style="margin:0 0 16px;padding:14px;border-color:#28466c">
       <div id="storePromotionMedia"></div>
       <div id="storePromotionTitle" style="font-size:17px;font-weight:900;margin:4px 0"></div>
@@ -555,6 +573,12 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     </div>
   </section>
 
+  <section class="view-pane" id="view-seller">
+    <div class="view-header"><div><h2>Become a Seller</h2><p>Choose a separate Seller Membership plan created by the admin. Store products do not upgrade your role.</p></div></div>
+    <div class="product" style="box-shadow:none;background:#0d1320;border-color:#1c283d;margin-bottom:12px"><h3 style="margin:0 0 8px">🏆 Seller Membership</h3><p class="sub" style="margin:0">After your membership purchase is completed successfully, your account role will automatically change to Seller. Membership purchase uses your wallet balance.</p></div>
+    <div id="sellerMembershipPlansList" class="stack"><div class="empty">Loading available membership plans…</div></div>
+  </section>
+
   <section class="view-pane" id="view-referral">
     <div class="view-header">
       <div>
@@ -691,9 +715,8 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 
 <div class="modal-back" id="authModal">
   <div class="modal">
-    <div id="authStoreLogoWrap" style="display:flex;justify-content:center;margin:2px 0 16px"><div id="authStoreLogo" class="logo" style="width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-weight:900;font-size:20px">TG</div></div>
     <div class="close-row">
-      <div><h3 id="authTitle" style="margin:0;font-size:18px;font-weight:900;color:#63e6db">Welcome Back</h3></div>
+      <div class="auth-brand-row"><img id="authStoreLogo" class="auth-store-logo" alt="Store logo" src="" style="display:none"><h3 id="authTitle" style="margin:0;font-size:18px;font-weight:900;color:#63e6db">Welcome Back</h3></div>
       <button class="xbtn" onclick="window.closeModal('authModal')">✕</button>
     </div>
     <div class="stack">
@@ -845,6 +868,7 @@ let userWalletBalance = 0;
 let navigationHistory = ['view-home'];
 let dynamicGatewayKey = "fam_3710dccd201f6497f7511ad6f49be25aaa569c57";
 let globalReferralPercentage = 10;
+let globalReferralEnabled = true;
 let appliedDiscount = { code: null, amount: 0 };
 let allCoupons = {};
 
@@ -925,12 +949,16 @@ onValue(ref(db, 'appConfig'), s => {
   }
   if (conf.gatewayKey) dynamicGatewayKey = conf.gatewayKey;
   if (conf.referralPercentage !== undefined) globalReferralPercentage = Number(conf.referralPercentage);
-  const authLogo = $('authStoreLogo');
-  if (authLogo) {
-    if (conf.storeLogoUrl) { authLogo.textContent = ''; authLogo.style.background = `center/cover no-repeat url(\"${String(conf.storeLogoUrl).replace(/[\"\\]/g, '')}\")`; authLogo.style.border = '1px solid #28466c'; }
-    else { authLogo.textContent = 'TG'; authLogo.style.background = ''; }
-  }
+  globalReferralEnabled = conf.referralEnabled !== false;
+  document.querySelectorAll('[data-page="view-referral"]').forEach(el => el.style.display = globalReferralEnabled ? '' : 'none');
+  const referralHomeBtn = document.querySelector('#view-home .hero button[onclick*="view-referral"]');
+  if (referralHomeBtn) referralHomeBtn.style.display = globalReferralEnabled ? '' : 'none';
+  const referralPage = $('view-referral'); if (referralPage) referralPage.style.display = globalReferralEnabled ? '' : 'none';
+  if (!globalReferralEnabled) { if ($('registerReferralWrap')) $('registerReferralWrap').style.display = 'none'; if ($('registerReferralCode')) $('registerReferralCode').value = ''; }
+  else if (authMode === 'register' && $('registerReferralWrap')) $('registerReferralWrap').style.display = 'block';
   const logo = document.querySelector('.brand .logo');
+  const authLogo = $('authStoreLogo');
+  if (authLogo && conf.storeLogoUrl) { authLogo.src = String(conf.storeLogoUrl); authLogo.style.display = 'block'; }
   if (logo && conf.storeLogoUrl) {
     logo.textContent = '';
     logo.style.background = `center/cover no-repeat url("${String(conf.storeLogoUrl).replace(/["\\\\]/g, '')}")`;
@@ -1041,73 +1069,131 @@ onValue(ref(db, 'popupAnnouncement'), s => {
 
 const floatBtn = $('floatingSupportBtn');
 if (floatBtn) {
-  // Keep support launcher fixed above the bottom navigation; discard old drag coordinates.
-  try { localStorage.removeItem('unionStoreSupportButtonPosition'); } catch (_) {}
-  const resetSupportPosition = () => {
-    floatBtn.style.setProperty('position', 'fixed', 'important');
-    floatBtn.style.setProperty('right', 'max(16px, env(safe-area-inset-right))', 'important');
-    floatBtn.style.setProperty('bottom', 'calc(82px + env(safe-area-inset-bottom))', 'important');
-    floatBtn.style.setProperty('left', 'auto', 'important');
-    floatBtn.style.setProperty('top', 'auto', 'important');
+  // Movable support launcher: pointer events cover mouse, touch and stylus.
+  // A drag never triggers the support modal; position is clamped to the visible viewport.
+  let drag = null;
+  let suppressNextClick = false;
+  const margin = 8;
+  const clampPosition = (left, top) => ({
+    left: Math.max(margin, Math.min(left, window.innerWidth - floatBtn.offsetWidth - margin)),
+    top: Math.max(margin, Math.min(top, window.innerHeight - floatBtn.offsetHeight - margin))
+  });
+  const placeButton = (left, top, persist = false) => {
+    const p = clampPosition(left, top);
+    floatBtn.style.left = `${p.left}px`;
+    floatBtn.style.top = `${p.top}px`;
+    floatBtn.style.right = 'auto';
+    floatBtn.style.bottom = 'auto';
+    if (persist) {
+      try { localStorage.setItem('unionStoreSupportButtonPosition', JSON.stringify(p)); } catch (_) {}
+    }
+  };
+  try {
+    const saved = JSON.parse(localStorage.getItem('unionStoreSupportButtonPosition') || 'null');
+    if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) placeButton(saved.left, saved.top);
+  } catch (_) {}
+  floatBtn.addEventListener('pointerdown', e => {
+    if (e.button !== undefined && e.button !== 0) return;
+    const rect = floatBtn.getBoundingClientRect();
+    drag = { id: e.pointerId, startX: e.clientX, startY: e.clientY, left: rect.left, top: rect.top, moved: false };
+    try { floatBtn.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  floatBtn.addEventListener('pointermove', e => {
+    if (!drag || drag.id !== e.pointerId) return;
+    const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
+    if (!drag.moved && Math.hypot(dx, dy) > 6) {
+      drag.moved = true;
+      floatBtn.classList.add('is-dragging');
+    }
+    if (drag.moved) {
+      e.preventDefault();
+      placeButton(drag.left + dx, drag.top + dy);
+    }
+  });
+  const finishDrag = e => {
+    if (!drag || (e && drag.id !== e.pointerId)) return;
+    if (drag.moved) {
+      const r = floatBtn.getBoundingClientRect();
+      placeButton(r.left, r.top, true);
+      suppressNextClick = true;
+      setTimeout(() => { suppressNextClick = false; }, 350);
+    }
+    drag = null;
     floatBtn.classList.remove('is-dragging');
   };
-  resetSupportPosition();
-  floatBtn.addEventListener('click', () => window.openSupportModal());
+  floatBtn.addEventListener('pointerup', finishDrag);
+  floatBtn.addEventListener('pointercancel', finishDrag);
+  floatBtn.addEventListener('lostpointercapture', () => { if (drag) finishDrag(); });
+  floatBtn.addEventListener('click', e => {
+    if (suppressNextClick) { e.preventDefault(); e.stopPropagation(); return; }
+    window.openSupportModal();
+  });
   floatBtn.setAttribute('role', 'button');
   floatBtn.setAttribute('tabindex', '0');
-  floatBtn.setAttribute('aria-label', 'Open customer support');
+  floatBtn.setAttribute('aria-label', 'Move support button by dragging, or open customer support with a tap');
   floatBtn.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.openSupportModal(); }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.openSupportModal();
+    }
   });
-  window.addEventListener('resize', resetSupportPosition);
+  window.addEventListener('resize', () => {
+    const r = floatBtn.getBoundingClientRect();
+    placeButton(r.left, r.top, true);
+  });
 }
 
-// Remove the stray capsule if a stale script injects it after page load.
-(function removeGhostCapsule(){
-  const known = '#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost';
-  const remove = () => {
-    document.querySelectorAll(known).forEach(el => el.remove());
-    // Also remove the blank, centered capsule injected by the old theme widget.
-    document.querySelectorAll('body *').forEach(el => {
-      if (el.matches('script,style,svg,path,nav,button,a,input,textarea,select,label,.bottom-bar,.bottom-item,#floatingSupportBtn')) return;
-      if (el.children.length || (el.textContent || '').trim()) return;
-      const r = el.getBoundingClientRect();
-      if (r.width < 24 || r.width > 100 || r.height < 12 || r.height > 42) return;
-      if (Math.abs((r.left + r.right) / 2 - window.innerWidth / 2) > 22) return;
-      if (r.bottom < window.innerHeight - 240 || r.top > window.innerHeight + 5) return;
-      const cs = getComputedStyle(el);
-      if (cs.position !== 'fixed' && cs.position !== 'absolute' && cs.position !== 'sticky') return;
-      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
-      el.remove();
-    });
-  };
-  remove();
-  if (document.body && window.MutationObserver) new MutationObserver(remove).observe(document.body,{childList:true,subtree:true});
-  window.addEventListener('load', remove); window.addEventListener('resize', remove);
-})();
-
-function resolvePlatformUrl(platform, rawValue) {
-  const value = String(rawValue || '').trim();
-  if (!value) return '#';
-  if (/^(https?:|mailto:|tel:)/i.test(value)) return value;
-  const clean = value.replace(/^@/, '');
-  const roots = {
-    telegram: 'https://t.me/', whatsapp: 'https://wa.me/', instagram: 'https://instagram.com/',
-    facebook: 'https://facebook.com/', tiktok: 'https://www.tiktok.com/@', x: 'https://x.com/',
-    youtube: 'https://youtube.com/', discord: 'https://discord.com/', messenger: 'https://m.me/',
-    email: 'mailto:'
-  };
-  if (platform === 'phone') return 'tel:' + value.replace(/[^+0-9]/g, '');
-  if (platform === 'whatsapp' && /^\+?[0-9 ()-]+$/.test(value)) return 'https://wa.me/' + value.replace(/\D/g, '');
-  if (roots[platform]) return roots[platform] + (platform === 'email' ? value : clean);
-  return /^https?:\/\//i.test(value) ? value : 'https://' + value;
+function resolvePlatformUrl(platform, rawUrl) {
+  rawUrl = (rawUrl || '').trim();
+  if (platform === 'whatsapp') {
+    if (rawUrl.startsWith('http')) return rawUrl;
+    const cleanNumber = rawUrl.replace(/[^0-9]/g, '');
+    return `https://wa.me/${cleanNumber}`;
+  }
+  if (platform === 'telegram') {
+    if (rawUrl.startsWith('http')) return rawUrl;
+    const cleanUser = rawUrl.replace('@', '');
+    return `https://t.me/${cleanUser}`;
+  }
+  if (platform === 'email') {
+    if (rawUrl.startsWith('mailto:')) return rawUrl;
+    return `mailto:${rawUrl}`;
+  }
+  if (platform === 'phone') {
+    if (rawUrl.startsWith('tel:')) return rawUrl;
+    return `tel:${rawUrl.replace(/[^+0-9]/g, '')}`;
+  }
+  if (platform === 'instagram' && !rawUrl.startsWith('http')) return `https://instagram.com/${rawUrl.replace(/^@/, '')}`;
+  if (platform === 'facebook' && !rawUrl.startsWith('http')) return `https://facebook.com/${rawUrl.replace(/^@/, '')}`;
+  if (platform === 'tiktok' && !rawUrl.startsWith('http')) return `https://tiktok.com/@${rawUrl.replace(/^@/, '')}`;
+  if (platform === 'x' && !rawUrl.startsWith('http')) return `https://x.com/${rawUrl.replace(/^@/, '')}`;
+  return rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
 }
+
+function getPlatformSvg(platform) {
+  const domains = {
+    telegram:'telegram.org', whatsapp:'whatsapp.com', youtube:'youtube.com', email:'gmail.com',
+    instagram:'instagram.com', facebook:'facebook.com', discord:'discord.com', x:'x.com',
+    tiktok:'tiktok.com', messenger:'messenger.com'
+  };
+  const labels = {telegram:'Telegram', whatsapp:'WhatsApp', youtube:'YouTube', email:'Gmail', instagram:'Instagram', facebook:'Facebook', discord:'Discord', x:'X', tiktok:'TikTok', messenger:'Messenger'};
+  const px = 24;
+  if (domains[platform]) {
+    const domain = domains[platform];
+    const label = labels[platform] || platform;
+    return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${label} official app logo" title="${label}" loading="lazy" referrerpolicy="no-referrer" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0" onerror="this.onerror=null;this.src='https://icons.duckduckgo.com/ip3/${domain}.ico'">`;
+  }
+  if (platform === 'phone') return `<img src="https://www.google.com/s2/favicons?domain=phone.google.com&sz=128" alt="Phone app icon" loading="lazy" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0">`;
+  return `<img src="https://www.google.com/s2/favicons?domain=www.google.com&sz=128" alt="Website icon" loading="lazy" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0">`;
+}
+
 
 onValue(ref(db, 'supportSettings'), s => {
   // Only display support channels explicitly added by the admin. Do not inject defaults.
   const rawLinks = s.val();
   const links = (Array.isArray(rawLinks) ? rawLinks : (rawLinks && typeof rawLinks === 'object' ? Object.values(rawLinks) : []))
-    .filter(item => item && item.url && item.title);
+    .filter(item => item && item.url && item.title)
+    .filter(item => !(String(item.title).trim() === 'Telegram Support' && String(item.url).trim().replace(/\/$/, '') === 'https://t.me/union_x_support'));
   const container = $('multiSupportButtonsContainer');
   const floatingButton = $('floatingSupportBtn');
   if (floatingButton) floatingButton.style.display = links.length ? 'flex' : 'none';
@@ -1230,8 +1316,8 @@ function setAuthMode(mode){
   $('switchAuth').textContent = reg ? 'Already have an account? Sign In' : 'Create a new account';
   if ($('authModeHint')) $('authModeHint').textContent = reg ? 'Create your account to save purchases and referrals.' : 'Sign in to continue to your account.';
   if ($('authPassword')) $('authPassword').autocomplete = reg ? 'new-password' : 'current-password';
-  if ($('registerReferralWrap')) $('registerReferralWrap').style.display = reg ? 'block' : 'none';
-  if (reg && $('registerReferralCode')) {
+  if ($('registerReferralWrap')) $('registerReferralWrap').style.display = (reg && globalReferralEnabled) ? 'block' : 'none';
+  if (reg && globalReferralEnabled && $('registerReferralCode')) {
     const queryReferral = new URLSearchParams(window.location.search).get('ref') || '';
     const savedReferral = localStorage.getItem('tg_ref_sponsor') || '';
     if (!$('registerReferralCode').value) $('registerReferralCode').value = queryReferral || savedReferral;
@@ -1257,7 +1343,7 @@ if (googleSignInBtnEl) googleSignInBtnEl.onclick = async () => {
     const u = res.user;
     onValue(ref(db, 'users/' + u.uid), async snap => {
       const data = snap.val() || {};
-      const sponsor = (authMode === 'register' ? ($('registerReferralCode')?.value || '') : '') .trim() || localStorage.getItem('tg_ref_sponsor') || '';
+      const sponsor = globalReferralEnabled ? ((authMode === 'register' ? ($('registerReferralCode')?.value || '') : '').trim() || localStorage.getItem('tg_ref_sponsor') || '') : '';
       const updatePayload = {
         name: u.displayName || 'Customer',
         email: u.email,
@@ -1304,8 +1390,8 @@ if (authSubmitEl) authSubmitEl.onclick = async () => {
     await applyAuthPersistence();
     if(authMode === 'register') {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      const enteredReferral = ($('registerReferralCode')?.value || '').trim();
-      const sponsor = enteredReferral || localStorage.getItem('tg_ref_sponsor') || '';
+      const enteredReferral = globalReferralEnabled ? ($('registerReferralCode')?.value || '').trim() : '';
+      const sponsor = globalReferralEnabled ? (enteredReferral || localStorage.getItem('tg_ref_sponsor') || '') : '';
       const userPayload = {
         email: cred.user.email,
         role: 'user',
@@ -1343,8 +1429,25 @@ if (authSubmitEl) authSubmitEl.onclick = async () => {
   } finally { setAuthBusy(authSubmitEl, false); }
 };
 
+function confirmSignOut(){
+  return new Promise(resolve=>{
+    let overlay=document.getElementById('logoutConfirmOverlay');
+    if(!overlay){
+      overlay=document.createElement('div'); overlay.id='logoutConfirmOverlay'; overlay.className='logout-confirm-overlay';
+      overlay.innerHTML='<div class="logout-confirm-card" role="dialog" aria-modal="true" aria-labelledby="logoutConfirmTitle"><div class="logout-confirm-icon">↪</div><h3 id="logoutConfirmTitle">Sign out?</h3><p>Are you sure you want to sign out of your account?</p><div class="logout-confirm-actions"><button type="button" class="logout-cancel" data-logout-cancel>Cancel</button><button type="button" class="logout-yes" data-logout-yes>Yes, Sign Out</button></div></div>';
+      document.body.appendChild(overlay);
+    }
+    const finish=value=>{overlay.classList.remove('open');setTimeout(()=>resolve(value),180);};
+    overlay.querySelector('[data-logout-cancel]').onclick=()=>finish(false);
+    overlay.querySelector('[data-logout-yes]').onclick=()=>finish(true);
+    overlay.onclick=e=>{if(e.target===overlay)finish(false)};
+    const esc=e=>{if(e.key==='Escape'){finish(false);document.removeEventListener('keydown',esc)}};
+    document.addEventListener('keydown',esc); overlay.classList.add('open');
+  });
+}
 const signOutEl = $('signOut');
 if (signOutEl) signOutEl.onclick = async () => {
+  if(!await confirmSignOut()) return;
   setAuthBusy(signOutEl, true, 'Signing out…');
   try { await signOut(auth); toast('Signed out successfully'); }
   catch(e) { toast(e.message || 'Unable to sign out'); }
@@ -1360,6 +1463,7 @@ onAuthStateChanged(auth, u => {
   document.querySelectorAll('#siteDrawer .drawer-item[data-page]').forEach(btn => {
     const publicAllowed = ['view-support'];
     btn.style.display = (u || publicAllowed.includes(btn.dataset.page)) ? 'flex' : 'none';
+    if (btn.dataset.page === 'view-referral' && !globalReferralEnabled) btn.style.display = 'none';
   });
   const accountDivider = document.querySelector('#siteDrawer .drawer-divider-label');
   if (accountDivider) accountDivider.style.display = u ? 'block' : 'none';
@@ -1377,7 +1481,8 @@ onAuthStateChanged(auth, u => {
   if(u){
     onValue(ref(db, 'users/' + u.uid), snap => {
       const profile = snap.val() || {};
-      userRole = profile.role === 'reseller' ? 'reseller' : 'user';
+      userRole = ['reseller','seller'].includes(profile.role) ? profile.role : 'user';
+      const resellerCard = $('resellerUpgradeCard'); if (resellerCard) { const p = resellerCard.querySelector('p'); if (p && userRole !== 'user') p.textContent = userRole === 'seller' ? 'Your Seller tier is active. Eligible plans now use seller pricing.' : 'Your Reseller tier is active. Eligible plans now use reseller pricing.'; }
       userWalletBalance = Number(profile.walletBalance || 0);
       
       if ($('topWalletBalance')) $('topWalletBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
@@ -1386,11 +1491,11 @@ onAuthStateChanged(auth, u => {
 
       const badge = $('activeRoleBadge');
       if (badge) {
-        badge.className = userRole === 'reseller' ? 'role-badge reseller' : 'role-badge user';
-        badge.textContent = userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
+        badge.className = userRole !== 'user' ? 'role-badge reseller' : 'role-badge user';
+        badge.textContent = userRole === 'seller' ? '🏆 Seller Tier (Seller Rates)' : userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
       }
 
-      if ($('userReferralLinkInput')) {
+      if (globalReferralEnabled && $('userReferralLinkInput')) {
         const refLink = `${window.location.origin}${window.location.pathname}?ref=${u.uid}`;
         $('userReferralLinkInput').value = refLink;
         if ($('userReferralCodeInput')) $('userReferralCodeInput').value = u.uid;
@@ -1603,12 +1708,13 @@ function getPlans(p){
   // Firebase can contain deleted/null product records or older plan formats.
   if (!p || typeof p !== 'object') return [];
   const r = p.plans;
-  if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
-  if (r && typeof r === 'object') return Object.entries(r).filter(([,v]) => v && typeof v === 'object').map(([id,v], i) => ({...v, id: v.id ?? id, name: String(v.name || v.title || `Plan ${i + 1}`), price: Number(v.price || 0), resellerPrice: Number(v.resellerPrice || 0), keysPool: Array.isArray(v.keysPool) ? v.keysPool : []}));
+  if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), sellerPrice: Number(pl.sellerPrice || pl.resellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
+  if (r && typeof r === 'object') return Object.entries(r).filter(([,v]) => v && typeof v === 'object').map(([id,v], i) => ({...v, id: v.id ?? id, name: String(v.name || v.title || `Plan ${i + 1}`), price: Number(v.price || 0), resellerPrice: Number(v.resellerPrice || 0), sellerPrice: Number(v.sellerPrice || v.resellerPrice || 0), keysPool: Array.isArray(v.keysPool) ? v.keysPool : []}));
   return [];
 }
 
 function getActivePlanPrice(pl) {
+  if (userRole === 'seller' && pl.sellerPrice && Number(pl.sellerPrice) > 0) return Number(pl.sellerPrice);
   if (userRole === 'reseller' && pl.resellerPrice && Number(pl.resellerPrice) > 0) return Number(pl.resellerPrice);
   return Number(pl.price || 0);
 }
@@ -1814,6 +1920,7 @@ onValue(ref(db, 'siteNotice'), s => {
 });
 
 async function processReferralRewards(buyerUid, orderAmount, orderDbId) {
+  if (!globalReferralEnabled) return;
   onValue(ref(db, 'users/' + buyerUid), async snap => {
     const buyerData = snap.val() || {};
     const sponsorUid = buyerData.referredBy;
@@ -2054,7 +2161,7 @@ async function checkOrderStatusExecution() {
   if (!activeOrderSession || orderStatusCheckInFlight) return false;
   orderStatusCheckInFlight = true;
   try {
-  const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode } = activeOrderSession;
+  const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode, sellerMembership } = activeOrderSession;
 
   const statusData = await fetchSafeOrderStatus(gatewayOrderId);
   if (!statusData) return false;
@@ -2422,6 +2529,41 @@ if (categorySelectEl) categorySelectEl.onchange = renderProducts;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindToggle,{once:true});else bindToggle();
   new MutationObserver(bindToggle).observe(document.documentElement,{childList:true,subtree:true});
 })();
+
+
+// Independent Seller Membership checkout. Memberships are stored separately from products.
+let availableSellerMembershipPlans = {};
+function renderSellerMembershipChoices(){
+  const host=$('sellerMembershipPlansList'); if(!host)return;
+  const plans=Object.entries(availableSellerMembershipPlans||{}).filter(([,p])=>p && p.active!==false && Number(p.price)>0);
+  if(!plans.length){host.innerHTML='<div class="empty">No Seller Membership plans are available right now. Please check again later.</div>';return;}
+  host.innerHTML=plans.map(([id,p])=>`<article class="product" style="box-shadow:none"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="flex:1;min-width:0"><h3 style="margin:0 0 6px">🏆 ${window.esc(p.name||'Seller Membership')}</h3><div class="sub">${window.esc(p.description||'Seller-tier pricing on eligible products.')}</div><div style="color:var(--muted);font-size:12px;margin-top:8px">Validity: ${window.esc(p.duration||'')}</div></div><strong style="font-size:21px;color:var(--cyan);white-space:nowrap">₹${Number(p.price).toFixed(0)}</strong></div><button class="btn primary" style="width:100%;margin-top:14px" onclick="purchaseSellerMembership('${id}')">Purchase Membership</button></article>`).join('');
+}
+window.purchaseSellerMembership = async id => {
+  if(!user){toast('Please login to purchase Seller Membership');return;}
+  const plan=availableSellerMembershipPlans[id]; if(!plan||plan.active===false)return toast('This membership plan is unavailable');
+  if(userRole==='seller'){toast('Your Seller role is already active');return;}
+  const price=Number(plan.price||0); if(!Number.isFinite(price)||price<=0)return toast('Invalid membership price');
+  if(!confirm(`Purchase ${plan.name} for ₹${price.toFixed(2)}?`))return;
+  try{
+    const userRef=ref(db,'users/'+user.uid);
+    const result=await runTransaction(userRef,current=>{
+      if(!current)return;
+      const bal=Number(current.walletBalance||0); if(bal<price)return;
+      return {...current,walletBalance:bal-price,role:'seller',sellerActivatedAt:Date.now(),sellerMembershipPlanId:id,sellerMembershipPlanName:plan.name,sellerMembershipValidFor:plan.duration};
+    });
+    if(!result.committed){const latest=Number((result.snapshot.val()||{}).walletBalance||0);return toast(latest<price?`Insufficient wallet balance. Need ₹${price.toFixed(2)}.`:'Unable to complete membership purchase. Please retry.');}
+    const orderRef=push(ref(db,'orders'));
+    await set(orderRef,{uid:user.uid,email:user.email||'',productName:'Seller Membership',planName:plan.name,membershipPlanId:id,amount:price,paymentMethod:'wallet',status:'delivered',orderType:'seller_membership',createdAt:Date.now(),deliveredAt:Date.now(),validity:plan.duration});
+    userRole='seller'; userWalletBalance=Number(result.snapshot.val().walletBalance||0);
+    if($('topWalletBalance'))$('topWalletBalance').textContent=`₹${userWalletBalance.toFixed(2)}`;
+    if($('depositPageBalance'))$('depositPageBalance').textContent=`₹${userWalletBalance.toFixed(2)}`;
+    document.querySelectorAll('.cur-wallet-bal').forEach(el=>el.textContent=`₹${userWalletBalance.toFixed(2)}`);
+    toast('Seller Membership purchased. Your Seller role is now active!');
+    navigateTo('view-home');
+  }catch(err){toast(err.message||'Membership purchase failed');}
+};
+onValue(ref(db,'sellerMembershipPlans'),snap=>{availableSellerMembershipPlans=snap.val()||{};renderSellerMembershipChoices();});
 </script>
 
 </body>
