@@ -136,7 +136,7 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 .product-title-area { display: flex; align-items: center; gap: 12px; }
 .product-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
 
-.auth-brand-row{display:flex;align-items:center;gap:10px}.auth-store-logo{width:38px;height:38px;object-fit:contain;border-radius:10px;border:1px solid #263852;background:#0b111c}
+.auth-brand-row{display:flex;align-items:center;gap:14px;min-height:64px}.auth-store-logo{width:58px;height:58px;min-width:58px;object-fit:contain;border-radius:16px;border:1px solid rgba(99,230,219,.72);background:radial-gradient(circle at 35% 25%,#243b58,#0b111c 72%);padding:4px;box-shadow:0 0 0 3px rgba(99,230,219,.09),0 0 24px rgba(99,230,219,.28),0 5px 18px rgba(0,0,0,.4);filter:drop-shadow(0 0 5px rgba(99,230,219,.25))}.auth-brand-row #authTitle{flex:1;line-height:1.25}
 /* Product features: show about three rows at once; scroll inside the list for the rest. */
 .feature-list {
   display: flex;
@@ -195,6 +195,9 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
   backdrop-filter:blur(14px); animation:fadeIn .3s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 .modal-back.open{display:flex}
+/* Keep published announcement above other UI layers so it cannot be visually buried. */
+#announcementPopupModal{z-index:150}
+#announcementPopupModal.open{display:flex;opacity:1;visibility:visible}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 .modal{
@@ -1064,12 +1067,24 @@ onValue(ref(db, 'coupons'), s => {
   allCoupons = s.val() || {};
 });
 
+let lastAnnouncementSignature = '';
 onValue(ref(db, 'popupAnnouncement'), s => {
   const ann = s.val();
-  if (ann && ann.active) {
-    $('annPopupTitle').textContent = ann.title || 'Announcement';
-    $('annPopupContent').textContent = ann.content || '';
-    const mContainer = $('annPopupMediaContainer');
+  const modal = $('announcementPopupModal');
+
+  // An empty snapshot should not dismiss a promotion that has already opened.
+  // Close it only when Firebase contains an explicit saved inactive record.
+  if (!ann) return;
+  if (ann.active !== true) {
+    lastAnnouncementSignature = '';
+    if (modal) modal.classList.remove('open');
+    return;
+  }
+  const signature = JSON.stringify({title:ann.title||'',content:ann.content||'',mediaType:ann.mediaType||'none',mediaUrl:ann.mediaUrl||'',updatedAt:ann.updatedAt||0});
+  $('annPopupTitle').textContent = ann.title || 'Announcement';
+  $('annPopupContent').textContent = ann.content || '';
+  const mContainer = $('annPopupMediaContainer');
+  if (mContainer) {
     mContainer.innerHTML = '';
     if (ann.mediaUrl) {
       if (ann.mediaType === 'image' || ann.mediaType === 'file_upload') {
@@ -1081,6 +1096,10 @@ onValue(ref(db, 'popupAnnouncement'), s => {
         if (yt) mContainer.innerHTML = `<div class="product-media-container" style="margin-bottom:12px"><div class="video-wrapper"><iframe src="${yt}" allowfullscreen></iframe></div></div>`;
       }
     }
+  }
+  // Open only when the announcement content changes; ordinary Firebase refreshes must not flash/reopen it.
+  if (signature !== lastAnnouncementSignature) {
+    lastAnnouncementSignature = signature;
     openModal('announcementPopupModal');
   }
 });
