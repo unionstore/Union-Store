@@ -305,7 +305,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(99,230,219,.55);o
 .drawer,.sidebar,.side-panel{transition:transform .32s var(--motion-ease),opacity .25s ease}
 .modal-back{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .modal{transform-origin:center;will-change:transform,opacity}
-.toast,.notification,.alert{animation:usToastIn .32s var(--motion-ease) both}
+.notification,.alert{animation:usToastIn .32s var(--motion-ease) both}
+.toast{animation:none!important}
+.toast:not(.show){opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.toast.show{visibility:visible!important;animation:usToastIn .22s ease-out both}
 @keyframes usToastIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 .us-reveal:not(.hidden){animation:usReveal .48s var(--motion-ease) both}
 @keyframes usReveal{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -317,8 +320,19 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
 
 
-/* Fix: remove stray theme-palette/ghost pill that was rendering as a floating capsule. */
-#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
+/* HARD FIX: suppress any injected theme-palette / ghost capsule widget, including variants with changed IDs/tokens. */
+#ui-theme-palette,
+[data-asset-token],
+[id*="theme-palette" i],
+[class*="theme-palette" i],
+[id*="ghost-pill" i],
+[class*="ghost-pill" i],
+[id*="floating-capsule" i],
+[class*="floating-capsule" i]{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;height:0!important;min-width:0!important;min-height:0!important;
+  max-width:0!important;max-height:0!important;overflow:hidden!important;
+}
 
 /* Animated sign-out confirmation */
 .logout-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(2,5,12,.76);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease}
@@ -897,11 +911,15 @@ window.closeDrawer = function() {
 window.toast = function(message, duration = 3000) {
   const t = $('toast');
   if (!t) return;
+  if (t._hideTimer) clearTimeout(t._hideTimer);
   t.textContent = message;
+  t.classList.remove('show');
+  void t.offsetWidth;
   t.classList.add('show');
-  setTimeout(() => {
+  t._hideTimer = setTimeout(() => {
     t.classList.remove('show');
-  }, duration);
+    t._hideTimer = null;
+  }, Math.max(800, Number(duration) || 3000));
 };
 
 window.openModal = function(id){ const el = $(id); if(el) el.classList.add('open'); };
