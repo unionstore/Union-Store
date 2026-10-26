@@ -2020,6 +2020,44 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
   }
 };
 
+async function createFamGatewayOrder({ amount, customerName = 'Customer', customerEmail = '', customerPhone = '' }) {
+  // FamGateway documents /api/qr.php as its GET order-creation endpoint.
+  // This avoids the JSON/X-Api-Key preflight that can fail on static GitHub Pages.
+  const params = new URLSearchParams({ api_key: dynamicGatewayKey, amount: String(amount), customer_name: customerName || 'Customer' });
+  if (customerEmail) params.set('customer_email', customerEmail);
+  if (customerPhone) params.set('customer_phone', customerPhone);
+  params.set('redirect_url', window.location.href);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const res = await fetch(`https://famgateway.in/api/qr.php?${params.toString()}`, { method:'GET', headers:{Accept:'application/json'}, cache:'no-store', signal:controller.signal });
+    if (!res.ok) throw new Error(`Gateway order HTTP ${res.status}`);
+    const result = await res.json();
+    if (result.status !== 'success' || !result.data || !result.data.order_id) throw new Error(result.message || result.error || 'Gateway did not create a payment order.');
+    return result;
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error('Payment gateway timed out. Please try again.');
+    if (err instanceof TypeError) throw new Error('Gateway is unreachable from this browser. Check network or gateway CORS settings.');
+    throw err;
+  } finally { clearTimeout(timeout); }
+}
+
+function configureUpiPaymentButton(button, orderData, label) {
+  if (!button) return;
+  const intent = typeof orderData.upi_intent === 'string' ? orderData.upi_intent.trim() : '';
+  const checkout = typeof orderData.checkout_url === 'string' ? orderData.checkout_url.trim() : '';
+  const useIntent = intent.startsWith('upi://pay?');
+  const target = useIntent ? intent : checkout;
+  if (!target) { button.style.display = 'none'; return; }
+  // Direct anchor navigation preserves Android's user gesture for UPI app launch.
+  button.href = target;
+  button.removeAttribute('target');
+  button.setAttribute('rel', 'noopener');
+  button.textContent = useIntent ? label : 'Open Secure Payment Page';
+  button.onclick = null;
+  button.style.display = 'flex';
+}
+
 async function fetchSafeOrderStatus(orderId) {
   if (!orderId) throw new Error('Missing gateway order ID.');
   const primaryUrl = `https://famgateway.in/api/checkout-status.php?order_id=${encodeURIComponent(orderId)}`;
@@ -2094,23 +2132,12 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
     let finalPayable = selected.activePrice;
     if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
 
-    const res = await fetch('https://famgateway.in/api/create-order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': dynamicGatewayKey
-      },
-      body: JSON.stringify({
-        api_key: dynamicGatewayKey,
-        amount: finalPayable,
-        customer_name: user.displayName || 'Customer',
-        customer_email: user.email || '',
-        customer_phone: phone,
-        redirect_url: window.location.href
-      })
+    const result = await createFamGatewayOrder({
+      amount: finalPayable,
+      customerName: user.displayName || 'Customer',
+      customerEmail: user.email || '',
+      customerPhone: phone
     });
-
-    const result = await res.json();
 
     if(result.status === 'success') {
       const orderData = result.data;
@@ -2147,14 +2174,7 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
       $('qrPayableAmount').textContent = `₹${orderData.payable_amount}`;
       if ($('orderStatusPillText')) $('orderStatusPillText').textContent = 'Waiting for payment confirmation...';
       
-      if(orderData.upi_intent) {
-        const intentUri = orderData.upi_intent;
-        $('directUpiAppBtn').href = intentUri;
-        $('directUpiAppBtn').style.display = 'block';
-        $('directUpiAppBtn').onclick = () => {
-          setTimeout(() => { window.location.href = intentUri; }, 50);
-        };
-      }
+      configureUpiPaymentButton($('directUpiAppBtn'), orderData, 'Pay via UPI App');
 
       startAutoOrderFulfillmentPolling();
       startCountdownTimer('orderTimerDisplay', () => {
@@ -2260,7 +2280,7 @@ function startAutoOrderFulfillmentPolling() {
   // Check every 30 seconds; manual check always invokes the gateway immediately.
   activePollInterval = setInterval(async () => {
     try { await checkOrderStatusExecution(); } catch (e) { console.warn('Auto payment check:', e); }
-  }, 30000);
+  }, 5000);
 }
 
 const checkOrderStatusManualBtnEl = $('checkOrderStatusManualBtn');
@@ -2295,22 +2315,11 @@ if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
   $('depositLoaderAnim').style.display = 'block';
 
   try {
-    const res = await fetch('https://famgateway.in/api/create-order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': dynamicGatewayKey
-      },
-      body: JSON.stringify({
-        api_key: dynamicGatewayKey,
-        amount: amount,
-        customer_name: user.displayName || 'Customer',
-        customer_email: user.email || '',
-        redirect_url: window.location.href
-      })
+    const result = await createFamGatewayOrder({
+      amount: amount,
+      customerName: user.displayName || 'Customer',
+      customerEmail: user.email || ''
     });
-
-    const result = await res.json();
 
     if(result.status === 'success') {
       const orderData = result.data;
@@ -2338,14 +2347,7 @@ if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
       $('depositPayableAmount').textContent = `₹${orderData.payable_amount}`;
       if ($('depositStatusPillText')) $('depositStatusPillText').textContent = 'Waiting for payment confirmation...';
       
-      if(orderData.upi_intent) {
-        const intentUri = orderData.upi_intent;
-        $('directDepositUpiBtn').href = intentUri;
-        $('directDepositUpiBtn').style.display = 'block';
-        $('directDepositUpiBtn').onclick = () => {
-          setTimeout(() => { window.location.href = intentUri; }, 50);
-        };
-      }
+      configureUpiPaymentButton($('directDepositUpiBtn'), orderData, 'Open in UPI App');
 
       startAutoDepositCreditPolling();
       startCountdownTimer('depositTimerDisplay', () => {
@@ -2440,7 +2442,7 @@ function startAutoDepositCreditPolling() {
   if (depositPollInterval) clearInterval(depositPollInterval);
   depositPollInterval = setInterval(async () => {
     try { await checkDepositStatusExecution(); } catch (e) { console.warn('Auto deposit check:', e); }
-  }, 30000);
+  }, 5000);
 }
 
 const checkDepositStatusManualBtnEl = $('checkDepositStatusManualBtn');
