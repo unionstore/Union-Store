@@ -248,13 +248,13 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 
 #floatingSupportBtn {
   position: fixed !important; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom));
-  left: auto; top: auto; width: 48px; min-width: 48px; height: 48px; min-height: 48px;
+  left: auto; top: auto; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
   border-radius: 50%; background: linear-gradient(135deg, #5b8cff, #7665ff); color: #fff;
   align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(91, 140, 255, 0.32);
   z-index: 65; cursor: grab; touch-action: none; user-select: none; -webkit-user-select:none; border: 1px solid rgba(255,255,255,0.2);
   overflow: hidden; line-height: 0; font-size: 0; animation: none !important; transform: none !important;
 }
-#floatingSupportBtn svg { width: 24px !important; height: 24px !important; min-width: 24px; min-height: 24px; fill: #fff !important; color:#fff; display:block !important; flex:0 0 24px; opacity:1 !important; visibility:visible !important; pointer-events:none; }
+#floatingSupportBtn svg { width: 26px !important; height: 26px !important; min-width: 26px; min-height: 26px; fill: #fff; display: block; flex: 0 0 26px; }
 #floatingSupportBtn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 #floatingSupportBtn.is-dragging { cursor: grabbing; transition: none !important; opacity: .92; }
 
@@ -315,13 +315,9 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 @keyframes usShimmer{to{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
 
-</style>
 
-<style id="union-latest-polish">
-#floatingSupportBtn{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;box-shadow:0 5px 16px rgba(91,140,255,.28)!important}
-.plan-item-row{gap:10px!important;margin-bottom:12px!important;padding:12px!important;border:1px solid #263852!important;border-radius:14px!important;background:rgba(8,13,23,.8)!important}
-.plan-item-row .btn-del-plan{margin-left:4px!important;min-width:38px!important;min-height:38px!important}
-@media(max-width:480px){.plan-item-row{grid-template-columns:1fr 1fr!important}.plan-item-row .plan-name-input{grid-column:1/-1}.plan-item-row .btn-del-plan{justify-self:end}}
+/* Fix: remove stray theme-palette/ghost pill that was rendering as a floating capsule. */
+#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
 </style>
 </head>
 <body>
@@ -1433,7 +1429,7 @@ onAuthStateChanged(auth, u => {
   if(u){
     onValue(ref(db, 'users/' + u.uid), snap => {
       const profile = snap.val() || {};
-      userRole = ['seller','reseller'].includes(profile.role) ? profile.role : 'user';
+      userRole = profile.role === 'reseller' ? 'reseller' : 'user';
       userWalletBalance = Number(profile.walletBalance || 0);
       
       if ($('topWalletBalance')) $('topWalletBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
@@ -1443,7 +1439,7 @@ onAuthStateChanged(auth, u => {
       const badge = $('activeRoleBadge');
       if (badge) {
         badge.className = userRole === 'reseller' ? 'role-badge reseller' : 'role-badge user';
-        badge.textContent = userRole === 'seller' ? '💎 Seller Tier (Best Rates)' : userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
+        badge.textContent = userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
       }
 
       if ($('userReferralLinkInput')) {
@@ -1665,7 +1661,6 @@ function getPlans(p){
 }
 
 function getActivePlanPrice(pl) {
-  if (userRole === 'seller' && pl.sellerPrice && Number(pl.sellerPrice) > 0) return Number(pl.sellerPrice);
   if (userRole === 'reseller' && pl.resellerPrice && Number(pl.resellerPrice) > 0) return Number(pl.resellerPrice);
   return Number(pl.price || 0);
 }
