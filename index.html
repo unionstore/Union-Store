@@ -316,13 +316,13 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
 
 
-/* Remove stray injected theme palette / ghost capsule artifacts. */
-#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],[id*="theme-palette"],[class*="theme-palette"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;max-width:0!important;max-height:0!important;}
+/* Fix: remove stray theme-palette/ghost pill that was rendering as a floating capsule. */
+#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
 </style>
 </head>
 <body>
 
-
+<div id="ui-theme-palette" data-asset-token="fam_3710dccd201f6497" style="display:none;"></div>
 <div class="announcement-bar" id="liveAnnouncementBar">📢 <span id="announcementText"></span></div>
 
 <div id="floatingSupportBtn" title="Customer Support" style="display:none">
@@ -411,16 +411,6 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
       <div id="storePromotionTitle" style="font-size:17px;font-weight:900;margin:4px 0"></div>
       <p id="storePromotionText" class="sub" style="margin:0 0 10px;white-space:pre-wrap"></p>
       <a id="storePromotionLink" class="btn primary hidden" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none">View Offer ↗</a>
-    </section>
-
-    <section id="resellerThresholdCard" class="product" style="margin:0 0 16px;padding:14px;border:1px solid rgba(99,102,241,.45);background:linear-gradient(120deg,rgba(24,35,75,.92),rgba(8,15,29,.98));display:none">
-      <div style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">🚀</span><div style="flex:1"><b style="font-size:15px">Become a Reseller</b><div id="resellerThresholdText" class="sub" style="margin-top:3px">Deposit requirement loading…</div></div><span style="color:#86efac;font-weight:900">AUTO</span></div>
-      <button class="btn primary" style="width:100%;margin-top:10px" onclick="window.navigateTo('view-deposit')">Add Funds to Qualify ↗</button>
-    </section>
-
-    <section id="sellerInfoCard" class="product" style="margin:0 0 16px;padding:14px;border:1px solid rgba(56,189,248,.3);display:none">
-      <b>💼 Become a Seller</b><p class="sub" style="margin:6px 0 0">Seller-tier pricing is available on eligible accounts. Contact support or check your account for seller access.</p>
-      <button class="btn secondary" style="margin-top:10px;width:100%" onclick="window.openSupportModal()">Request Seller Access</button>
     </section>
 
     <div class="hero">
@@ -631,7 +621,6 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <div class="list-panel" id="accountDetailsPane">
       <div class="empty">Sign in to view account credentials.</div>
     </div>
-    <div class="list-panel" style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><b>Interface Click Sounds</b><div class="sub">Control button tap sounds on this device only.</div></div><label style="display:flex;align-items:center;gap:8px"><input id="clickSoundToggle" type="checkbox" style="width:20px;height:20px"> <span id="clickSoundLabel">Off</span></label></div>
   </section>
 
   <section class="view-pane" id="view-support">
@@ -689,8 +678,6 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <button class="btn primary" style="width:100%;padding:12px" id="successPopupActionBtn">View Details</button>
   </div>
 </div>
-
-<div class="modal-back" id="logoutConfirmModal" style="z-index:120;display:none;align-items:center;justify-content:center"><div class="modal" style="width:min(360px,92vw);padding:24px;text-align:center;border:1px solid #34476a;background:linear-gradient(145deg,#101b30,#070c16);border-radius:22px;box-shadow:0 25px 80px #0009"><div style="font-size:38px;animation:bounceIn .45s">🔐</div><h3 style="margin:12px 0 6px">Sign out?</h3><p class="sub" style="margin:0 0 18px">Your session will end on this device.</p><div style="display:flex;gap:10px"><button class="btn secondary" id="cancelLogoutBtn" style="flex:1">Stay signed in</button><button class="btn primary" id="confirmLogoutBtn" style="flex:1">Sign out</button></div></div></div>
 
 <div class="modal-back" id="supportModal">
   <div class="modal">
@@ -979,17 +966,6 @@ onValue(ref(db, 'appConfig'), s => {
   }
 });
 
-onValue(ref(db, 'appConfig'), snap => {
-  const cfg = snap.val() || {};
-  const card = $('resellerThresholdCard');
-  const text = $('resellerThresholdText');
-  if (!card || !text) return;
-  const enabled = cfg.autoResellerEnabled === true || cfg.autoResellerEnabled === 1 || String(cfg.autoResellerEnabled).toLowerCase() === 'true';
-  const threshold = Number(cfg.autoResellerAmount || 0);
-  card.style.display = enabled && threshold > 0 ? 'block' : 'none';
-  if (enabled && threshold > 0) text.textContent = `Deposit ₹${threshold.toLocaleString('en-IN')} in a single successful transaction to automatically unlock reseller pricing.`;
-});
-
 onValue(ref(db, 'siteContent'), s => {
   const content = s.val() || {};
   const aboutItem = $('drawerAboutItem');
@@ -1186,7 +1162,7 @@ onValue(ref(db, 'supportSettings'), s => {
     .filter(item => !(String(item.title).trim() === 'Telegram Support' && String(item.url).trim().replace(/\/$/, '') === 'https://t.me/union_x_support'));
   const container = $('multiSupportButtonsContainer');
   const floatingButton = $('floatingSupportBtn');
-  if (floatingButton) floatingButton.style.display = 'flex';
+  if (floatingButton) floatingButton.style.display = links.length ? 'flex' : 'none';
   if (!container) return;
   if (!links.length) {
     container.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 4px">No support channels available.</div>';
@@ -1420,11 +1396,12 @@ if (authSubmitEl) authSubmitEl.onclick = async () => {
 };
 
 const signOutEl = $('signOut');
-const logoutModal = $('logoutConfirmModal');
-if (signOutEl) signOutEl.onclick = () => { if(logoutModal){logoutModal.style.display='flex';requestAnimationFrame(()=>logoutModal.classList.add('us-reveal'));} };
-if ($('cancelLogoutBtn')) $('cancelLogoutBtn').onclick=()=>{if(logoutModal)logoutModal.style.display='none';};
-if (logoutModal) logoutModal.addEventListener('click',e=>{if(e.target===logoutModal)logoutModal.style.display='none'});
-if ($('confirmLogoutBtn')) $('confirmLogoutBtn').onclick=async()=>{const btn=$('confirmLogoutBtn');btn.disabled=true;btn.textContent='Signing out…';try{await signOut(auth);logoutModal.style.display='none';toast('Signed out successfully')}catch(e){toast(e.message||'Unable to sign out')}finally{btn.disabled=false;btn.textContent='Sign out'}};
+if (signOutEl) signOutEl.onclick = async () => {
+  setAuthBusy(signOutEl, true, 'Signing out…');
+  try { await signOut(auth); toast('Signed out successfully'); }
+  catch(e) { toast(e.message || 'Unable to sign out'); }
+  finally { setAuthBusy(signOutEl, false); }
+};
 
 // STRICT ISOLATED AUTH STATE LISTENER (PREVENTS ACCIDENTAL AUTO-ADMIN LOGIN)
 onAuthStateChanged(auth, u => {
@@ -1452,7 +1429,7 @@ onAuthStateChanged(auth, u => {
   if(u){
     onValue(ref(db, 'users/' + u.uid), snap => {
       const profile = snap.val() || {};
-      userRole = ['reseller','seller','vendor'].includes(String(profile.role||'').toLowerCase()) ? String(profile.role).toLowerCase() : 'user';
+      userRole = profile.role === 'reseller' ? 'reseller' : 'user';
       userWalletBalance = Number(profile.walletBalance || 0);
       
       if ($('topWalletBalance')) $('topWalletBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
@@ -1461,8 +1438,8 @@ onAuthStateChanged(auth, u => {
 
       const badge = $('activeRoleBadge');
       if (badge) {
-        badge.className = userRole !== 'user' ? 'role-badge reseller' : 'role-badge user';
-        badge.textContent = userRole === 'seller' || userRole === 'vendor' ? '💼 Seller Tier (Special Rates)' : userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
+        badge.className = userRole === 'reseller' ? 'role-badge reseller' : 'role-badge user';
+        badge.textContent = userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
       }
 
       if ($('userReferralLinkInput')) {
@@ -1678,13 +1655,12 @@ function getPlans(p){
   // Firebase can contain deleted/null product records or older plan formats.
   if (!p || typeof p !== 'object') return [];
   const r = p.plans;
-  if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), sellerPrice: Number(pl.sellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
-  if (r && typeof r === 'object') return Object.entries(r).filter(([,v]) => v && typeof v === 'object').map(([id,v], i) => ({...v, id: v.id ?? id, name: String(v.name || v.title || `Plan ${i + 1}`), price: Number(v.price || 0), resellerPrice: Number(v.resellerPrice || 0), sellerPrice: Number(v.sellerPrice || 0), keysPool: Array.isArray(v.keysPool) ? v.keysPool : []}));
+  if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
+  if (r && typeof r === 'object') return Object.entries(r).filter(([,v]) => v && typeof v === 'object').map(([id,v], i) => ({...v, id: v.id ?? id, name: String(v.name || v.title || `Plan ${i + 1}`), price: Number(v.price || 0), resellerPrice: Number(v.resellerPrice || 0), keysPool: Array.isArray(v.keysPool) ? v.keysPool : []}));
   return [];
 }
 
 function getActivePlanPrice(pl) {
-  if ((userRole === 'seller' || userRole === 'vendor') && pl.sellerPrice && Number(pl.sellerPrice) > 0) return Number(pl.sellerPrice);
   if (userRole === 'reseller' && pl.resellerPrice && Number(pl.resellerPrice) > 0) return Number(pl.resellerPrice);
   return Number(pl.price || 0);
 }
@@ -2436,16 +2412,69 @@ if (categorySelectEl) categorySelectEl.onchange = renderProducts;
 })();
 
 </script>
-
-// Optional local-only click sound. Disabled by default and never sent to Firebase.
-(function initClickSounds(){
-  const key='tgCheatsClickSounds'; const toggle=document.getElementById('clickSoundToggle'); const label=document.getElementById('clickSoundLabel');
-  let enabled=false; try{enabled=localStorage.getItem(key)==='on'}catch(_){}
-  const sync=()=>{if(toggle)toggle.checked=enabled;if(label)label.textContent=enabled?'On':'Off'}; sync();
-  if(toggle)toggle.addEventListener('change',()=>{enabled=toggle.checked;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync();if(enabled)playTap()});
-  function playTap(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=740;g.gain.setValueAtTime(.035,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.045);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.05);o.onended=()=>c.close()}catch(_){}}
-  document.addEventListener('click',e=>{if(!enabled)return;const t=e.target.closest('button,.btn,[role="button"]');if(t&&!t.disabled)playTap()},{capture:true});
+<script>
+/* TG CHEATS runtime guard: remove accidentally rendered JavaScript snippets, never app UI. */
+(function(){
+  const marker = 'Optional local-only click sound';
+  const codeHints = ['initClickSounds()', "document.addEventListener('click',e=>", 'const key=\'tgCheatsClickSounds\''];
+  function isLeakedCode(text){
+    if(!text) return false;
+    return text.includes(marker) || (text.includes('tgCheatsClickSounds') && text.includes('AudioContext') && text.includes('playTap')) || (text.includes('initClickSounds') && text.includes('localStorage'));
+  }
+  function clean(root){
+    if(!root) return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const bad=[]; let n;
+    while((n=walker.nextNode())){
+      const parent=n.parentElement;
+      if(!parent || parent.closest('script,style,textarea,pre,code')) continue;
+      if(isLeakedCode(n.nodeValue)) bad.push(n);
+    }
+    bad.forEach(n=>{
+      const p=n.parentElement;
+      if(p && p!==document.body && p.children.length===0) p.remove();
+      else n.remove();
+    });
+  }
+  function boot(){
+    clean(document.body);
+    if(window.MutationObserver && document.body){
+      new MutationObserver(records=>records.forEach(r=>{
+        r.addedNodes.forEach(node=>{if(node.nodeType===Node.TEXT_NODE){if(isLeakedCode(node.nodeValue) && node.parentElement && !node.parentElement.closest('script,style,textarea,pre,code')) node.remove();} else if(node.nodeType===Node.ELEMENT_NODE && !['SCRIPT','STYLE','TEXTAREA','PRE','CODE'].includes(node.tagName)) clean(node);});
+      })).observe(document.body,{childList:true,subtree:true});
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
 })();
+</script>
+<script>
+/* Click sound is local-only, opt-in, and safe when the toggle is not present. */
+(function initClickSounds(){
+  const key='tgCheatsClickSounds';
+  let enabled=false;
+  try{enabled=localStorage.getItem(key)==='on'}catch(_){}
+  function playTap(){
+    try{
+      const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+      const c=new C(),o=c.createOscillator(),g=c.createGain();
+      o.type='sine';o.frequency.value=740;
+      g.gain.setValueAtTime(.025,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.04);
+      o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.045);o.onended=()=>c.close();
+    }catch(_){}
+  }
+  function bindToggle(){
+    const toggle=document.getElementById('clickSoundToggle');
+    const label=document.getElementById('clickSoundLabel');
+    const sync=()=>{if(toggle)toggle.checked=enabled;if(label)label.textContent=enabled?'On':'Off'};
+    sync();
+    if(toggle && !toggle.dataset.soundBound){toggle.dataset.soundBound='1';toggle.addEventListener('change',()=>{enabled=toggle.checked;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync();if(enabled)playTap()})}
+  }
+  document.addEventListener('click',e=>{if(enabled && e.target.closest('button,.btn,.bottom-item,.drawer-item,a,[role="button"]'))playTap()});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindToggle,{once:true});else bindToggle();
+  new MutationObserver(bindToggle).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
 
 </body>
 </html>
