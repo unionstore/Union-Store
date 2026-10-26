@@ -247,8 +247,8 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 }
 
 #floatingSupportBtn {
-  position: fixed !important; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom));
-  left: auto; top: auto; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
+  position: fixed !important; right: max(16px, env(safe-area-inset-right)) !important; bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+  left: auto !important; top: auto !important; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
   border-radius: 50%; background: linear-gradient(135deg, #5b8cff, #7665ff); color: #fff;
   align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(91, 140, 255, 0.32);
   z-index: 65; cursor: grab; touch-action: none; user-select: none; -webkit-user-select:none; border: 1px solid rgba(255,255,255,0.2);
@@ -316,8 +316,8 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
 
 
-/* Fix: remove stray theme-palette/ghost pill that was rendering as a floating capsule. */
-#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"]{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
+/* Remove stray floating theme-palette capsule, including dynamically injected copies. */
+#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost{display:none!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;min-width:0!important;min-height:0!important;opacity:0!important;}
 </style>
 </head>
 <body>
@@ -1035,124 +1035,33 @@ onValue(ref(db, 'popupAnnouncement'), s => {
 
 const floatBtn = $('floatingSupportBtn');
 if (floatBtn) {
-  // Movable support launcher: pointer events cover mouse, touch and stylus.
-  // A drag never triggers the support modal; position is clamped to the visible viewport.
-  let drag = null;
-  let suppressNextClick = false;
-  const margin = 8;
-  const clampPosition = (left, top) => ({
-    left: Math.max(margin, Math.min(left, window.innerWidth - floatBtn.offsetWidth - margin)),
-    top: Math.max(margin, Math.min(top, window.innerHeight - floatBtn.offsetHeight - margin))
-  });
-  const placeButton = (left, top, persist = false) => {
-    const p = clampPosition(left, top);
-    floatBtn.style.left = `${p.left}px`;
-    floatBtn.style.top = `${p.top}px`;
-    floatBtn.style.right = 'auto';
-    floatBtn.style.bottom = 'auto';
-    if (persist) {
-      try { localStorage.setItem('unionStoreSupportButtonPosition', JSON.stringify(p)); } catch (_) {}
-    }
-  };
-  try {
-    const saved = JSON.parse(localStorage.getItem('unionStoreSupportButtonPosition') || 'null');
-    if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) placeButton(saved.left, saved.top);
-  } catch (_) {}
-  floatBtn.addEventListener('pointerdown', e => {
-    if (e.button !== undefined && e.button !== 0) return;
-    const rect = floatBtn.getBoundingClientRect();
-    drag = { id: e.pointerId, startX: e.clientX, startY: e.clientY, left: rect.left, top: rect.top, moved: false };
-    try { floatBtn.setPointerCapture(e.pointerId); } catch (_) {}
-  });
-  floatBtn.addEventListener('pointermove', e => {
-    if (!drag || drag.id !== e.pointerId) return;
-    const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
-    if (!drag.moved && Math.hypot(dx, dy) > 6) {
-      drag.moved = true;
-      floatBtn.classList.add('is-dragging');
-    }
-    if (drag.moved) {
-      e.preventDefault();
-      placeButton(drag.left + dx, drag.top + dy);
-    }
-  });
-  const finishDrag = e => {
-    if (!drag || (e && drag.id !== e.pointerId)) return;
-    if (drag.moved) {
-      const r = floatBtn.getBoundingClientRect();
-      placeButton(r.left, r.top, true);
-      suppressNextClick = true;
-      setTimeout(() => { suppressNextClick = false; }, 350);
-    }
-    drag = null;
+  // Keep support launcher fixed above the bottom navigation; discard old drag coordinates.
+  try { localStorage.removeItem('unionStoreSupportButtonPosition'); } catch (_) {}
+  const resetSupportPosition = () => {
+    floatBtn.style.setProperty('position', 'fixed', 'important');
+    floatBtn.style.setProperty('right', 'max(16px, env(safe-area-inset-right))', 'important');
+    floatBtn.style.setProperty('bottom', 'calc(82px + env(safe-area-inset-bottom))', 'important');
+    floatBtn.style.setProperty('left', 'auto', 'important');
+    floatBtn.style.setProperty('top', 'auto', 'important');
     floatBtn.classList.remove('is-dragging');
   };
-  floatBtn.addEventListener('pointerup', finishDrag);
-  floatBtn.addEventListener('pointercancel', finishDrag);
-  floatBtn.addEventListener('lostpointercapture', () => { if (drag) finishDrag(); });
-  floatBtn.addEventListener('click', e => {
-    if (suppressNextClick) { e.preventDefault(); e.stopPropagation(); return; }
-    window.openSupportModal();
-  });
+  resetSupportPosition();
+  floatBtn.addEventListener('click', () => window.openSupportModal());
   floatBtn.setAttribute('role', 'button');
   floatBtn.setAttribute('tabindex', '0');
-  floatBtn.setAttribute('aria-label', 'Move support button by dragging, or open customer support with a tap');
+  floatBtn.setAttribute('aria-label', 'Open customer support');
   floatBtn.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      window.openSupportModal();
-    }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.openSupportModal(); }
   });
-  window.addEventListener('resize', () => {
-    const r = floatBtn.getBoundingClientRect();
-    placeButton(r.left, r.top, true);
-  });
+  window.addEventListener('resize', resetSupportPosition);
 }
 
-function resolvePlatformUrl(platform, rawUrl) {
-  rawUrl = (rawUrl || '').trim();
-  if (platform === 'whatsapp') {
-    if (rawUrl.startsWith('http')) return rawUrl;
-    const cleanNumber = rawUrl.replace(/[^0-9]/g, '');
-    return `https://wa.me/${cleanNumber}`;
-  }
-  if (platform === 'telegram') {
-    if (rawUrl.startsWith('http')) return rawUrl;
-    const cleanUser = rawUrl.replace('@', '');
-    return `https://t.me/${cleanUser}`;
-  }
-  if (platform === 'email') {
-    if (rawUrl.startsWith('mailto:')) return rawUrl;
-    return `mailto:${rawUrl}`;
-  }
-  if (platform === 'phone') {
-    if (rawUrl.startsWith('tel:')) return rawUrl;
-    return `tel:${rawUrl.replace(/[^+0-9]/g, '')}`;
-  }
-  if (platform === 'instagram' && !rawUrl.startsWith('http')) return `https://instagram.com/${rawUrl.replace(/^@/, '')}`;
-  if (platform === 'facebook' && !rawUrl.startsWith('http')) return `https://facebook.com/${rawUrl.replace(/^@/, '')}`;
-  if (platform === 'tiktok' && !rawUrl.startsWith('http')) return `https://tiktok.com/@${rawUrl.replace(/^@/, '')}`;
-  if (platform === 'x' && !rawUrl.startsWith('http')) return `https://x.com/${rawUrl.replace(/^@/, '')}`;
-  return rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-}
-
-function getPlatformSvg(platform) {
-  const domains = {
-    telegram:'telegram.org', whatsapp:'whatsapp.com', youtube:'youtube.com', email:'gmail.com',
-    instagram:'instagram.com', facebook:'facebook.com', discord:'discord.com', x:'x.com',
-    tiktok:'tiktok.com', messenger:'messenger.com'
-  };
-  const labels = {telegram:'Telegram', whatsapp:'WhatsApp', youtube:'YouTube', email:'Gmail', instagram:'Instagram', facebook:'Facebook', discord:'Discord', x:'X', tiktok:'TikTok', messenger:'Messenger'};
-  const px = 24;
-  if (domains[platform]) {
-    const domain = domains[platform];
-    const label = labels[platform] || platform;
-    return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${label} official app logo" title="${label}" loading="lazy" referrerpolicy="no-referrer" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0" onerror="this.onerror=null;this.src='https://icons.duckduckgo.com/ip3/${domain}.ico'">`;
-  }
-  if (platform === 'phone') return `<img src="https://www.google.com/s2/favicons?domain=phone.google.com&sz=128" alt="Phone app icon" loading="lazy" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0">`;
-  return `<img src="https://www.google.com/s2/favicons?domain=www.google.com&sz=128" alt="Website icon" loading="lazy" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0">`;
-}
-
+// Remove the stray capsule if a stale script injects it after page load.
+(function removeGhostCapsule(){
+  const remove = () => document.querySelectorAll('#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost').forEach(el => el.remove());
+  remove();
+  if (document.body && window.MutationObserver) new MutationObserver(remove).observe(document.body,{childList:true,subtree:true});
+})();
 
 onValue(ref(db, 'supportSettings'), s => {
   // Only display support channels explicitly added by the admin. Do not inject defaults.
