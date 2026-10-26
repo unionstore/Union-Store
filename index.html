@@ -691,6 +691,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 
 <div class="modal-back" id="authModal">
   <div class="modal">
+    <div id="authStoreLogoWrap" style="display:flex;justify-content:center;margin:2px 0 16px"><div id="authStoreLogo" class="logo" style="width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-weight:900;font-size:20px">TG</div></div>
     <div class="close-row">
       <div><h3 id="authTitle" style="margin:0;font-size:18px;font-weight:900;color:#63e6db">Welcome Back</h3></div>
       <button class="xbtn" onclick="window.closeModal('authModal')">✕</button>
@@ -924,6 +925,11 @@ onValue(ref(db, 'appConfig'), s => {
   }
   if (conf.gatewayKey) dynamicGatewayKey = conf.gatewayKey;
   if (conf.referralPercentage !== undefined) globalReferralPercentage = Number(conf.referralPercentage);
+  const authLogo = $('authStoreLogo');
+  if (authLogo) {
+    if (conf.storeLogoUrl) { authLogo.textContent = ''; authLogo.style.background = `center/cover no-repeat url(\"${String(conf.storeLogoUrl).replace(/[\"\\]/g, '')}\")`; authLogo.style.border = '1px solid #28466c'; }
+    else { authLogo.textContent = 'TG'; authLogo.style.background = ''; }
+  }
   const logo = document.querySelector('.brand .logo');
   if (logo && conf.storeLogoUrl) {
     logo.textContent = '';
@@ -1058,17 +1064,50 @@ if (floatBtn) {
 
 // Remove the stray capsule if a stale script injects it after page load.
 (function removeGhostCapsule(){
-  const remove = () => document.querySelectorAll('#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost').forEach(el => el.remove());
+  const known = '#ui-theme-palette,[data-asset-token="fam_3710dccd201f6497"],#theme-palette,.theme-palette-ghost';
+  const remove = () => {
+    document.querySelectorAll(known).forEach(el => el.remove());
+    // Also remove the blank, centered capsule injected by the old theme widget.
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.matches('script,style,svg,path,nav,button,a,input,textarea,select,label,.bottom-bar,.bottom-item,#floatingSupportBtn')) return;
+      if (el.children.length || (el.textContent || '').trim()) return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 24 || r.width > 100 || r.height < 12 || r.height > 42) return;
+      if (Math.abs((r.left + r.right) / 2 - window.innerWidth / 2) > 22) return;
+      if (r.bottom < window.innerHeight - 240 || r.top > window.innerHeight + 5) return;
+      const cs = getComputedStyle(el);
+      if (cs.position !== 'fixed' && cs.position !== 'absolute' && cs.position !== 'sticky') return;
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return;
+      el.remove();
+    });
+  };
   remove();
   if (document.body && window.MutationObserver) new MutationObserver(remove).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('load', remove); window.addEventListener('resize', remove);
 })();
+
+function resolvePlatformUrl(platform, rawValue) {
+  const value = String(rawValue || '').trim();
+  if (!value) return '#';
+  if (/^(https?:|mailto:|tel:)/i.test(value)) return value;
+  const clean = value.replace(/^@/, '');
+  const roots = {
+    telegram: 'https://t.me/', whatsapp: 'https://wa.me/', instagram: 'https://instagram.com/',
+    facebook: 'https://facebook.com/', tiktok: 'https://www.tiktok.com/@', x: 'https://x.com/',
+    youtube: 'https://youtube.com/', discord: 'https://discord.com/', messenger: 'https://m.me/',
+    email: 'mailto:'
+  };
+  if (platform === 'phone') return 'tel:' + value.replace(/[^+0-9]/g, '');
+  if (platform === 'whatsapp' && /^\+?[0-9 ()-]+$/.test(value)) return 'https://wa.me/' + value.replace(/\D/g, '');
+  if (roots[platform]) return roots[platform] + (platform === 'email' ? value : clean);
+  return /^https?:\/\//i.test(value) ? value : 'https://' + value;
+}
 
 onValue(ref(db, 'supportSettings'), s => {
   // Only display support channels explicitly added by the admin. Do not inject defaults.
   const rawLinks = s.val();
   const links = (Array.isArray(rawLinks) ? rawLinks : (rawLinks && typeof rawLinks === 'object' ? Object.values(rawLinks) : []))
-    .filter(item => item && item.url && item.title)
-    .filter(item => !(String(item.title).trim() === 'Telegram Support' && String(item.url).trim().replace(/\/$/, '') === 'https://t.me/union_x_support'));
+    .filter(item => item && item.url && item.title);
   const container = $('multiSupportButtonsContainer');
   const floatingButton = $('floatingSupportBtn');
   if (floatingButton) floatingButton.style.display = links.length ? 'flex' : 'none';
