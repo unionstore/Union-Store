@@ -2436,7 +2436,7 @@ if (checkOrderStatusManualBtnEl) checkOrderStatusManualBtnEl.onclick = async () 
 
   try {
     const verified = await checkOrderStatusExecution();
-    if (!verified) toast('Payment abhi confirm nahi hua. Gateway status update hone par phir check karein.');
+    if (!verified) toast('⏳ Payment is still processing. Please check again in a moment.');
   } catch(e) {
     toast('Payment check failed: ' + e.message);
   } finally {
