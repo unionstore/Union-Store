@@ -480,10 +480,13 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
     </div>
   </section>
 
+  <!-- ✅ PREMIUM SELLER VIEW -->
   <section class="view-pane" id="view-seller">
     <div class="view-header"><div><h2>Become a Seller</h2><p>Choose a separate Seller Membership plan created by the admin. Store products do not upgrade your role.</p></div></div>
-    <div class="product" style="box-shadow:none;background:#0d1320;border-color:#1c283d;margin-bottom:12px"><h3 style="margin:0 0 8px">🏆 Seller Membership</h3><p class="sub" style="margin:0">After your membership purchase is completed successfully, your account role will automatically change to Seller. Membership purchase uses your wallet balance.</p></div>
-    <div id="sellerMembershipPlansList" class="stack"><div class="empty">Loading available membership plans…</div></div>
+    
+    <div id="sellerMembershipPlansList" class="stack">
+      <div class="empty">Loading available membership plans…</div>
+    </div>
   </section>
 
   <section class="view-pane" id="view-referral">
@@ -2609,19 +2612,48 @@ function renderSellerMembershipChoices() {
     return;
   }
 
-  host.innerHTML = entries.map(([id, p]) => `
-    <article class="product" style="box-shadow:none">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
-        <div style="flex:1;min-width:0">
-          <h3 style="margin:0 0 6px">🏆 ${window.esc(p.name || 'Seller Membership')}</h3>
-          <div class="sub">${window.esc(p.description || 'Seller-tier pricing on eligible products.')}</div>
-          <div style="color:var(--muted);font-size:12px;margin-top:8px">Validity: ${window.esc(p.duration || 'N/A')}</div>
-        </div>
-        <strong style="font-size:21px;color:var(--cyan);white-space:nowrap">${formatPrice(p.price)}</strong>
+  host.innerHTML = entries.map(([id, p]) => {
+    // ✅ NAYA LOGIC: Description ko line-by-line todkar features banana
+    const descLines = (p.description || 'Standard Seller Access').split(/\r?\n/).filter(l => l.trim().length > 0);
+    
+    const featuresHtml = descLines.map(line => `
+      <div class="feature-item">
+        <span>${window.esc(line)}</span>
+        <span class="check">✓</span>
       </div>
-      <button class="btn primary" style="width:100%;margin-top:14px" data-seller-plan-id="${window.esc(id)}">Purchase Membership</button>
-    </article>
-  `).join('');
+    `).join('');
+
+    return `
+      <article class="product" style="box-shadow:none; background:linear-gradient(145deg, #111a2d, #0a0f18); border:1px solid #2a3e5f; border-radius:20px; padding:18px; transition:all 0.3s;">
+        
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+          <div style="display:flex; gap:10px; align-items:center;">
+             <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #fbbf24); display:grid; place-items:center; box-shadow: 0 4px 12px rgba(251,191,36,0.3);">
+               <span style="font-size:20px;">👑</span>
+             </div>
+             <div>
+               <h3 style="margin:0; font-size:18px; color:#fff; font-weight:900;">${window.esc(p.name || 'Seller Membership')}</h3>
+               <div style="color:var(--muted); font-size:11.5px; margin-top:4px; display:flex; align-items:center; gap:4px;">
+                 <span>🕒</span> Validity: ${window.esc(p.duration || 'Lifetime')}
+               </div>
+             </div>
+          </div>
+          <div style="text-align:right;">
+             <div style="font-size:10px; color:var(--muted); text-transform:uppercase; font-weight:800; letter-spacing:0.5px;">PRICE</div>
+             <div style="font-size:22px; color:var(--gold); font-weight:900;">${formatPrice(p.price)}</div>
+          </div>
+        </div>
+        
+        <div class="feature-list" style="margin-bottom:18px; display:flex; flex-direction:column; gap:8px;">
+          ${featuresHtml}
+        </div>
+
+        <button class="btn gold" style="width:100%; padding:13px; font-size:14.5px; font-weight:900; border-radius:12px; display:flex; justify-content:center; gap:8px;" data-seller-plan-id="${window.esc(id)}">
+          <span>⚡</span> Purchase Membership
+        </button>
+      </article>
+    `;
+  }).join('');
 
   host.querySelectorAll('[data-seller-plan-id]').forEach(btn => {
     btn.onclick = () => window.purchaseSellerMembership(btn.dataset.sellerPlanId);
