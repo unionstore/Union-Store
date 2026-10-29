@@ -63,7 +63,6 @@ button{cursor:pointer;border:0}
 .wallet-box{background:linear-gradient(135deg,#132238,#0d1522);border:1px solid #233959;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .wallet-val{font-size:24px;font-weight:900;color:var(--cyan);margin:2px 0 0}
 
-/* ✅ NAYA GLOWING RESELLER HIGHLIGHT BOX */
 .reseller-highlight {
   background: linear-gradient(135deg, #1c1810, #0d1522);
   border: 1px solid #52421b; 
@@ -114,10 +113,9 @@ button{cursor:pointer;border:0}
 .product-title-area { display: flex; align-items: center; gap: 12px; }
 .product-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
 
-/* ✅ FEATURE EXPANDER STYLES */
 .feature-list { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 16px; position: relative;}
 .feature-item { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; color: #f4f7ff; font-weight: 600; background: linear-gradient(135deg, #0a1120, #060a12); padding: 11px 14px; border-radius: 12px; border-left: 3px solid var(--cyan); border-top: 1px solid #1c2c47; border-right: 1px solid #1c2c47; border-bottom: 1px solid #1c2c47; box-shadow: inset 0 1px 4px rgba(99,230,219,0.08); transition: all 0.2s; }
-.feature-item:nth-child(n+4) { display: none; /* Hide after 3 */ }
+.feature-item:nth-child(n+4) { display: none; }
 .feature-item:hover { border-color: var(--cyan); background: linear-gradient(135deg, #0d1628, #080d17); transform: translateX(2px); }
 .feature-item span.check { color: var(--green); font-weight: 800; font-size: 16px; text-shadow: 0 0 10px rgba(74,222,128,0.5); }
 
@@ -213,6 +211,16 @@ button{cursor:pointer;border:0}
 
 body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
 @keyframes usPageEnter{from{opacity:0}to{opacity:1}}
+
+/* ✅ QUANTITY SELECTOR STYLES */
+.qty-selector{display:flex;align-items:center;gap:8px;background:#080d17;border:1px solid #1e2c45;border-radius:12px;padding:6px 8px;margin-top:8px}
+.qty-btn{width:32px;height:32px;border-radius:8px;background:#162033;border:1px solid #27374e;color:#fff;font-size:18px;display:grid;place-items:center;font-weight:700;transition:all .2s}
+.qty-btn:hover{background:#1f2d45;border-color:#384f73}
+.qty-btn:disabled{opacity:.4;cursor:not-allowed}
+.qty-val{flex:1;text-align:center;font-weight:800;font-size:15px;color:var(--cyan);background:transparent;border:0;outline:none;min-width:40px}
+.qty-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.order-id-display{font-family:monospace;font-size:11.5px;color:var(--cyan);background:#060a12;padding:6px 10px;border-radius:8px;border:1px dashed #283e5f;word-break:break-all}
+.auto-api-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(38,161,123,0.15);color:#26a17b;border:1px solid rgba(38,161,123,0.4);padding:3px 8px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px}
 </style>
 </head>
 <body>
@@ -280,7 +288,6 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
       <button class="btn primary" onclick="window.navigateTo('view-deposit')">+ Add Funds</button>
     </div>
 
-    <!-- ✅ PRO RESELLER ACTIVE BANNER -->
     <div id="proResellerActiveBanner" class="hidden" style="background:linear-gradient(135deg, rgba(38,161,123,0.15), rgba(99,230,219,0.1)); border:1px solid rgba(38,161,123,0.4); border-radius:16px; padding:14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 15px rgba(38,161,123,0.1);">
       <div>
         <h3 id="currencyTitle" style="margin:0 0 4px; font-size:15px; font-weight:900; color:#26a17b; display:flex; align-items:center; gap:6px;">
@@ -293,7 +300,6 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
       </button>
     </div>
 
-    <!-- ✅ RESELLER UPGRADE HIGHLIGHT (FIXED BUTTON AND GLOW) -->
     <div id="resellerActiveHighlight" class="reseller-highlight hidden">
       <div>
         <h3 style="margin:0 0 6px; font-size:16px; color:var(--gold); display:flex; align-items:center; gap:8px;">
@@ -309,7 +315,6 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
       </button>
     </div>
 
-    <!-- ✅ ANALYTICS SECTION -->
     <div class="panel" style="margin-bottom:16px;">
       <h4 style="margin:0 0 12px; font-size:15px; color:var(--cyan);">📊 Your Analytics</h4>
       <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px;">
@@ -480,7 +485,6 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
     </div>
   </section>
 
-  <!-- ✅ PREMIUM SELLER VIEW -->
   <section class="view-pane" id="view-seller">
     <div class="view-header"><div><h2>Become a Seller</h2><p>Choose a separate Seller Membership plan created by the admin. Store products do not upgrade your role.</p></div></div>
     
@@ -671,6 +675,8 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
           <span>🕒</span> <span id="summaryPlanNameText">Plan: 6 Hours</span>
         </div>
 
+        <div style="margin-top:10px; display:flex; align-items:center; gap:8px;" id="autoApiBadgeWrap"></div>
+
         <div style="margin-top:14px; padding-top:12px; border-top:1px solid #1c293d; display:flex; justify-content:space-between; align-items:center;">
           <div>
             <div style="font-size:10.5px; font-weight:800; color:var(--muted); letter-spacing:0.5px">TOTAL PAYABLE</div>
@@ -686,6 +692,14 @@ body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
           <span style="position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:16px;">📞</span>
           <input class="field" id="orderPhoneNumber" type="tel" placeholder="Enter 10-digit phone number" required maxlength="10" style="padding-left:40px">
         </div>
+
+        <label style="font-size:12px;color:var(--muted); font-weight:700">Quantity</label>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="qty-btn" id="qtyMinusBtn">−</button>
+          <input type="number" id="orderQuantity" value="1" min="1" max="10" style="flex:1; text-align:center; background:#090e18; border:1px solid #223147; color:var(--cyan); padding:12px; border-radius:12px; font-weight:800; font-size:16px; outline:none;">
+          <button type="button" class="qty-btn" id="qtyPlusBtn">+</button>
+        </div>
+        <div style="font-size:10.5px;color:var(--muted);margin-top:2px">Max 10 keys per order</div>
         
         <label style="font-size:12px;color:var(--muted); font-weight:700">Discount Coupon</label>
         <div style="display:flex;gap:8px">
@@ -772,18 +786,19 @@ const app = initializeApp(firebaseConfig), auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence).catch(e => console.error(e));
 const db = getDatabase(app);
 
-// ✅ YAHAN CLOUDFLARE WORKER KA URL HAI (PROXY URL)
 const PROXY_URL = 'https://still-credit-6ab3.amansoni8252.workers.dev'; 
 
 let products=[], user=null, selected=null, authMode='login', userOrders=[];
 let userRole = 'user', userWalletBalance = 0, resellerMinDeposit = 10, maxSingleDeposit = 0;
-let deposits = []; // <--- FIXED: Missing variable declared
+let deposits = [];
 let isUsdtMode = false;
-const USDT_RATE = 49; // 1 USDT = 49 INR
+const USDT_RATE = 49;
 let navigationHistory = ['view-home'];
 let globalReferralPercentage = 10, globalReferralEnabled = true, appliedDiscount = { code: null, amount: 0 }, allCoupons = {}, productDiscounts = {}, availableSellerMembershipPlans = {};
 
 let activeOrderSession = null, activeDepositSession = null, orderStatusCheckInFlight = false, depositStatusCheckInFlight = false, orderCountdownRef = null, depositCountdownRef = null;
+
+let currentOrderQuantity = 1;
 
 const $ = id => document.getElementById(id);
 
@@ -875,6 +890,64 @@ function getYouTubeEmbedUrl(url) {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=0&rel=0` : '';
+}
+
+// ✅ QTY CONTROLS
+const qtyMinusBtnEl = $('qtyMinusBtn');
+const qtyPlusBtnEl = $('qtyPlusBtn');
+const orderQuantityEl = $('orderQuantity');
+
+if (qtyMinusBtnEl) {
+  qtyMinusBtnEl.onclick = () => {
+    let q = parseInt(orderQuantityEl.value) || 1;
+    if (q > 1) {
+      orderQuantityEl.value = q - 1;
+      currentOrderQuantity = q - 1;
+      updateBuySummaryDisplay();
+    }
+  };
+}
+if (qtyPlusBtnEl) {
+  qtyPlusBtnEl.onclick = () => {
+    let q = parseInt(orderQuantityEl.value) || 1;
+    if (q < 10) {
+      orderQuantityEl.value = q + 1;
+      currentOrderQuantity = q + 1;
+      updateBuySummaryDisplay();
+    }
+  };
+}
+if (orderQuantityEl) {
+  orderQuantityEl.oninput = () => {
+    let q = parseInt(orderQuantityEl.value) || 1;
+    q = Math.max(1, Math.min(10, q));
+    orderQuantityEl.value = q;
+    currentOrderQuantity = q;
+    updateBuySummaryDisplay();
+  };
+}
+
+function updateBuySummaryDisplay() {
+  if (!selected) return;
+  let basePrice = selected.activePrice;
+  let qty = currentOrderQuantity;
+  let subtotal = basePrice * qty;
+  let finalPrice = subtotal;
+  if (appliedDiscount.amount > 0) {
+    finalPrice = Math.max(1, subtotal - appliedDiscount.amount);
+  }
+
+  $('summaryProdName').textContent = selected.product.name;
+  $('summaryCatSub').textContent = selected.product.category || 'Panel License';
+  $('summaryPlanNameText').textContent = `Plan: ${selected.plan.name} × ${qty}`;
+  $('summaryPayableVal').textContent = formatPrice(finalPrice);
+
+  // Auto API badge
+  const badgeWrap = $('autoApiBadgeWrap');
+  if (badgeWrap) {
+    const isApi = selected.product.supplierType === 'bantibhaiya' || selected.product.supplierType === 'vipseller';
+    badgeWrap.innerHTML = isApi ? '<span class="auto-api-badge">⚡ AUTO API</span>' : '<span class="auto-api-badge" style="background:rgba(91,140,255,0.15);color:var(--blue);border-color:rgba(91,140,255,0.4)">MANUAL STOCK</span>';
+  }
 }
 
 onValue(ref(db, 'appConfig'), s => {
@@ -1142,9 +1215,9 @@ onValue(ref(db, 'supportSettings'), s => {
   }).join('');
 });
 
-async function popKeyFromPlanInventory(productId, planName) {
+async function popKeyFromPlanInventory(productId, planName, quantity = 1) {
   const productRef = ref(db, `products/${productId}`);
-  let poppedKey = null;
+  let poppedKeys = [];
 
   await runTransaction(productRef, (currentProduct) => {
     if (!currentProduct || !currentProduct.plans) return currentProduct;
@@ -1152,13 +1225,13 @@ async function popKeyFromPlanInventory(productId, planName) {
     if (planIdx === -1) return currentProduct;
     const pool = currentProduct.plans[planIdx].keysPool || [];
     if (pool.length > 0) {
-      poppedKey = pool.shift();
+      poppedKeys = pool.splice(0, quantity);
       currentProduct.plans[planIdx].keysPool = pool;
       currentProduct.plans[planIdx].stock = pool.length;
     }
     return currentProduct;
   });
-  return poppedKey;
+  return poppedKeys;
 }
 
 function navigateTo(targetViewId, isBackAction = false) {
@@ -1182,7 +1255,6 @@ function navigateTo(targetViewId, isBackAction = false) {
     navigationHistory.push(targetViewId);
   }
   
-  // ✅ FIX: Re-draw seller plans when navigating to that view
   if(targetViewId === 'view-seller') {
     if (typeof window.renderSellerMembershipChoices === 'function') {
       window.renderSellerMembershipChoices();
@@ -1405,10 +1477,8 @@ onAuthStateChanged(auth, u => {
     onValue(ref(db, 'users/' + u.uid), snap => {
       const profile = snap.val() || {};
       userRole = ['reseller','seller'].includes(profile.role) ? profile.role : 'user';
-      const resellerCard = $('resellerUpgradeCard'); if (resellerCard) { const p = resellerCard.querySelector('p'); if (p && userRole !== 'user') p.textContent = userRole === 'seller' ? 'Your Seller tier is active. Eligible plans now use seller pricing.' : 'Your Reseller tier is active. Eligible plans now use reseller pricing.'; }
       userWalletBalance = Number(profile.walletBalance || 0);
 
-      // ✅ Calculate Max Single Deposit for Reseller Upgrade
       let highestDep = 0;
       Object.values(deposits || {}).forEach(d => { if (d.uid === u.uid && d.status === 'approved') { const amt = Number(d.amount || 0); if (amt > highestDep) highestDep = amt; } });
       maxSingleDeposit = highestDep;
@@ -1512,7 +1582,6 @@ window.activateResellerRole = async () => {
   } catch(e) { toast(e.message); }
 };
 
-// ✅ Currency Switch Logic (USDT <-> INR)
 const switchCurrencyBtnEl = $('switchCurrencyBtn');
 if (switchCurrencyBtnEl) {
   switchCurrencyBtnEl.onclick = () => {
@@ -1570,20 +1639,18 @@ function updateAnalytics() {
   const totalSpent = deliveredOrders.reduce((sum, o) => sum + Number(o.amount || 0), 0);
   if($('analysisOrders')) $('analysisOrders').textContent = userOrders.length;
   if($('analysisSpent')) $('analysisSpent').textContent = formatPrice(totalSpent);
-  if($('analysisKeys')) $('analysisKeys').textContent = deliveredOrders.length;
-  // Referral count is updated in users listener
+  if($('analysisKeys')) $('analysisKeys').textContent = deliveredOrders.reduce((n,o) => n + Number(o.quantity || 1), 0);
 }
 
 function loadDeposits(u){
   onValue(query(ref(db, 'deposits'), orderByChild('uid'), equalTo(u.uid)), s => {
-    deposits = []; // <-- FIXED: Clear and add deposits to global variable
+    deposits = [];
     s.forEach(c => {
       const val = c.val();
       if (val) deposits.push({ id: c.key, ...val });
     });
     deposits.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     
-    // Calculate max single deposit and update banner state
     let highestDep = 0;
     deposits.forEach(d => {
       if (d.status === 'approved' && Number(d.amount) > highestDep) highestDep = Number(d.amount);
@@ -1614,6 +1681,7 @@ function loadDeposits(u){
               <b>Auto Wallet Top-up</b>
               <small style="color:var(--muted);display:block">${new Date(d.createdAt||Date.now()).toLocaleString()}</small>
               ${d.utr ? `<small style="color:var(--green);display:block">UTR: ${window.esc(d.utr)}</small>` : ''}
+              ${d.depositId ? `<small style="color:var(--cyan);display:block">ID: ${window.esc(d.depositId)}</small>` : ''}
             </div>
             <div style="text-align:right">
               <span class="pill ${d.status==='approved'?'delivered':'pending'}">${window.esc(d.status||'pending')}</span>
@@ -1638,27 +1706,37 @@ function renderOrders(){
   const container = $('purchaseOrdersList');
   if (!container) return;
   if (!userOrders.length) { container.innerHTML = '<div class="empty">No purchase orders found.</div>'; return; }
-  container.innerHTML = userOrders.map(o => `
+  container.innerHTML = userOrders.map(o => {
+    const isMulti = Array.isArray(o.keys) && o.keys.length > 1;
+    return `
     <div class="order-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <b style="font-size:14.5px">${window.esc(o.productName)}</b>
-          <small style="color:var(--muted);display:block">${window.esc(o.planName)} · Ph: ${window.esc(o.phone||'N/A')}</small>
+          <small style="color:var(--muted);display:block">${window.esc(o.planName)} · Qty: ${o.quantity || 1} · Ph: ${window.esc(o.phone||'N/A')}</small>
           <small style="color:var(--cyan);font-size:10px">Method: ${window.esc((o.paymentMethod||'UPI').toUpperCase())}</small>
+          <div class="order-id-display" style="margin-top:6px">Order ID: ${window.esc(o.id || 'N/A')}</div>
         </div>
         <div style="text-align:right">
           <span class="pill ${o.status==='delivered'?'delivered':'pending'}">${window.esc(o.status||'pending')}</span>
           <div style="font-weight:900;margin-top:4px">${formatPrice(o.amount||0)}</div>
         </div>
       </div>
-      ${o.deliveryDetails && o.status==='delivered' ? `
-        <div class="key-box-display">
-          <span class="key-token-val">${window.esc(o.deliveryDetails)}</span>
-          <button class="btn-copy" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(o.deliveryDetails)}">📋 Copy Key</button>
-        </div>
-      ` : ''}
-    </div>
-  `).join('');
+      ${o.status==='delivered' ? (
+        isMulti 
+          ? o.keys.map((k, i) => `
+            <div class="key-box-display">
+              <span class="key-token-val">${window.esc(k)}</span>
+              <button class="btn-copy" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(k)}">📋 Copy Key ${i+1}</button>
+            </div>`).join('')
+          : (o.deliveryDetails ? `
+            <div class="key-box-display">
+              <span class="key-token-val">${window.esc(o.deliveryDetails)}</span>
+              <button class="btn-copy" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(o.deliveryDetails)}">📋 Copy Key</button>
+            </div>` : '')
+      ) : ''}
+    </div>`;
+  }).join('');
 }
 
 function copyKeyToken(t) {
@@ -1710,6 +1788,7 @@ function renderKeys(){
           <div>
             <b style="font-size:16px; color:#fff">${window.esc(o.productName)}</b>
             <div style="font-size:11.5px; color:var(--muted); margin-top:2px">${window.esc(o.planName)} · Key ${idx + 1} of ${keys.length}</div>
+            <div class="order-id-display" style="margin-top:4px">Order ID: ${window.esc(o.id || 'N/A')}</div>
           </div>
         </div>
         <span style="background:rgba(74,222,128,0.15); color:var(--green); border:1px solid rgba(74,222,128,0.3); padding:4px 10px; border-radius:8px; font-size:10.5px; font-weight:800">DELIVERED</span>
@@ -1759,6 +1838,8 @@ function renderProducts(){
     const plans = getPlans(p), first = plans[0] || {name:'Default', price:0, resellerPrice:0, stock:0};
     const firstPrice = getActivePlanPrice(first, p.id);
     const firstStock = (first.keysPool || []).length;
+    const isAutoApi = p.supplierType === 'bantibhaiya' || p.supplierType === 'vipseller';
+    
     let mediaHtml = '';
     if (p.mediaType === 'image' && p.mediaUrl) {
       mediaHtml = `<div class="product-media-container"><img src="${window.esc(p.mediaUrl)}" alt="${window.esc(p.name)}" loading="lazy"></div>`;
@@ -1799,13 +1880,16 @@ function renderProducts(){
         ${mediaHtml}
         <div class="product-header-row">
           <div class="product-title-area">
-            <div class="product-icon">${p.isPinned ? '📌' : '⚡'}</div>
+            <div class="product-icon">${p.isPinned ? '📌' : isAutoApi ? '⚡' : '🔑'}</div>
             <div>
               <h3 style="margin:0;font-size:18px;font-weight:900;color:#fff">${window.esc(p.name)} ${discHtml}</h3>
               <div style="font-size:12px;color:var(--muted);margin-top:2px">${window.esc(p.category || 'Premium Panel')}</div>
             </div>
           </div>
-          <span style="background:rgba(99,230,219,0.12);color:var(--cyan);border:1px solid rgba(99,230,219,0.25);padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase">${window.esc(p.category || 'ACTIVE')}</span>
+          <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+            <span style="background:rgba(99,230,219,0.12);color:var(--cyan);border:1px solid rgba(99,230,219,0.25);padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase">${window.esc(p.category || 'ACTIVE')}</span>
+            ${isAutoApi ? '<span class="auto-api-badge">⚡ AUTO API</span>' : '<span class="auto-api-badge" style="background:rgba(91,140,255,0.15);color:var(--blue);border-color:rgba(91,140,255,0.4)">MANUAL STOCK</span>'}
+          </div>
         </div>
 
         <div class="feature-list" tabindex="0" role="region" aria-label="Product features; scroll to view all features">
@@ -1819,7 +1903,8 @@ function renderProducts(){
             <select class="field plan-select" style="background:#04070e;border-color:#1c2d4a;font-weight:700">
               ${plans.map((pl,i)=>{
                 const stk = (pl.keysPool||[]).length;
-                return `<option value="${i}">${window.esc(pl.name)} — ${formatPrice(getActivePlanPrice(pl, p.id))} (${stk > 0 ? stk + ' in stock' : 'Out of stock'})</option>`;
+                const stockText = isAutoApi ? 'Auto API' : (stk > 0 ? stk + ' in stock' : 'Out of stock');
+                return `<option value="${i}">${window.esc(pl.name)} — ${formatPrice(getActivePlanPrice(pl, p.id))} (${stockText})</option>`;
               }).join('')}
             </select>
           </div>
@@ -1832,7 +1917,7 @@ function renderProducts(){
             <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:800">TOTAL PRICE</div>
             <div class="price" style="color:var(--green)"><span class="price-num">${formatPrice(firstPrice)}</span></div>
           </div>
-          <button class="btn primary buy-btn" ${firstStock===0?'disabled':''} style="padding:11px 22px;font-size:14px;box-shadow:0 6px 20px rgba(91,140,255,0.3)">
+          <button class="btn primary buy-btn" ${(!isAutoApi && firstStock===0)?'disabled':''} style="padding:11px 22px;font-size:14px;box-shadow:0 6px 20px rgba(91,140,255,0.3)">
             Buy Now ➔
           </button>
         </div>
@@ -1844,6 +1929,7 @@ function renderProducts(){
     const p = safeProducts.find(x => String(x.id) === String(card.dataset.product));
     if (!p) { card.remove(); return; }
     const plans = getPlans(p), sel = card.querySelector('.plan-select');
+    const isAutoApi = p.supplierType === 'bantibhaiya' || p.supplierType === 'vipseller';
     if (sel) {
       sel.onchange = () => {
         const pl = plans[Number(sel.value)] || plans[0] || {name:'Unavailable', price:0, resellerPrice:0, keysPool:[]};
@@ -1851,7 +1937,7 @@ function renderProducts(){
         const priceEl = card.querySelector('.price-num');
         const buttonEl = card.querySelector('.buy-btn');
         if (priceEl) priceEl.textContent = formatPrice(getActivePlanPrice(pl, p.id));
-        if (buttonEl) buttonEl.disabled = (stk === 0 || plans.length === 0);
+        if (buttonEl) buttonEl.disabled = (!isAutoApi && stk === 0) || plans.length === 0;
       };
     }
     const buyBtn = card.querySelector('.buy-btn');
@@ -1868,6 +1954,8 @@ function renderProducts(){
         $('couponCodeInput').value = '';
         $('couponDiscountMsg').textContent = '';
         appliedDiscount = { code: null, amount: 0 };
+        currentOrderQuantity = 1;
+        if ($('orderQuantity')) $('orderQuantity').value = 1;
 
         $('buyInitialState').style.display = 'block';
         $('qrCheckoutBox').style.display = 'none';
@@ -1877,19 +1965,6 @@ function renderProducts(){
       };
     }
   });
-}
-
-function updateBuySummaryDisplay() {
-  if (!selected) return;
-  let finalPrice = selected.activePrice;
-  if (appliedDiscount.amount > 0) {
-    finalPrice = Math.max(1, selected.activePrice - appliedDiscount.amount);
-  }
-
-  $('summaryProdName').textContent = selected.product.name;
-  $('summaryCatSub').textContent = selected.product.category || 'Panel License';
-  $('summaryPlanNameText').textContent = `Plan: ${selected.plan.name}`;
-  $('summaryPayableVal').textContent = formatPrice(finalPrice);
 }
 
 const applyCouponBtnEl = $('applyCouponBtn');
@@ -1908,8 +1983,9 @@ if (applyCouponBtnEl) applyCouponBtnEl.onclick = () => {
   }
 
   let discVal = 0;
+  const subtotal = selected.activePrice * currentOrderQuantity;
   if (coupon.type === 'percentage') {
-    discVal = Math.round((selected.activePrice * Number(coupon.value)) / 100);
+    discVal = Math.round((subtotal * Number(coupon.value)) / 100);
   } else {
     discVal = Number(coupon.value);
   }
@@ -1979,21 +2055,20 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
   const phone = $('orderPhoneNumber').value.trim();
   if(!phone || phone.length < 10) return toast('Enter 10-digit Phone Number');
 
-  let finalPayable = selected.activePrice;
-  if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
+  const qty = currentOrderQuantity;
+  const subtotal = selected.activePrice * qty;
+  let finalPayable = subtotal;
+  if (appliedDiscount.amount > 0) finalPayable = Math.max(1, subtotal - appliedDiscount.amount);
 
   if (userWalletBalance < finalPayable) {
     return toast(`Insufficient Balance! Required: ${formatPrice(finalPayable)}, Available: ${formatPrice(userWalletBalance)}`);
   }
 
   const currentStock = (selected.plan.keysPool || []).length;
+  const isAutoApi = selected.product.supplierType === 'bantibhaiya' || selected.product.supplierType === 'vipseller';
   
-  // ✅ CHECK SUPPLIER STOCK
-  if(currentStock <= 0 && selected.product.supplierType === 'manual') {
-    return toast('Selected plan is out of stock!');
-  }
-  if(currentStock <= 0 && !selected.product.supplierType) {
-    return toast('Selected plan is out of stock!');
+  if (!isAutoApi && currentStock < qty) {
+    return toast(`Not enough stock! Only ${currentStock} key(s) available.`);
   }
 
   const remCheckbox = $('rememberPhoneCheckbox');
@@ -2001,48 +2076,50 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
 
   try {
     let keyDispatched = null;
+    let keysDispatched = [];
 
-    // ✅ AGAR MANUAL SUPPLIER HAI TOH LOCAL STOCK SE KEY NIKALO
-    if (selected.product.supplierType === 'manual' || !selected.product.supplierType) {
-      keyDispatched = await popKeyFromPlanInventory(selected.product.id, selected.plan.name);
-      if (!keyDispatched) return toast('Stock exhausted just now!');
-    } 
-    // ✅ AGAR BANTI BHAIYA HAI TOH API SE KEY MANGWAO
-    else if (selected.product.supplierType === 'bantibhaiya') {
-      const res = await fetch(`${PROXY_URL}/api/supplier/bantibhaiya`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          api_key: '83a38a73012ac3e788486cf530d0e42b', // Worker me bhi hai, yahan fallback
-          product_id: selected.product.bantiPid,
-          duration: selected.plan.name, // Banti API duration accept karta hai
-          quantity: 1
-        })
-      });
-      const data = await res.json();
-      if(!data.success) throw new Error(data.message || data.error || 'Banti Bhaiya API Error');
+    if (isAutoApi) {
+      // API based product
+      const supplierType = selected.product.supplierType;
       
-      // Banti se key extract karo
-      keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
-      if(!keyDispatched) throw new Error('Banti se valid key nahi mili');
-    }
-    // ✅ AGAR VipSeller HAI TOH API SE KEY MANGWAO
-    else if (selected.product.supplierType === 'vipseller') {
-      const res = await fetch(`${PROXY_URL}/api/supplier/vipseller`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          variant_id: selected.plan.vipVariantId,
-          quantity: 1,
-          api_version: selected.plan.vipApiVersion || 'v2'
-        })
-      });
-      const data = await res.json();
-      if(!data.success) throw new Error(data.message || data.error || 'VipSeller API Error');
-
-      // VipSeller se key extract karo
-      keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
-      if(!keyDispatched) throw new Error('VipSeller se valid key nahi mili');
+      if (supplierType === 'bantibhaiya') {
+        const res = await fetch(`${PROXY_URL}/api/supplier/bantibhaiya`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            api_key: '83a38a73012ac3e788486cf530d0e42b',
+            product_id: selected.product.bantiPid,
+            duration: selected.plan.name,
+            quantity: qty
+          })
+        });
+        const data = await res.json();
+        if(!data.success) throw new Error(data.message || data.error || 'Banti Bhaiya API Error');
+        
+        keysDispatched = Array.isArray(data.keys) ? data.keys : [data.key || data.data?.key].filter(Boolean);
+        keyDispatched = keysDispatched[0];
+      } 
+      else if (supplierType === 'vipseller') {
+        const res = await fetch(`${PROXY_URL}/api/supplier/vipseller`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            variant_id: selected.plan.vipVariantId,
+            quantity: qty,
+            api_version: selected.plan.vipApiVersion || 'v2'
+          })
+        });
+        const data = await res.json();
+        if(!data.success) throw new Error(data.message || data.error || 'VipSeller API Error');
+        
+        keysDispatched = Array.isArray(data.keys) ? data.keys : [data.key || data.data?.key].filter(Boolean);
+        keyDispatched = keysDispatched[0];
+      }
+    } else {
+      // Manual stock product
+      keysDispatched = await popKeyFromPlanInventory(selected.product.id, selected.plan.name, qty);
+      if (!keysDispatched || keysDispatched.length < qty) return toast('Stock exhausted just now!');
+      keyDispatched = keysDispatched[0];
     }
 
     if (!keyDispatched) throw new Error('Key generation failed from supplier');
@@ -2054,20 +2131,29 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
     // Save Order
     const r = push(ref(db, 'orders'));
     const orderDbId = r.key;
-    await set(r, {
+    const orderPayload = {
       uid: user.uid,
       email: user.email,
       phone: phone,
       tier: userRole,
       productName: selected.product.name,
       planName: selected.plan.name,
+      quantity: qty,
       amount: finalPayable,
       paymentMethod: 'wallet',
-      deliveryDetails: keyDispatched,
       status: 'delivered',
       createdAt: Date.now(),
       deliveredAt: Date.now()
-    });
+    };
+    
+    if (keysDispatched.length > 1) {
+      orderPayload.keys = keysDispatched;
+      orderPayload.deliveryDetails = keysDispatched[0];
+    } else {
+      orderPayload.deliveryDetails = keyDispatched;
+    }
+    
+    await set(r, orderPayload);
 
     await processReferralRewards(user.uid, finalPayable, orderDbId);
 
@@ -2079,8 +2165,9 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
     closeModal('buyModal');
     window.openSuccessPopup(
       'License Key Dispatched!',
-      `Product: ${selected.product.name} (${selected.plan.name})`,
-      `<b>Delivered Key:</b> <code>${window.esc(keyDispatched)}</code>`,
+      `Product: ${selected.product.name} (${selected.plan.name}) × ${qty}`,
+      `<b>Delivered Key${qty > 1 ? 's' : ''}:</b> ${keysDispatched.map((k, i) => `<div class="key-box-display" style="margin-top:4px"><code class="key-token-val">${window.esc(k)}</code><button class="btn-copy" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(k)}">📋 Copy</button></div>`).join('')}
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Order ID: ${orderDbId}</div>`,
       () => navigateTo('view-keys')
     );
   } catch(e) {
@@ -2203,11 +2290,12 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
   const phone = $('orderPhoneNumber').value.trim();
   if(!phone || phone.length < 10) return toast('Please enter a valid 10-digit Phone Number');
 
+  const qty = currentOrderQuantity;
+  const isAutoApi = selected.product.supplierType === 'bantibhaiya' || selected.product.supplierType === 'vipseller';
   const currentStock = (selected.plan.keysPool || []).length;
   
-  // ✅ CHECK SUPPLIER STOCK
-  if(currentStock <= 0 && selected.product.supplierType === 'manual') {
-    return toast('Selected plan is out of stock!');
+  if (!isAutoApi && currentStock < qty) {
+    return toast(`Not enough stock! Only ${currentStock} key(s) available.`);
   }
 
   const remCheckbox = $('rememberPhoneCheckbox');
@@ -2217,8 +2305,9 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
   $('orderLoaderAnim').style.display = 'block';
 
   try {
-    let finalPayable = selected.activePrice;
-    if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
+    const subtotal = selected.activePrice * qty;
+    let finalPayable = subtotal;
+    if (appliedDiscount.amount > 0) finalPayable = Math.max(1, subtotal - appliedDiscount.amount);
 
     const result = await createFamGatewayOrder({
       amount: finalPayable,
@@ -2239,6 +2328,7 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
         tier: userRole,
         productName: selected.product.name,
         planName: selected.plan.name,
+        quantity: qty,
         amount: finalPayable,
         gatewayOrderId: orderData.order_id,
         paymentMethod: 'upi',
@@ -2252,6 +2342,7 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
         productId: selected.product.id,
         planName: selected.plan.name,
         productName: selected.product.name,
+        quantity: qty,
         amount: finalPayable,
         couponCode: appliedDiscount.code
       };
@@ -2287,7 +2378,7 @@ async function checkOrderStatusExecution() {
   if (!activeOrderSession || orderStatusCheckInFlight) return false;
   orderStatusCheckInFlight = true;
   try {
-    const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode } = activeOrderSession;
+    const { gatewayOrderId, dbOrderId, productId, planName, productName, quantity, amount, couponCode } = activeOrderSession;
 
     const statusData = await fetchSafeOrderStatus(gatewayOrderId);
     if (!statusData) return false;
@@ -2308,13 +2399,14 @@ async function checkOrderStatusExecution() {
       if (activePollInterval) clearInterval(activePollInterval);
       if (window.orderCountdownRef) clearInterval(window.orderCountdownRef);
 
-      let keyDispatched = null;
+      let keysDispatched = [];
       const p = products.find(x => String(x.id) === String(productId));
-      
-      // ✅ AGAR MANUAL SUPPLIER HAI TOH LOCAL STOCK SE KEY NIKALO
-      if (p && (p.supplierType === 'manual' || !p.supplierType)) {
-        keyDispatched = await popKeyFromPlanInventory(productId, planName);
-        if (!keyDispatched) {
+      const isAutoApi = p && (p.supplierType === 'bantibhaiya' || p.supplierType === 'vipseller');
+
+      if (!isAutoApi) {
+        // Manual stock
+        keysDispatched = await popKeyFromPlanInventory(productId, planName, quantity);
+        if (!keysDispatched || keysDispatched.length < quantity) {
           await update(ref(db, 'orders/' + dbOrderId), {
             status: 'paid_stock_review',
             utr: statusData.utr || 'Bank-Verified',
@@ -2327,16 +2419,14 @@ async function checkOrderStatusExecution() {
           toast('Payment verified, but stock is unavailable. Please contact support.');
           return true;
         }
-      } 
-      // ✅ AGAR BANTI BHAIYA HAI TOH API SE KEY MANGWAO
-      else if (p && p.supplierType === 'bantibhaiya') {
+      } else if (p.supplierType === 'bantibhaiya') {
         const res = await fetch(`${PROXY_URL}/api/supplier/bantibhaiya`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             product_id: p.bantiPid,
             duration: planName,
-            quantity: 1
+            quantity: quantity
           })
         });
         const data = await res.json();
@@ -2347,17 +2437,15 @@ async function checkOrderStatusExecution() {
           toast('Payment verified, but Banti API failed. Contact support.');
           return true;
         }
-        keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
-      }
-      // ✅ AGAR VIPSELLER HAI TOH API SE KEY MANGWAO
-      else if (p && p.supplierType === 'vipseller') {
+        keysDispatched = Array.isArray(data.keys) ? data.keys : [data.key || data.data?.key].filter(Boolean);
+      } else if (p.supplierType === 'vipseller') {
         const pl = p.plans.find(x => x.name === planName);
         const res = await fetch(`${PROXY_URL}/api/supplier/vipseller`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             variant_id: pl?.vipVariantId || '',
-            quantity: 1,
+            quantity: quantity,
             api_version: pl?.vipApiVersion || 'v2'
           })
         });
@@ -2369,10 +2457,10 @@ async function checkOrderStatusExecution() {
           toast('Payment verified, but VipSeller API failed. Contact support.');
           return true;
         }
-        keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
+        keysDispatched = Array.isArray(data.keys) ? data.keys : [data.key || data.data?.key].filter(Boolean);
       }
 
-      if (!keyDispatched) {
+      if (!keysDispatched || keysDispatched.length === 0) {
         await update(ref(db, 'orders/' + dbOrderId), { status: 'paid_stock_review', utr: statusData.utr || 'Bank-Verified', verifiedAt: Date.now(), deliveryDetails: '' });
         activeOrderSession = null;
         if (activePollInterval) clearInterval(activePollInterval);
@@ -2381,13 +2469,19 @@ async function checkOrderStatusExecution() {
         return true;
       }
 
-      await update(ref(db, 'orders/' + dbOrderId), {
+      const orderUpdate = {
         status: 'delivered',
-        deliveryDetails: keyDispatched,
         utr: statusData.utr || 'Bank-Verified',
         verifiedAt: Date.now(),
         deliveredAt: Date.now()
-      });
+      };
+      if (keysDispatched.length > 1) {
+        orderUpdate.keys = keysDispatched;
+        orderUpdate.deliveryDetails = keysDispatched[0];
+      } else {
+        orderUpdate.deliveryDetails = keysDispatched[0];
+      }
+      await update(ref(db, 'orders/' + dbOrderId), orderUpdate);
 
       await processReferralRewards(user.uid, amount, dbOrderId);
 
@@ -2400,8 +2494,10 @@ async function checkOrderStatusExecution() {
       closeModal('buyModal');
       window.openSuccessPopup(
         'Payment Verified & Key Dispatched!',
-        `Product: ${productName} (${planName})`,
-        `<b>UTR:</b> ${window.esc(statusData.utr || 'Verified')}<div class="key-box-display"><code class="key-token-val" id="successDeliveredKey">${window.esc(keyDispatched)}</code><button class="btn-copy" onclick="window.copyKeyToken(document.getElementById('successDeliveredKey').textContent)">📋 Copy Key</button></div>`,
+        `Product: ${productName} (${planName}) × ${quantity}`,
+        `<b>UTR:</b> ${window.esc(statusData.utr || 'Verified')}
+        ${keysDispatched.map((k, i) => `<div class="key-box-display" style="margin-top:6px"><code class="key-token-val" id="successDeliveredKey_${i}">${window.esc(k)}</code><button class="btn-copy" onclick="window.copyKeyToken(document.getElementById('successDeliveredKey_${i}').textContent)">📋 Copy</button></div>`).join('')}
+        <div style="margin-top:8px;font-size:11px;color:var(--muted)">Order ID: ${dbOrderId}</div>`,
         () => navigateTo('view-keys')
       );
       return true;
@@ -2470,11 +2566,13 @@ if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
 
       const r = push(ref(db, 'deposits'));
       const depositDbId = r.key;
+      const depositId = 'DEP-' + depositDbId.slice(-8).toUpperCase();
       await set(r, {
         uid: user.uid,
         email: user.email,
         amount: amount,
         gatewayOrderId: orderData.order_id,
+        depositId: depositId,
         status: 'pending',
         createdAt: Date.now()
       });
@@ -2554,7 +2652,7 @@ async function checkDepositStatusExecution() {
       window.openSuccessPopup(
         'Wallet Credited Successfully!',
         `${formatPrice(amount)} has been verified and added to your wallet balance.`,
-        `<b>New Balance:</b> ${formatPrice(updatedBal)}`,
+        `<b>New Balance:</b> ${formatPrice(updatedBal)}<div style="margin-top:6px;font-size:11px;color:var(--muted)">Deposit ID: ${window.esc(depositDbId)}</div>`,
         () => navigateTo('view-home')
       );
       return true;
