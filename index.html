@@ -4,30 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#060911">
-<title>Store</title>
+<title>TG Union Store</title>
 <style>
 :root{
-  --bg:#04060b;
-  --panel:#0d1320;
-  --line:#1c283d;
-  --text:#f4f7ff;
-  --muted:#8e9eb5;
-  --blue:#5b8cff;
-  --cyan:#63e6db;
-  --green:#4ade80;
-  --red:#fb7185;
+  --bg:#04060b; --panel:#0d1320; --line:#1c283d; --text:#f4f7ff; --muted:#8e9eb5;
+  --blue:#5b8cff; --cyan:#63e6db; --green:#4ade80; --red:#fb7185; --gold:#fbbf24;
+  --usdt:#26a17b;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-html, body, * {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-*::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
+html, body, * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+*::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
 
 body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
 button,input,select,textarea{font:inherit}
@@ -37,28 +23,19 @@ button{cursor:pointer;border:0}
 .top{position:sticky;top:0;z-index:25;background:rgba(4,6,11,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(28,39,59,0.8)}
 .nav{height:60px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nav-left{display:flex;align-items:center;gap:10px}
-.nav-btn{width:40px;height:40px;border-radius:12px;background:#101726;border:1px solid #28374f;color:#eaf2ff;font-size:20px;display:grid;place-items:center;transition:all .2s cubic-bezier(0.16,1,0.3,1)}
-.nav-btn:active{transform:scale(0.92);filter:brightness(0.9)}
-
+.nav-btn{width:40px;height:40px;border-radius:12px;background:#101726;border:1px solid #28374f;color:#eaf2ff;font-size:20px;display:grid;place-items:center;transition:all .2s}
 .brand{display:flex;align-items:center;gap:8px;font-weight:900}
 .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#5b8cff,#9a5cff);display:grid;place-items:center;font-size:14px;font-weight:800;box-shadow:0 0 15px rgba(91,140,255,.4); animation: pulseGlow 3s infinite;}
+@keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(91,140,255,0.4); } 50% { box-shadow: 0 0 22px rgba(99,230,219,0.7); } 100% { box-shadow: 0 0 10px rgba(91,140,255,0.4); } }
 
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 10px rgba(91,140,255,0.4); }
-  50% { box-shadow: 0 0 22px rgba(99,230,219,0.7); }
-  100% { box-shadow: 0 0 10px rgba(91,140,255,0.4); }
-}
-
-.btn{
-  padding:12px 16px; border-radius:14px; font-weight:750;
-  transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  display:inline-flex; align-items:center; justify-content:center;
-}
+.btn{padding:12px 16px; border-radius:14px; font-weight:750; transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1); display:inline-flex; align-items:center; justify-content:center;}
 .btn:active{transform:scale(0.95); filter:brightness(0.85); box-shadow:none;}
 .primary{background:linear-gradient(135deg,#5b8cff,#7665ff);color:white;box-shadow:0 6px 20px rgba(91,140,255,.35)}
 .primary:hover{box-shadow:0 8px 25px rgba(91,140,255,.5);filter:brightness(1.05); transform:translateY(-1px);}
 .secondary{background:#162033;color:#e9efff;border:1px solid #27374e}
 .secondary:hover{background:#1f2d45;border-color:#384f73; transform:translateY(-1px);}
+.gold{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#000;box-shadow:0 6px 20px rgba(251,191,36,.3)}
+.gold:hover{box-shadow:0 8px 25px rgba(251,191,36,.5);filter:brightness(1.05); transform:translateY(-1px);}
 
 .announcement-bar{background:linear-gradient(90deg,#19355e,#12223d);border-bottom:1px solid #25477d;padding:6px 12px;text-align:center;font-size:11.5px;color:#cde1ff;font-weight:600;display:none}
 
@@ -86,19 +63,29 @@ button{cursor:pointer;border:0}
 .wallet-box{background:linear-gradient(135deg,#132238,#0d1522);border:1px solid #233959;border-radius:18px;padding:16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .wallet-val{font-size:24px;font-weight:900;color:var(--cyan);margin:2px 0 0}
 
-.hero{padding:10px 0 16px;display:flex;flex-direction:column;gap:12px}
-.eyebrow{display:inline-flex;align-items:center;gap:6px;border:1px solid #2d4263;background:#121e33;padding:4px 10px;border-radius:999px;color:#a8c4f7;font-size:11px;font-weight:800;width:fit-content}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green); animation: pulseDot 1.5s infinite;}
-
-@keyframes pulseDot {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+/* ✅ NAYA GLOWING RESELLER HIGHLIGHT BOX */
+.reseller-highlight {
+  background: linear-gradient(135deg, #1c1810, #0d1522);
+  border: 1px solid #52421b; 
+  border-radius: 18px; 
+  padding: 16px; 
+  margin-bottom: 16px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 0 15px rgba(251,191,36,.1); 
+}
+.reseller-highlight h3 {
+  margin: 0 0 6px; 
+  font-size: 16px; 
+  color: var(--gold); 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
 }
 
-h1{font-size:26px;line-height:1.15;letter-spacing:-1px;margin:10px 0 8px}
-h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{color:var(--muted);font-size:13px;margin:0 0 12px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 16px}
 .stat{padding:12px 8px;border:1px solid var(--line);background:#0b111c;border-radius:14px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.25); transition: transform 0.2s;}
 .stat:hover{transform: translateY(-2px); border-color: rgba(99,230,219,0.3);}
@@ -110,22 +97,13 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 .role-badge.user{background:rgba(91,140,255,.15);color:var(--blue);border:1px solid rgba(91,140,255,.3)}
 
 .tools{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.field{
-  width:100%; background:#090e18; border:1px solid #223147; color:var(--text); padding:12px 14px; border-radius:12px; outline:none;
-  transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.field:focus{
-  border-color:var(--cyan); box-shadow:0 0 0 4px rgba(99, 230, 219, 0.15), 0 0 15px rgba(99, 230, 219, 0.2);
-  transform: translateY(-1px);
-}
+.field{width:100%; background:#090e18; border:1px solid #223147; color:var(--text); padding:12px 14px; border-radius:12px; outline:none; transition:all 0.25s cubic-bezier(0.16, 1, 0.3, 1);}
+.field:focus{border-color:var(--cyan); box-shadow:0 0 0 4px rgba(99, 230, 219, 0.15), 0 0 15px rgba(99, 230, 219, 0.2); transform: translateY(-1px);}
 .grid{display:flex;flex-direction:column;gap:14px}
 
-.product{
-  background:linear-gradient(160deg,#121b2b,#0a101a); border:1px solid #1c2a42; border-radius:24px; padding:20px;
-  display:flex; flex-direction:column; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden;
-  box-shadow:0 12px 35px rgba(0,0,0,0.45);
-}
+.product{background:linear-gradient(160deg,#121b2b,#0a101a); border:1px solid #1c2a42; border-radius:24px; padding:20px; display:flex; flex-direction:column; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden; box-shadow:0 12px 35px rgba(0,0,0,0.45);}
 .product:hover{ border-color:rgba(99, 230, 219, 0.5); transform:translateY(-3px); box-shadow:0 16px 45px rgba(99,230,219,0.12); }
+.product.pinned { border-color: rgba(251,191,36,0.6); box-shadow: 0 0 20px rgba(251,191,36,0.2); }
 
 .product-media-container{margin:0 0 16px;border-radius:16px;overflow:hidden;border:1px solid #1f304d;background:#050811}
 .product-media-container img, .product-media-container video{display:block;width:100%;max-height:210px;object-fit:cover}
@@ -136,42 +114,23 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 .product-title-area { display: flex; align-items: center; gap: 12px; }
 .product-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
 
-.auth-brand-row{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:0;width:100%;padding:8px 28px 12px}.auth-store-logo{width:78px;height:78px;min-width:78px;object-fit:contain;border-radius:20px;border:1px solid rgba(99,230,219,.82);background:radial-gradient(circle at 35% 25%,#243b58,#0b111c 72%);padding:5px;box-shadow:0 0 0 4px rgba(99,230,219,.10),0 0 30px rgba(99,230,219,.34),0 5px 18px rgba(0,0,0,.4);filter:drop-shadow(0 0 7px rgba(99,230,219,.3))}.auth-brand-row #authTitle{flex:0 0 auto;line-height:1.25;text-align:center}.authModal .close-row{position:relative;justify-content:center}.authModal .xbtn{position:absolute;right:0;top:0}
-/* Product features: show about three rows at once; scroll inside the list for the rest. */
-.feature-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 4px 0 16px;
-  max-height: 148px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 2px 5px 2px 0;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--cyan, #38bdf8) #101a2a;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-.feature-list::-webkit-scrollbar { width: 5px; }
-.feature-list::-webkit-scrollbar-track { background: #101a2a; border-radius: 8px; }
-.feature-list::-webkit-scrollbar-thumb { background: var(--cyan, #38bdf8); border-radius: 8px; }
-.feature-list:focus-visible { outline: 1px solid var(--cyan, #38bdf8); outline-offset: 2px; }
-.feature-item { flex: 0 0 auto; }
-.feature-item { 
-  display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; color: #f4f7ff; font-weight: 600; 
-  background: linear-gradient(135deg, #0a1120, #060a12); padding: 11px 14px; border-radius: 12px; 
-  border-left: 3px solid var(--cyan); border-top: 1px solid #1c2c47; border-right: 1px solid #1c2c47; border-bottom: 1px solid #1c2c47;
-  box-shadow: inset 0 1px 4px rgba(99,230,219,0.08); transition: all 0.2s; 
-}
+/* ✅ FEATURE EXPANDER STYLES */
+.feature-list { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 16px; position: relative;}
+.feature-item { display: flex; align-items: center; justify-content: space-between; font-size: 13.5px; color: #f4f7ff; font-weight: 600; background: linear-gradient(135deg, #0a1120, #060a12); padding: 11px 14px; border-radius: 12px; border-left: 3px solid var(--cyan); border-top: 1px solid #1c2c47; border-right: 1px solid #1c2c47; border-bottom: 1px solid #1c2c47; box-shadow: inset 0 1px 4px rgba(99,230,219,0.08); transition: all 0.2s; }
+.feature-item:nth-child(n+4) { display: none; /* Hide after 3 */ }
 .feature-item:hover { border-color: var(--cyan); background: linear-gradient(135deg, #0d1628, #080d17); transform: translateX(2px); }
 .feature-item span.check { color: var(--green); font-weight: 800; font-size: 16px; text-shadow: 0 0 10px rgba(74,222,128,0.5); }
 
-.plan-picker-box { background: #080d17; border: 1px solid #1e2c45; border-radius: 14px; padding: 12px; margin-bottom: 14px; }
-.plan-picker-label { font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 6px; }
+.expand-features-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px; background: #0f1a2e; color: var(--cyan); font-size: 12px; font-weight: 800; border-radius: 10px; cursor: pointer; border: 1px dashed #2a4468; transition: all 0.3s; margin-bottom: 14px; }
+.expand-features-btn:hover { background: #16263f; border-color: var(--cyan); }
+.expand-features-btn .arrow { transition: transform 0.3s ease; font-size: 16px; animation: bounceUpDown 1.5s infinite; }
+@keyframes bounceUpDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.feature-list.expanded .feature-item:nth-child(n+4) { display: flex; animation: fadeInUp .3s ease both; }
+.feature-list.expanded ~ .expand-features-btn .arrow { transform: rotate(180deg); animation: none; }
+.feature-list.expanded ~ .expand-features-btn { background: transparent; border-color: transparent; }
 
+.plan-picker-box { background: #080d17; border: 1px solid #1e2c45; border-radius: 14px; padding: 12px; margin-bottom: 14px; }
 .product-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:4px}
-.empty{text-align:center;border:1px dashed #26354b;border-radius:16px;padding:30px 14px;color:var(--muted);font-size:13px}
 
 .list-panel{background:#0d1422;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.3)}
 .order-card{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid #1c283c}
@@ -179,174 +138,67 @@ h1 span{background:linear-gradient(90deg,#72a0ff,#a9a1ff,#63e6db);-webkit-backgr
 .pill{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10.5px;font-weight:800}
 .pill.delivered{background:#113827;color:#86efac}
 .pill.pending{background:#3d2f16;color:#fcd34d}
+.pill.discount {background:#5b8cff;color:#fff;box-shadow:0 0 10px rgba(91,140,255,0.5);}
 
 .key-box-display{display:flex;align-items:center;justify-content:space-between;gap:6px;background:#060a12;padding:10px 12px;border-radius:10px;border:1px dashed #63e6db;margin-top:8px}
 .key-token-val{font-family:monospace;letter-spacing:1px;color:#63e6db;font-weight:700;font-size:13px;word-break:break-all}
 .btn-copy{padding:6px 12px;background:#162438;border:1px solid #283e5f;color:#fff;border-radius:8px;font-size:11.5px;flex-shrink:0}
-.btn-copy:active{transform:scale(0.92)}
 
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(7,11,19,0.92);border-top:1px solid #1c273b;display:flex;align-items:center;justify-content:space-around;z-index:30;backdrop-filter:blur(18px)}
 .bottom-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);background:transparent;padding:6px 10px;font-size:10.5px;font-weight:700;gap:3px;transition:color .2s}
 .bottom-item.active-bottom{color:var(--blue)}
 .bottom-item span.icon{font-size:18px;line-height:1}
 
-.modal-back{
-  position:fixed; inset:0; background:rgba(2, 5, 12, 0.88); z-index:70; display:none; align-items:center; justify-content:center; padding:16px;
-  backdrop-filter:blur(14px); animation:fadeIn .3s cubic-bezier(0.16,1,0.3,1) forwards;
-}
+.modal-back{position:fixed; inset:0; background:rgba(2, 5, 12, 0.88); z-index:70; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(14px); animation:fadeIn .3s forwards;}
 .modal-back.open{display:flex}
-/* Keep published announcement above other UI layers so it cannot be visually buried. */
-#announcementPopupModal{z-index:150}
-#announcementPopupModal.open{display:flex;opacity:1;visibility:visible}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-.modal{
-  width:min(440px,100%); background:linear-gradient(155deg, rgba(14, 21, 35, 0.98), rgba(6, 10, 18, 0.99));
-  border:1px solid #233754; border-radius:24px; padding:22px;
-  box-shadow:0 35px 75px rgba(0,0,0,0.85), 0 0 40px rgba(91,140,255,0.12);
-  animation:popIn .4s cubic-bezier(0.16,1,0.3,1) forwards; position:relative; overflow:hidden;
-}
+.modal{width:min(440px,100%); background:linear-gradient(155deg, rgba(14, 21, 35, 0.98), rgba(6, 10, 18, 0.99)); border:1px solid #233754; border-radius:24px; padding:22px; box-shadow:0 35px 75px rgba(0,0,0,0.85); animation:popIn .4s forwards; position:relative; overflow:hidden; max-height:90vh; overflow-y:auto;}
 @keyframes popIn{from{transform:scale(0.85) translateY(15px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 
 .stack{display:grid;gap:14px}
 .close-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.xbtn{background:#172233;color:#cbd7ea;border-radius:10px;width:34px;height:34px;display:grid;place-items:center;transition:all .2s}
-.xbtn:hover{background:#23354e;color:#fff}
+.xbtn{background:#172233;color:#cbd7ea;border-radius:10px;width:34px;height:34px;display:grid;place-items:center;}
 
-.toast{
-  position:fixed; left:50%; bottom:76px; transform:translate(-50%,20px); background:linear-gradient(135deg, #5b8cff, #7665ff);
-  color:#fff; padding:12px 20px; border-radius:14px; font-weight:800; font-size:13px; z-index:90; opacity:0; pointer-events:none;
-  transition:all .3s cubic-bezier(0.16,1,0.3,1); max-width:90vw; text-align:center; box-shadow:0 8px 25px rgba(91,140,255,0.4);
-}
+.toast{position:fixed; left:50%; bottom:76px; transform:translate(-50%,20px); background:linear-gradient(135deg, #5b8cff, #7665ff); color:#fff; padding:12px 20px; border-radius:14px; font-weight:800; font-size:13px; z-index:90; opacity:0; pointer-events:none; transition:all .3s; max-width:90vw; text-align:center;}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .hidden{display:none!important}
 
-.auth-register-mode{border-color:#2a6b73!important;box-shadow:0 35px 75px rgba(0,0,0,.85),0 0 35px rgba(45,212,191,.13)!important}.auth-register-mode #authTitle{color:#4ade80!important}.auth-login-mode #authTitle{color:#63e6db!important}.auth-mode-enter{animation:popIn .28s ease both}
+.auth-brand-row{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;padding:8px 28px 12px}
+.auth-store-logo{width:78px;height:78px;object-fit:contain;border-radius:20px;border:1px solid rgba(99,230,219,.82);background:radial-gradient(circle at 35% 25%,#243b58,#0b111c 72%);padding:5px;box-shadow:0 0 0 4px rgba(99,230,219,.10),0 0 30px rgba(99,230,219,.34);}
 .remember-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);user-select:none;cursor:pointer}
 .remember-row input{cursor:pointer;accent-color:var(--blue);width:16px;height:16px}
 
-.qr-checkout-box{display:none;text-align:center;padding:18px 14px;position:relative;overflow:hidden;border:1px solid rgba(99,230,219,.28)!important;background:radial-gradient(ellipse at 50% 0%,rgba(91,140,255,.16),transparent 58%),linear-gradient(145deg,#0b1727,#080d18 75%)!important;box-shadow:0 16px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035)!important}
-.qr-checkout-box:before{content:"";position:absolute;inset:-60% -30%;background:linear-gradient(110deg,transparent 38%,rgba(99,230,219,.055) 48%,rgba(91,140,255,.09) 52%,transparent 62%);animation:qrAmbientSweep 7s linear infinite;pointer-events:none}
-.qr-checkout-box>*{position:relative;z-index:1}
-.qr-frame{background:#fff;padding:12px;border-radius:20px;display:inline-block;box-shadow:0 0 0 1px rgba(255,255,255,.8),0 0 0 6px rgba(99,230,219,.06),0 14px 34px rgba(0,0,0,.38),0 0 30px rgba(99,230,219,.12);margin:16px 0;animation:qrFloat 3s ease-in-out infinite}
+.qr-checkout-box{display:none;text-align:center;padding:18px 14px;border:1px solid rgba(99,230,219,.28)!important;background:linear-gradient(145deg,#0b1727,#080d18 75%)!important;border-radius:16px;margin-top:14px;}
+.qr-frame{background:#fff;padding:12px;border-radius:20px;display:inline-block;box-shadow:0 0 0 1px rgba(255,255,255,.8),0 14px 34px rgba(0,0,0,.38);margin:16px 0;animation:qrFloat 3s ease-in-out infinite}
 .qr-frame img{display:block;width:clamp(190px,58vw,270px);height:auto;aspect-ratio:1;object-fit:contain}
-.status-pill-scan{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,rgba(19,34,56,.95),rgba(21,48,67,.95));border:1px solid rgba(99,230,219,.28);padding:8px 14px;border-radius:999px;font-size:12px;color:#63e6db;box-shadow:0 0 20px rgba(99,230,219,.06)}
-#depositPayableAmount,#orderPayableAmount{ text-shadow:0 0 22px rgba(99,230,219,.24)}
-@keyframes qrAmbientSweep{from{transform:translateX(-18%) rotate(8deg)}to{transform:translateX(18%) rotate(8deg)}}
 @keyframes qrFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@media(prefers-reduced-motion:reduce){.qr-checkout-box:before,.qr-frame{animation:none!important}}
-.qr-frame{background:#fff;padding:10px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,.6);margin:10px 0}
-.qr-frame img{display:block;width:180px;height:180px}
-.status-pill-scan{display:inline-flex;align-items:center;gap:6px;background:#132238;border:1px solid #233959;padding:5px 12px;border-radius:999px;font-size:11.5px;color:#63e6db}
-.pulse-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 1.2s infinite}
-@keyframes pulse{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
 
 .pay-loading-overlay{display:none;padding:24px 10px;text-align:center}
 .pay-loader-ring{display:inline-block;width:46px;height:46px;border:4px solid rgba(91,140,255,0.2);border-radius:50%;border-top-color:var(--cyan);animation:spinRing 0.85s linear infinite;margin-bottom:12px}
 @keyframes spinRing{to{transform:rotate(360deg)}}
-.pay-loader-text{font-size:14px;font-weight:700;color:var(--cyan);margin:0 0 4px}
-.pay-loader-sub{font-size:12px;color:var(--muted);margin:0}
 
 .success-modal { text-align: center; padding: 4px; }
-.success-icon-box {
-  width: 60px; height: 60px; background: rgba(74, 222, 128, 0.15); border: 2px solid var(--green);
-  border-radius: 50%; display: grid; place-items: center; margin: 0 auto 14px; color: var(--green);
-  font-size: 28px; animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-@keyframes bounceIn {
-  0% { transform: scale(0); opacity: 0; }
-  70% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
-}
+.success-icon-box {width: 60px; height: 60px; background: rgba(74, 222, 128, 0.15); border: 2px solid var(--green); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 14px; color: var(--green); font-size: 28px; animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+@keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
 
-#floatingSupportBtn {
-  position: fixed !important; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom));
-  left: auto; top: auto; width: 54px; min-width: 54px; height: 54px; min-height: 54px;
-  border-radius: 50%; background: linear-gradient(135deg, #5b8cff, #7665ff); color: #fff;
-  align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(91, 140, 255, 0.32);
-  z-index: 65; cursor: grab; touch-action: none; user-select: none; -webkit-user-select:none; border: 1px solid rgba(255,255,255,0.2);
-  overflow: hidden; line-height: 0; font-size: 0; animation: none !important; transform: none !important;
-}
-#floatingSupportBtn svg { width: 26px !important; height: 26px !important; min-width: 26px; min-height: 26px; fill: #fff; display: block; flex: 0 0 26px; }
-#floatingSupportBtn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
-#floatingSupportBtn.is-dragging { cursor: grabbing; transition: none !important; opacity: .92; }
+#floatingSupportBtn {position: fixed !important; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom)); width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, #5b8cff, #7665ff); color: #fff; display:flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(91, 140, 255, 0.32); z-index: 65; border: 1px solid rgba(255,255,255,0.2);}
+#floatingSupportBtn svg { width: 26px !important; height: 26px !important; fill: #fff; }
 
-.support-link-item {
-  display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 12px;
-  background: #141f33; border: 1px solid #253957; color: #f4f7ff; text-decoration: none; font-weight: 700; font-size: 14px; transition: all .2s;
-}
-.support-link-item:hover, .support-link-item:active { background: #1c2c47; border-color: var(--blue); transform: translateY(-1px); }
+.support-link-item {display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 12px; background: #141f33; border: 1px solid #253957; color: #f4f7ff; text-decoration: none; font-weight: 700; font-size: 14px; transition: all .2s;}
+.support-link-item:hover { background: #1c2c47; border-color: var(--blue); transform: translateY(-1px); }
 .support-svg-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
-.support-svg-icon svg { width: 24px; height: 24px; display: block; }
 
-/* Premium authentication feedback animations */
 @keyframes authSpin{to{transform:rotate(360deg)}}
 @keyframes authSuccess{0%{transform:scale(.94);opacity:.4}70%{transform:scale(1.025);opacity:1}100%{transform:scale(1);opacity:1}}
-@keyframes authExit{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(8px) scale(.98)}}
 .auth-loading{pointer-events:none!important;opacity:.86!important;filter:saturate(.8)}
 .auth-spinner{display:inline-block;width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-3px;margin-right:8px;animation:authSpin .65s linear infinite}
 .auth-success-anim{animation:authSuccess .42s cubic-bezier(.16,1,.3,1)}
-.auth-exit-anim{animation:authExit .22s ease forwards}
-@media(prefers-reduced-motion:reduce){.auth-spinner{animation:none!important}.auth-success-anim,.auth-exit-anim{animation:none!important}}
 
-/* Live visual effects */
-@keyframes glowPulse{0%,100%{box-shadow:none}}
-@keyframes floatUp{0%{opacity:0;transform:translateY(14px) scale(.985)}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes shimmerLine{0%{background-position:-200% 0}100%{background-position:200% 0}}
-#storePromotionCard.promo-live:not(.hidden){display:block!important;visibility:visible!important;animation:floatUp .35s ease both;border:1px solid rgba(56,189,248,.65)!important;background:#0d1320!important;position:relative;overflow:hidden}
-#storePromotionCard.promo-live:before{content:"SPECIAL OFFER";display:inline-block;font-size:10px;letter-spacing:1.5px;font-weight:900;color:#07111e;background:linear-gradient(90deg,#67e8f9,#93c5fd,#67e8f9);background-size:200% 100%;padding:5px 9px;border-radius:6px;margin-bottom:9px;animation:none}
-#storePromotionMedia img,#storePromotionMedia video{display:block;width:100%;max-height:300px;object-fit:contain;filter:none!important;opacity:1!important;image-rendering:auto;border-radius:12px}
-.product-media-container img,.product-media-container video,.product-media-container iframe{filter:none!important;opacity:1!important}
-.auth-stage{animation:floatUp .32s ease both}
-.auth-mode-enter{animation:floatUp .32s ease both}
-@media(prefers-reduced-motion:reduce){#storePromotionCard.promo-live,.auth-stage,.auth-mode-enter{animation:none!important}}
+#storePromotionCard.hidden { display: none !important; }
+#storePromotionCard:not(.hidden).promo-live{display:block!important; animation:floatUp .35s ease both; border:1px solid rgba(56,189,248,.65)!important; background:#0d1320!important; position:relative; overflow:hidden;}
+#storePromotionCard.promo-live:before{content:"SPECIAL OFFER";display:inline-block;font-size:10px;letter-spacing:1.5px;font-weight:900;color:#07111e;background:linear-gradient(90deg,#67e8f9,#93c5fd,#67e8f9);background-size:200% 100%;padding:5px 9px;border-radius:6px;margin-bottom:9px;}
+#storePromotionMedia img,#storePromotionMedia video{display:block;width:100%;max-height:300px;object-fit:contain;border-radius:12px}
 
-
-/* UNION STORE — premium motion layer */
-:root{--motion-fast:180ms;--motion-mid:320ms;--motion-slow:560ms;--motion-ease:cubic-bezier(.2,.8,.2,1)}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{animation:usPageEnter .55s var(--motion-ease) both}
-@keyframes usPageEnter{from{opacity:0}to{opacity:1}}
-button,.btn,a,[role="button"],input,select,textarea{transition:transform var(--motion-fast) var(--motion-ease),background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,box-shadow var(--motion-fast) ease,filter var(--motion-fast) ease,color var(--motion-fast) ease}
-button:hover,.btn:hover,[role="button"]:hover{filter:brightness(1.08)}
-button:active,.btn:active,[role="button"]:active{transform:scale(.97)}
-a:hover{filter:brightness(1.1)}
-input:focus,select:focus,textarea:focus{outline:2px solid rgba(99,230,219,.55);outline-offset:1px;box-shadow:none!important}
-.card,.panel,.product-card,.stat-card,.stat-box,.order-card,.product-item,.plan-card,.support-card,.promo-card,.feature-card,.glass-card,.section-card,.inventory-card,.user-card,.deposit-card,.table-wrap{transition:transform .28s var(--motion-ease),border-color .28s ease,box-shadow .28s ease;will-change:transform}
-.card:hover,.panel:hover,.product-card:hover,.stat-card:hover,.stat-box:hover,.order-card:hover,.product-item:hover,.plan-card:hover,.support-card:hover,.promo-card:hover,.feature-card:hover,.glass-card:hover,.section-card:hover,.inventory-card:hover,.user-card:hover,.deposit-card:hover{transform:translateY(-2px);border-color:rgba(56,189,248,.32);box-shadow:0 12px 32px rgba(0,0,0,.16)}
-.drawer,.sidebar,.side-panel{transition:transform .32s var(--motion-ease),opacity .25s ease}
-.modal-back{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.modal{transform-origin:center;will-change:transform,opacity}
-.notification,.alert{animation:usToastIn .32s var(--motion-ease) both}
-.toast{animation:none!important}
-.toast:not(.show){opacity:0!important;visibility:hidden!important;pointer-events:none!important}
-.toast.show{visibility:visible!important;animation:usToastIn .22s ease-out both}
-@keyframes usToastIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.us-reveal:not(.hidden){animation:usReveal .48s var(--motion-ease) both}
-@keyframes usReveal{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
-.us-stagger>*{animation:usReveal .42s var(--motion-ease) both}
-.us-stagger>*:nth-child(2){animation-delay:45ms}.us-stagger>*:nth-child(3){animation-delay:90ms}.us-stagger>*:nth-child(4){animation-delay:135ms}.us-stagger>*:nth-child(5){animation-delay:180ms}.us-stagger>*:nth-child(6){animation-delay:225ms}
-button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
-.skeleton,.loading-skeleton{background:linear-gradient(100deg,rgba(255,255,255,.025) 25%,rgba(56,189,248,.11) 45%,rgba(255,255,255,.025) 65%);background-size:200% 100%;animation:usShimmer 1.5s linear infinite}
-@keyframes usShimmer{to{background-position:-200% 0}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transform:none!important}}
-
-
-/* HARD FIX: suppress any injected theme-palette / ghost capsule widget, including variants with changed IDs/tokens. */
-#ui-theme-palette,
-[data-asset-token],
-[id*="theme-palette" i],
-[class*="theme-palette" i],
-[id*="ghost-pill" i],
-[class*="ghost-pill" i],
-[id*="floating-capsule" i],
-[class*="floating-capsule" i]{
-  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
-  width:0!important;height:0!important;min-width:0!important;min-height:0!important;
-  max-width:0!important;max-height:0!important;overflow:hidden!important;
-}
-
-/* Animated sign-out confirmation */
 .logout-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(2,5,12,.76);backdrop-filter:blur(9px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility .22s ease}
 .logout-confirm-overlay.open{opacity:1;visibility:visible}
 .logout-confirm-card{width:min(100%,360px);background:#0d1320;border:1px solid #2b3b56;border-radius:22px;padding:24px 20px 20px;text-align:center;box-shadow:0 22px 70px rgba(0,0,0,.55);transform:translateY(18px) scale(.94);transition:transform .28s cubic-bezier(.16,1,.3,1)}
@@ -358,8 +210,9 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 .logout-confirm-actions button{flex:1;min-height:44px;border-radius:12px;font-weight:800;padding:10px 12px}
 .logout-cancel{background:#172236;color:#e9efff;border:1px solid #2b3c56}
 .logout-yes{background:#e34b65;color:#fff;border:1px solid #f06b80}
-@media(prefers-reduced-motion:reduce){.logout-confirm-overlay,.logout-confirm-card{transition:none}}
 
+body{animation:usPageEnter .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes usPageEnter{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -392,47 +245,25 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <aside class="drawer-card" id="siteDrawer" aria-label="Navigation drawer">
   <div class="drawer-header">
-    <div>
-      <h2 id="drawerStoreTitle">TG UNION</h2>
-    </div>
+    <div><h2 id="drawerStoreTitle">TG UNION</h2></div>
     <button class="drawer-close-btn" id="closeDrawer" aria-label="Close menu">✕</button>
   </div>
 
   <div class="drawer-menu-list">
-    <button class="drawer-item active-menu" data-page="view-home">
-      <span>⌂</span><span>Dashboard / Home</span>
-    </button>
-    <button class="drawer-item" data-page="view-catalog">
-      <span>🛒</span><span>Buy Products</span>
-    </button>
-    <button class="drawer-item" data-page="view-purchase">
-      <span>🧾</span><span>Purchase Orders</span>
-    </button>
-    <button class="drawer-item" data-page="view-deposit">
-      <span>💳</span><span>Deposit / Wallet</span>
-    </button>
-    <button class="drawer-item" data-page="view-keys">
-      <span>🔑</span><span>My Keys</span>
-    </button>
+    <button class="drawer-item active-menu" data-page="view-home"><span>⌂</span><span>Dashboard / Home</span></button>
+    <button class="drawer-item" data-page="view-catalog"><span>🛒</span><span>Buy Products</span></button>
+    <button class="drawer-item" data-page="view-purchase"><span>🧾</span><span>Purchase Orders</span></button>
+    <button class="drawer-item" data-page="view-deposit"><span>💳</span><span>Deposit / Wallet</span></button>
+    <button class="drawer-item" data-page="view-keys"><span>🔑</span><span>My Keys</span></button>
     <button class="drawer-item" data-page="view-seller"><span>🏆</span><span>Become a Seller</span></button>
-    <button class="drawer-item" data-page="view-referral">
-      <span>🎁</span><span>Referral Program</span>
-    </button>
-    <button class="drawer-item" data-page="view-about" id="drawerAboutItem" style="display:none">
-      <span>ℹ️</span><span>About Us</span>
-    </button>
-    <button class="drawer-item" data-page="view-policy" id="drawerPolicyItem" style="display:none">
-      <span>🛡️</span><span>Policy & Terms</span>
-    </button>
+    <button class="drawer-item" data-page="view-referral"><span>🎁</span><span>Referral Program</span></button>
+    <button class="drawer-item" data-page="view-about" id="drawerAboutItem" style="display:none"><span>ℹ️</span><span>About Us</span></button>
+    <button class="drawer-item" data-page="view-policy" id="drawerPolicyItem" style="display:none"><span>🛡️</span><span>Policy & Terms</span></button>
 
     <div class="drawer-divider-label" style="color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:1.5px;margin:16px 8px 6px">ACCOUNT</div>
 
-    <button class="drawer-item" data-page="view-account">
-      <span>👤</span><span>My Account</span>
-    </button>
-    <button class="drawer-item" data-page="view-support">
-      <span>💬</span><span>Help & Support</span>
-    </button>
+    <button class="drawer-item" data-page="view-account"><span>👤</span><span>My Account</span></button>
+    <button class="drawer-item" data-page="view-support"><span>💬</span><span>Help & Support</span></button>
     <button class="drawer-item" id="drawerAuthBtn" style="margin-top:10px;background:#142238;border:1px solid #233959">
       <span>🔐</span><span id="drawerAuthText">Login / Sign Up</span>
     </button>
@@ -449,12 +280,63 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
       <button class="btn primary" onclick="window.navigateTo('view-deposit')">+ Add Funds</button>
     </div>
 
-    <section id="resellerUpgradeCard" class="product hidden" style="margin:0 0 16px;padding:16px;border-color:#263852;box-shadow:none"><div style="font-size:17px;font-weight:900">🌟 Reseller Upgrade</div><p class="sub" style="margin:7px 0 10px">Upgrade your account to unlock reseller pricing on eligible plans. Your role and available rates are shown automatically after an admin-approved upgrade.</p><button class="btn secondary" type="button" onclick="window.navigateTo('view-support')">Ask about Reseller Upgrade ↗</button></section>
-    <section id="storePromotionCard" class="product hidden" style="margin:0 0 16px;padding:14px;border-color:#28466c">
+    <!-- ✅ PRO RESELLER ACTIVE BANNER -->
+    <div id="proResellerActiveBanner" class="hidden" style="background:linear-gradient(135deg, rgba(38,161,123,0.15), rgba(99,230,219,0.1)); border:1px solid rgba(38,161,123,0.4); border-radius:16px; padding:14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 15px rgba(38,161,123,0.1);">
+      <div>
+        <h3 id="currencyTitle" style="margin:0 0 4px; font-size:15px; font-weight:900; color:#26a17b; display:flex; align-items:center; gap:6px;">
+          👑 PRO RESELLER ACTIVE (INR MODE)
+        </h3>
+        <p id="currencySubtitle" style="margin:0; font-size:11.5px; color:#e2e8f0;">You are enjoying Pro Reseller prices (INR).</p>
+      </div>
+      <button id="switchCurrencyBtn" style="background:#26a17b; color:#fff; font-size:11.5px; font-weight:900; border-radius:10px; padding:8px 14px; white-space:nowrap; box-shadow:0 2px 10px rgba(38,161,123,0.3);">
+        🔄 SWITCH TO USDT MODE
+      </button>
+    </div>
+
+    <!-- ✅ RESELLER UPGRADE HIGHLIGHT (FIXED BUTTON AND GLOW) -->
+    <div id="resellerActiveHighlight" class="reseller-highlight hidden">
+      <div>
+        <h3 style="margin:0 0 6px; font-size:16px; color:var(--gold); display:flex; align-items:center; gap:8px;">
+          👑 BECOME A PRO RESELLER
+        </h3>
+        <p style="margin:0; font-size:12.5px; color:#e2e8f0; max-width:400px;">
+          Upgrade to unlock reseller prices on all products. 
+          <br>Single Deposit Required: <b id="highlightMinDepositText">₹10</b>
+        </p>
+      </div>
+      <button class="btn gold" style="padding:10px 20px; border-radius:10px; font-size:13px; font-weight:800; box-shadow:0 4px 15px rgba(251,191,36,0.4);" onclick="window.activateResellerRole()">
+        ⚡ Activate Now
+      </button>
+    </div>
+
+    <!-- ✅ ANALYTICS SECTION -->
+    <div class="panel" style="margin-bottom:16px;">
+      <h4 style="margin:0 0 12px; font-size:15px; color:var(--cyan);">📊 Your Analytics</h4>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="stat" style="padding:12px;">
+          <b id="analysisOrders" style="color:var(--blue); font-size:20px;">0</b>
+          <span>Total Orders</span>
+        </div>
+        <div class="stat" style="padding:12px;">
+          <b id="analysisSpent" style="color:var(--red); font-size:20px;">₹0.00</b>
+          <span>Total Spent</span>
+        </div>
+        <div class="stat" style="padding:12px;">
+          <b id="analysisKeys" style="color:var(--green); font-size:20px;">0</b>
+          <span>Keys Purchased</span>
+        </div>
+        <div class="stat" style="padding:12px;">
+          <b id="analysisReferrals" style="color:var(--gold); font-size:20px;">0</b>
+          <span>Referrals</span>
+        </div>
+      </div>
+    </div>
+
+    <section id="storePromotionCard" class="hidden" style="margin:0 0 16px;padding:14px;border:1px solid #28466c; border-radius:16px; background:#0d1320;">
       <div id="storePromotionMedia"></div>
       <div id="storePromotionTitle" style="font-size:17px;font-weight:900;margin:4px 0"></div>
       <p id="storePromotionText" class="sub" style="margin:0 0 10px;white-space:pre-wrap"></p>
-      <a id="storePromotionLink" class="btn primary hidden" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none">View Offer ↗</a>
+      <a id="storePromotionLink" class="btn primary hidden" href="#" target="_blank" style="text-decoration:none">View Offer ↗</a>
     </section>
 
     <div class="hero">
@@ -515,7 +397,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <div class="view-header">
       <div>
         <h2>Wallet Deposit</h2>
-        <p>Funds auto-credit immediately upon verified UPI payment[cite: 1].</p>
+        <p>Funds auto-credit immediately upon verified UPI payment.</p>
       </div>
       <button class="header-back-btn" onclick="window.goBack()">← Back</button>
     </div>
@@ -532,7 +414,6 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
       <button class="btn primary" id="generateDepositQrBtn" style="padding:12px;font-size:14px">Generate Top-Up QR</button>
     </div>
 
-    <!-- DEPOSIT HISTORY CARD BUTTON -->
     <div class="list-panel" style="margin-bottom:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:all 0.2s;" onclick="window.navigateTo('view-deposit-history')">
       <div style="display:flex; align-items:center; gap:12px">
         <div style="width:40px; height:40px; border-radius:10px; background:rgba(99,230,219,0.15); display:grid; place-items:center; color:var(--cyan)">🕒</div>
@@ -547,7 +428,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <div class="pay-loading-overlay" id="depositLoaderAnim">
       <div class="pay-loader-ring"></div>
       <div class="pay-loader-text">Connecting Gateway Securely...</div>
-      <p class="pay-loader-sub">Generating dynamic UPI payment session[cite: 1]</p>
+      <p class="pay-loader-sub">Generating dynamic UPI payment session</p>
     </div>
 
     <div class="list-panel qr-checkout-box" id="depositQrBox" style="margin-bottom:14px">
@@ -559,7 +440,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
         <img id="liveDepositQrImage" src="" alt="Deposit QR">
       </div>
       <div style="font-size:22px;font-weight:900;color:#63e6db;margin-bottom:4px" id="depositPayableAmount">₹0.00</div>
-      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI App or QR. Click Check Status if not credited automatically[cite: 1]!</p>
+      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI App or QR. Click Check Status if not credited automatically!</p>
       <div class="stack">
         <a id="directDepositUpiBtn" class="btn primary" href="#" style="text-decoration:none;display:none;padding:11px">Open in UPI App</a>
         <button class="btn secondary" id="checkDepositStatusManualBtn" style="border-color:#2a4468;color:#63e6db;padding:11px">⚡ Check Payment Status</button>
@@ -590,8 +471,8 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     </div>
 
     <div class="stats" style="margin-bottom:14px">
-      <div class="stat"><b id="statUserKeysCount" style="color:var(--cyan)">03</b><span>TOTAL KEYS</span></div>
-      <div class="stat"><b id="statUserProductsCount" style="color:var(--green)">02</b><span>PRODUCTS</span></div>
+      <div class="stat"><b id="statUserKeysCount" style="color:var(--cyan)">00</b><span>TOTAL KEYS</span></div>
+      <div class="stat"><b id="statUserProductsCount" style="color:var(--green)">00</b><span>PRODUCTS</span></div>
     </div>
 
     <div class="list-panel stack" id="userKeysList" style="background:transparent; border:0; padding:0">
@@ -832,7 +713,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
     <div class="pay-loading-overlay" id="orderLoaderAnim">
       <div class="pay-loader-ring"></div>
       <div class="pay-loader-text">Creating Secure Payment Session...</div>
-      <p class="pay-loader-sub">Reserving atomic order ID & UPI Intent[cite: 1]</p>
+      <p class="pay-loader-sub">Reserving atomic order ID & UPI Intent</p>
     </div>
 
     <div class="qr-checkout-box" id="qrCheckoutBox">
@@ -844,7 +725,7 @@ button:disabled,.btn:disabled{cursor:wait;opacity:.68;filter:saturate(.7)}
         <img id="liveQrImage" src="" alt="Scan QR">
       </div>
       <div style="font-size:22px;font-weight:900;color:#63e6db;margin-bottom:4px" id="qrPayableAmount">₹0.00</div>
-      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI app or scan QR. Key auto-dispatches once confirmed[cite: 1]!</p>
+      <p style="font-size:11.5px;color:var(--muted);margin:0 0 12px">Pay via UPI app or scan QR. Key auto-dispatches once confirmed!</p>
       
       <div class="stack">
         <a id="directUpiAppBtn" class="btn primary" href="#" style="text-decoration:none;display:none;padding:12px">Pay via UPI App</a>
@@ -871,7 +752,7 @@ import {
   signInWithPopup,
   signOut
 } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-import {getDatabase,ref,onValue,push,set,update,runTransaction} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js';
+import {getDatabase,ref,onValue,push,set,update,runTransaction,query,orderByChild,equalTo,get} from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAM1cUZQtLA9YTA3bInmwQubh7AwI7ZHWE",
@@ -888,21 +769,18 @@ const app = initializeApp(firebaseConfig), auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence).catch(e => console.error(e));
 const db = getDatabase(app);
 
-let products=[], user=null, selected=null, authMode='login', userOrders=[];
-let userRole = 'user';
-let userWalletBalance = 0;
-let navigationHistory = ['view-home'];
-let dynamicGatewayKey = "fam_3710dccd201f6497f7511ad6f49be25aaa569c57";
-let globalReferralPercentage = 10;
-let globalReferralEnabled = true;
-let appliedDiscount = { code: null, amount: 0 };
-let allCoupons = {};
+// ✅ YAHAN CLOUDFLARE WORKER KA URL HAI (PROXY URL)
+const PROXY_URL = 'https://still-credit-6ab3.amansoni8252.workers.dev'; 
 
-let activeOrderSession = null;
-let activeDepositSession = null;
-let orderStatusCheckInFlight = false;
-let depositStatusCheckInFlight = false;
-let countdownTimerRef = null;
+let products=[], user=null, selected=null, authMode='login', userOrders=[];
+let userRole = 'user', userWalletBalance = 0, resellerMinDeposit = 10, maxSingleDeposit = 0;
+let deposits = []; // <--- FIXED: Missing variable declared
+let isUsdtMode = false;
+const USDT_RATE = 49; // 1 USDT = 49 INR
+let navigationHistory = ['view-home'];
+let globalReferralPercentage = 10, globalReferralEnabled = true, appliedDiscount = { code: null, amount: 0 }, allCoupons = {}, productDiscounts = {}, availableSellerMembershipPlans = {};
+
+let activeOrderSession = null, activeDepositSession = null, orderStatusCheckInFlight = false, depositStatusCheckInFlight = false, orderCountdownRef = null, depositCountdownRef = null;
 
 const $ = id => document.getElementById(id);
 
@@ -942,24 +820,43 @@ window.navigateTo = navigateTo;
 window.goBack = goBack;
 window.copyReferralLink = copyReferralLink;
 window.copyKeyToken = copyKeyToken;
+window.toggleFeatures = function(btn) {
+  const list = btn.previousElementSibling;
+  if(list) list.classList.toggle('expanded');
+};
 
 window.openSuccessPopup = function(title, desc, extraHtml, callback) {
-  $('successPopupTitle').textContent = title;
-  $('successPopupDesc').textContent = desc;
+  const titleEl = $('successPopupTitle');
+  const descEl = $('successPopupDesc');
+  if (titleEl) titleEl.textContent = title;
+  if (descEl) descEl.textContent = desc;
   const extraBox = $('successPopupExtra');
-  if (extraHtml) {
-    extraBox.innerHTML = extraHtml;
-    extraBox.style.display = 'block';
-  } else {
-    extraBox.style.display = 'none';
+  if (extraBox) {
+    if (extraHtml) {
+      extraBox.innerHTML = extraHtml;
+      extraBox.style.display = 'block';
+    } else {
+      extraBox.style.display = 'none';
+    }
   }
   const btn = $('successPopupActionBtn');
-  btn.onclick = () => {
-    window.closeModal('successPopupModal');
-    if (callback) callback();
-  };
+  if (btn) {
+    btn.onclick = () => {
+      window.closeModal('successPopupModal');
+      if (callback) callback();
+    };
+  }
   window.openModal('successPopupModal');
 };
+
+function formatPrice(inrAmount) {
+  const amt = Number(inrAmount || 0);
+  if (isUsdtMode) {
+    const usdt = (amt / USDT_RATE).toFixed(2);
+    return `${usdt} USDT`;
+  }
+  return `₹${amt.toFixed(2)}`;
+}
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
@@ -970,6 +867,13 @@ if (refParam && !localStorage.getItem('tg_ref_sponsor')) {
   localStorage.setItem('tg_ref_sponsor', refParam.trim());
 }
 
+function getYouTubeEmbedUrl(url) {
+  if (!url) return '';
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=0&rel=0` : '';
+}
+
 onValue(ref(db, 'appConfig'), s => {
   const conf = s.val() || {};
   if (conf.storeName) {
@@ -977,15 +881,18 @@ onValue(ref(db, 'appConfig'), s => {
     if ($('drawerStoreTitle')) $('drawerStoreTitle').textContent = conf.storeName;
     document.title = conf.storeName;
   }
-  if (conf.gatewayKey) dynamicGatewayKey = conf.gatewayKey;
+  
   if (conf.referralPercentage !== undefined) globalReferralPercentage = Number(conf.referralPercentage);
   globalReferralEnabled = conf.referralEnabled !== false;
+  if (conf.resellerMinDepositAmount !== undefined) resellerMinDeposit = Number(conf.resellerMinDepositAmount);
+  
   document.querySelectorAll('[data-page="view-referral"]').forEach(el => el.style.display = globalReferralEnabled ? '' : 'none');
   const referralHomeBtn = document.querySelector('#view-home .hero button[onclick*="view-referral"]');
   if (referralHomeBtn) referralHomeBtn.style.display = globalReferralEnabled ? '' : 'none';
   const referralPage = $('view-referral'); if (referralPage) referralPage.style.display = globalReferralEnabled ? '' : 'none';
   if (!globalReferralEnabled) { if ($('registerReferralWrap')) $('registerReferralWrap').style.display = 'none'; if ($('registerReferralCode')) $('registerReferralCode').value = ''; }
   else if (authMode === 'register' && $('registerReferralWrap')) $('registerReferralWrap').style.display = 'block';
+  
   const logo = document.querySelector('.brand .logo');
   const authLogo = $('authStoreLogo');
   if (authLogo && conf.storeLogoUrl) { authLogo.src = String(conf.storeLogoUrl); authLogo.style.display = 'block'; }
@@ -994,39 +901,73 @@ onValue(ref(db, 'appConfig'), s => {
     logo.style.background = `center/cover no-repeat url("${String(conf.storeLogoUrl).replace(/["\\\\]/g, '')}")`;
     logo.style.border = '1px solid #28466c';
   }
+
   const promo = $('storePromotionCard');
   if (promo) {
-    const hasPromoContent = !!(String(conf.promoTitle || '').trim() || String(conf.promoText || '').trim() || String(conf.promoMediaUrl || '').trim() || String(conf.promoLink || '').trim());
-    const promoEnabled = conf.promoEnabled === true || conf.promoEnabled === 1 || String(conf.promoEnabled).toLowerCase() === 'true' || (conf.promoEnabled === undefined && hasPromoContent);
-    promo.classList.toggle('hidden', !promoEnabled);
-    promo.classList.toggle('promo-live', promoEnabled);
-    const homePane = $('view-home');
-    if (homePane && homePane.firstElementChild !== promo) homePane.insertBefore(promo, homePane.firstElementChild);
-    $('storePromotionTitle').textContent = conf.promoTitle || 'Special Promotion';
-    $('storePromotionText').textContent = conf.promoText || '';
-    const mediaBox = $('storePromotionMedia');
-    mediaBox.innerHTML = '';
-    if (conf.promoMediaUrl) {
-      const mediaLooksVideo = conf.promoMediaType === 'video' || /^data:video\//i.test(conf.promoMediaUrl) || /\.(mp4|webm|ogg)(\?|$)/i.test(conf.promoMediaUrl);
-      if (mediaLooksVideo) {
-        const video = document.createElement('video');
-        video.src = conf.promoMediaUrl; video.controls = true; video.playsInline = true;
-        video.style.cssText = 'display:block;width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-bottom:10px;background:#050b14';
-        video.onerror = () => { mediaBox.textContent = 'Promotion video could not be loaded. Check the media URL.'; };
-        mediaBox.appendChild(video);
-      } else {
-        const image = document.createElement('img');
-        image.src = conf.promoMediaUrl; image.alt = conf.promoTitle || 'Promotion';
-        image.style.cssText = 'display:block;width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-bottom:10px';
-        image.onerror = () => { mediaBox.textContent = 'Promotion image could not be loaded. Check the media URL.'; };
-        mediaBox.appendChild(image);
+    const hasPromoContent = !!(
+      String(conf.promoTitle || '').trim() ||
+      String(conf.promoText || '').trim() ||
+      String(conf.promoMediaUrl || '').trim() ||
+      String(conf.promoLink || '').trim()
+    );
+    const promoEnabled = conf.promoEnabled === true ||
+                         conf.promoEnabled === 1 ||
+                         String(conf.promoEnabled).toLowerCase() === 'true' ||
+                         (conf.promoEnabled === undefined && hasPromoContent);
+
+    if (promoEnabled) {
+      if ($('storePromotionTitle')) $('storePromotionTitle').textContent = conf.promoTitle || 'Special Promotion';
+      if ($('storePromotionText')) $('storePromotionText').textContent = conf.promoText || '';
+
+      const mediaBox = $('storePromotionMedia');
+      if (mediaBox) {
+        if (conf.promoMediaUrl) {
+          const ytEmbed = getYouTubeEmbedUrl(conf.promoMediaUrl);
+          const isVideoFile = conf.promoMediaType === 'video' || /^data:video\//i.test(conf.promoMediaUrl) || /\.(mp4|webm|ogg)(\?|$)/i.test(conf.promoMediaUrl);
+          if (mediaBox.dataset.loadedUrl !== conf.promoMediaUrl) {
+            mediaBox.dataset.loadedUrl = conf.promoMediaUrl;
+            mediaBox.innerHTML = '';
+            if (conf.promoMediaType === 'youtube' || ytEmbed) {
+              const yt = ytEmbed || getYouTubeEmbedUrl(conf.promoMediaUrl);
+              if (yt) mediaBox.innerHTML = `<div class="product-media-container" style="margin-bottom:10px"><div class="video-wrapper"><iframe src="${yt}" allowfullscreen></iframe></div></div>`;
+            } else if (isVideoFile) {
+              const video = document.createElement('video');
+              video.src = conf.promoMediaUrl; video.controls = true; video.playsInline = true;
+              video.style.cssText = 'display:block;width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-bottom:10px;background:#050b14';
+              mediaBox.appendChild(video);
+            } else {
+              const img = document.createElement('img');
+              img.src = conf.promoMediaUrl; img.alt = conf.promoTitle || 'Promotion';
+              img.style.cssText = 'display:block;width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-bottom:10px';
+              mediaBox.appendChild(img);
+            }
+          }
+        } else {
+          mediaBox.innerHTML = '';
+          delete mediaBox.dataset.loadedUrl;
+        }
       }
+
+      const link = $('storePromotionLink');
+      if (link) {
+        if (conf.promoLink && /^https:\/\//i.test(conf.promoLink)) {
+          link.href = conf.promoLink;
+          link.textContent = conf.promoButtonText || 'View Offer ↗';
+          link.classList.remove('hidden');
+        } else {
+          link.classList.add('hidden');
+        }
+      }
+
+      const homePane = $('view-home');
+      if (homePane && homePane.firstElementChild !== promo) homePane.insertBefore(promo, homePane.firstElementChild);
+
+      promo.classList.add('promo-live');
+      promo.classList.remove('hidden');
+    } else {
+      promo.classList.add('hidden');
+      promo.classList.remove('promo-live');
     }
-    const link = $('storePromotionLink');
-    if (conf.promoLink && /^https:\/\//i.test(conf.promoLink)) {
-      link.href = conf.promoLink; link.textContent = conf.promoButtonText || 'View Offer ↗';
-      link.classList.remove('hidden');
-    } else link.classList.add('hidden');
   }
 });
 
@@ -1039,15 +980,17 @@ onValue(ref(db, 'siteContent'), s => {
     if (aboutItem) aboutItem.style.display = 'flex';
     if ($('aboutPageContent')) $('aboutPageContent').textContent = content.about.text || '';
     const bDiv = $('aboutPageBanner');
-    if (content.about.bannerUrl) {
-      bDiv.style.display = 'block';
-      if (content.about.bannerType === 'video_file') {
-        bDiv.innerHTML = `<video src="${content.about.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+    if (bDiv) {
+      if (content.about.bannerUrl) {
+        bDiv.style.display = 'block';
+        if (content.about.bannerType === 'video_file') {
+          bDiv.innerHTML = `<video src="${content.about.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+        } else {
+          bDiv.innerHTML = `<img src="${content.about.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+        }
       } else {
-        bDiv.innerHTML = `<img src="${content.about.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+        bDiv.style.display = 'none';
       }
-    } else {
-      bDiv.style.display = 'none';
     }
   } else {
     if (aboutItem) aboutItem.style.display = 'none';
@@ -1057,15 +1000,17 @@ onValue(ref(db, 'siteContent'), s => {
     if (policyItem) policyItem.style.display = 'flex';
     if ($('policyPageContent')) $('policyPageContent').textContent = content.policy.text || '';
     const pDiv = $('policyPageBanner');
-    if (content.policy.bannerUrl) {
-      pDiv.style.display = 'block';
-      if (content.policy.bannerType === 'video_file') {
-        pDiv.innerHTML = `<video src="${content.policy.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+    if (pDiv) {
+      if (content.policy.bannerUrl) {
+        pDiv.style.display = 'block';
+        if (content.policy.bannerType === 'video_file') {
+          pDiv.innerHTML = `<video src="${content.policy.bannerUrl}" controls style="width:100%;max-height:240px;object-fit:cover;border-radius:12px"></video>`;
+        } else {
+          pDiv.innerHTML = `<img src="${content.policy.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+        }
       } else {
-        pDiv.innerHTML = `<img src="${content.policy.bannerUrl}" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">`;
+        pDiv.style.display = 'none';
       }
-    } else {
-      pDiv.style.display = 'none';
     }
   } else {
     if (policyItem) policyItem.style.display = 'none';
@@ -1076,13 +1021,16 @@ onValue(ref(db, 'coupons'), s => {
   allCoupons = s.val() || {};
 });
 
+onValue(ref(db, 'productDiscounts'), s => {
+  productDiscounts = s.val() || {};
+  renderProducts();
+});
+
 let lastAnnouncementSignature = '';
 onValue(ref(db, 'popupAnnouncement'), s => {
   const ann = s.val();
   const modal = $('announcementPopupModal');
 
-  // An empty snapshot should not dismiss a promotion that has already opened.
-  // Close it only when Firebase contains an explicit saved inactive record.
   if (!ann) return;
   if (ann.active !== true) {
     lastAnnouncementSignature = '';
@@ -1090,8 +1038,8 @@ onValue(ref(db, 'popupAnnouncement'), s => {
     return;
   }
   const signature = JSON.stringify({title:ann.title||'',content:ann.content||'',mediaType:ann.mediaType||'none',mediaUrl:ann.mediaUrl||'',updatedAt:ann.updatedAt||0});
-  $('annPopupTitle').textContent = ann.title || 'Announcement';
-  $('annPopupContent').textContent = ann.content || '';
+  if ($('annPopupTitle')) $('annPopupTitle').textContent = ann.title || 'Announcement';
+  if ($('annPopupContent')) $('annPopupContent').textContent = ann.content || '';
   const mContainer = $('annPopupMediaContainer');
   if (mContainer) {
     mContainer.innerHTML = '';
@@ -1106,7 +1054,6 @@ onValue(ref(db, 'popupAnnouncement'), s => {
       }
     }
   }
-  // Open only when the announcement content changes; ordinary Firebase refreshes must not flash/reopen it.
   if (signature !== lastAnnouncementSignature) {
     lastAnnouncementSignature = signature;
     openModal('announcementPopupModal');
@@ -1115,80 +1062,8 @@ onValue(ref(db, 'popupAnnouncement'), s => {
 
 const floatBtn = $('floatingSupportBtn');
 if (floatBtn) {
-  // Movable support launcher: pointer events cover mouse, touch and stylus.
-  // A drag never triggers the support modal; position is clamped to the visible viewport.
-  let drag = null;
-  let suppressNextClick = false;
-  const margin = 8;
-  const clampPosition = (left, top) => ({
-    left: Math.max(margin, Math.min(left, window.innerWidth - floatBtn.offsetWidth - margin)),
-    top: Math.max(margin, Math.min(top, window.innerHeight - floatBtn.offsetHeight - margin))
-  });
-  const placeButton = (left, top, persist = false) => {
-    const p = clampPosition(left, top);
-    floatBtn.style.left = `${p.left}px`;
-    floatBtn.style.top = `${p.top}px`;
-    floatBtn.style.right = 'auto';
-    floatBtn.style.bottom = 'auto';
-    if (persist) {
-      try { localStorage.setItem('unionStoreSupportButtonPosition', JSON.stringify(p)); } catch (_) {}
-    }
-  };
-  // Always start at the intended bottom-right default position. Clear older
-  // persisted drag positions that could leave the support button near the header.
-  try { localStorage.removeItem('unionStoreSupportButtonPosition'); } catch (_) {}
-  floatBtn.style.left = 'auto';
-  floatBtn.style.top = 'auto';
-  floatBtn.style.right = 'max(16px, env(safe-area-inset-right))';
-  floatBtn.style.bottom = 'calc(76px + env(safe-area-inset-bottom))';
-  floatBtn.addEventListener('pointerdown', e => {
-    if (e.button !== undefined && e.button !== 0) return;
-    const rect = floatBtn.getBoundingClientRect();
-    drag = { id: e.pointerId, startX: e.clientX, startY: e.clientY, left: rect.left, top: rect.top, moved: false };
-    try { floatBtn.setPointerCapture(e.pointerId); } catch (_) {}
-  });
-  floatBtn.addEventListener('pointermove', e => {
-    if (!drag || drag.id !== e.pointerId) return;
-    const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
-    if (!drag.moved && Math.hypot(dx, dy) > 6) {
-      drag.moved = true;
-      floatBtn.classList.add('is-dragging');
-    }
-    if (drag.moved) {
-      e.preventDefault();
-      placeButton(drag.left + dx, drag.top + dy);
-    }
-  });
-  const finishDrag = e => {
-    if (!drag || (e && drag.id !== e.pointerId)) return;
-    if (drag.moved) {
-      const r = floatBtn.getBoundingClientRect();
-      placeButton(r.left, r.top, true);
-      suppressNextClick = true;
-      setTimeout(() => { suppressNextClick = false; }, 350);
-    }
-    drag = null;
-    floatBtn.classList.remove('is-dragging');
-  };
-  floatBtn.addEventListener('pointerup', finishDrag);
-  floatBtn.addEventListener('pointercancel', finishDrag);
-  floatBtn.addEventListener('lostpointercapture', () => { if (drag) finishDrag(); });
-  floatBtn.addEventListener('click', e => {
-    if (suppressNextClick) { e.preventDefault(); e.stopPropagation(); return; }
+  floatBtn.addEventListener('click', (e) => {
     window.openSupportModal();
-  });
-  floatBtn.setAttribute('role', 'button');
-  floatBtn.setAttribute('tabindex', '0');
-  floatBtn.setAttribute('aria-label', 'Move support button by dragging, or open customer support with a tap');
-  floatBtn.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      window.openSupportModal();
-    }
-  });
-  window.addEventListener('resize', () => {
-    const r = floatBtn.getBoundingClientRect();
-    placeButton(r.left, r.top, true);
   });
 }
 
@@ -1236,9 +1111,7 @@ function getPlatformSvg(platform) {
   return `<img src="https://www.google.com/s2/favicons?domain=www.google.com&sz=128" alt="Website icon" loading="lazy" style="width:${px}px;height:${px}px;object-fit:contain;display:block;flex-shrink:0">`;
 }
 
-
 onValue(ref(db, 'supportSettings'), s => {
-  // Only display support channels explicitly added by the admin. Do not inject defaults.
   const rawLinks = s.val();
   const links = (Array.isArray(rawLinks) ? rawLinks : (rawLinks && typeof rawLinks === 'object' ? Object.values(rawLinks) : []))
     .filter(item => item && item.url && item.title)
@@ -1283,13 +1156,6 @@ async function popKeyFromPlanInventory(productId, planName) {
     return currentProduct;
   });
   return poppedKey;
-}
-
-function getYouTubeEmbedUrl(url) {
-  if (!url) return '';
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=0&rel=0` : '';
 }
 
 function navigateTo(targetViewId, isBackAction = false) {
@@ -1360,9 +1226,9 @@ function setAuthMode(mode){
   const authCard = $('authModal')?.querySelector('.modal');
   if (authCard) { authCard.classList.toggle('auth-register-mode', reg); authCard.classList.toggle('auth-login-mode', !reg); }
   if ($('googleSignInBtn')) $('googleSignInBtn').innerHTML = $('googleSignInBtn').innerHTML.replace('Continue with Google', reg ? 'Sign up with Google' : 'Continue with Google');
-  $('authTitle').textContent = reg ? 'Create Account' : 'Welcome Back';
-  $('authSubmit').textContent = reg ? 'Create Account' : 'Sign In';
-  $('switchAuth').textContent = reg ? 'Already have an account? Sign In' : 'Create a new account';
+  if ($('authTitle')) $('authTitle').textContent = reg ? 'Create Account' : 'Welcome Back';
+  if ($('authSubmit')) $('authSubmit').textContent = reg ? 'Create Account' : 'Sign In';
+  if ($('switchAuth')) $('switchAuth').textContent = reg ? 'Already have an account? Sign In' : 'Create a new account';
   if ($('authModeHint')) $('authModeHint').textContent = reg ? 'Create your account to save purchases and referrals.' : 'Sign in to continue to your account.';
   if ($('authPassword')) $('authPassword').autocomplete = reg ? 'new-password' : 'current-password';
   if ($('registerReferralWrap')) $('registerReferralWrap').style.display = (reg && globalReferralEnabled) ? 'block' : 'none';
@@ -1448,17 +1314,16 @@ if (authSubmitEl) authSubmitEl.onclick = async () => {
         createdAt: Date.now()
       };
       if (sponsor && sponsor !== cred.user.uid) {
-        // Current referral codes are the referrer's Firebase UID.
-        const sponsorSnap = await new Promise((resolve, reject) => {
-          import('https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js').then(({ get }) => get(ref(db, 'users/' + sponsor))).then(resolve).catch(reject);
-        });
-        if (sponsorSnap.exists()) userPayload.referredBy = sponsor;
-        else if (enteredReferral) {
-          await set(ref(db, 'users/' + cred.user.uid), userPayload);
-          toast('Account created, but referral code was not recognized.');
-          authTransition('', true);
-          return;
-        }
+        try {
+          const sponsorSnap = await get(ref(db, 'users/' + sponsor));
+          if (sponsorSnap.exists()) userPayload.referredBy = sponsor;
+          else if (enteredReferral) {
+            await set(ref(db, 'users/' + cred.user.uid), userPayload);
+            toast('Account created, but referral code was not recognized.');
+            authTransition('', true);
+            return;
+          }
+        } catch(_) {}
       }
       await set(ref(db, 'users/' + cred.user.uid), userPayload);
     } else {
@@ -1468,11 +1333,11 @@ if (authSubmitEl) authSubmitEl.onclick = async () => {
   }catch(e){
     const code = e?.code || '';
     const messages = {
-      'auth/invalid-credential': 'Invalid email or password. On phone, check keyboard/autofill, email spelling, and password capitalization. The website is using the same Firebase project as the admin panel.',
-      'auth/wrong-password': 'Incorrect password. Re-enter it manually or reset your password.',
+      'auth/invalid-credential': 'Invalid email or password. On phone, check keyboard/autofill, email spelling, and password capitalization.',
+      'auth/wrong-password': 'Incorrect password.',
       'auth/user-not-found': 'No account exists for this email address.',
       'auth/too-many-requests': 'Too many attempts. Wait a while and try again.',
-      'auth/network-request-failed': 'Network request failed. Check your internet connection and try again.'
+      'auth/network-request-failed': 'Network request failed. Check your internet connection.'
     };
     toast(messages[code] || e.message || 'Authentication failed.');
   } finally { setAuthBusy(authSubmitEl, false); }
@@ -1503,7 +1368,6 @@ if (signOutEl) signOutEl.onclick = async () => {
   finally { setAuthBusy(signOutEl, false); }
 };
 
-// STRICT ISOLATED AUTH STATE LISTENER (PREVENTS ACCIDENTAL AUTO-ADMIN LOGIN)
 onAuthStateChanged(auth, u => {
   user = u;
   if ($('authNav')) $('authNav').classList.toggle('hidden', !!u);
@@ -1526,17 +1390,21 @@ onAuthStateChanged(auth, u => {
   const homeHero = document.querySelector('#view-home .hero');
   if (homeHero) { const explore = homeHero.querySelector('button[onclick*="view-catalog"]'); if (explore) explore.textContent = 'Browse Products & Prices ↓'; }
 
-
   if(u){
     onValue(ref(db, 'users/' + u.uid), snap => {
       const profile = snap.val() || {};
       userRole = ['reseller','seller'].includes(profile.role) ? profile.role : 'user';
       const resellerCard = $('resellerUpgradeCard'); if (resellerCard) { const p = resellerCard.querySelector('p'); if (p && userRole !== 'user') p.textContent = userRole === 'seller' ? 'Your Seller tier is active. Eligible plans now use seller pricing.' : 'Your Reseller tier is active. Eligible plans now use reseller pricing.'; }
       userWalletBalance = Number(profile.walletBalance || 0);
+
+      // ✅ Calculate Max Single Deposit for Reseller Upgrade
+      let highestDep = 0;
+      Object.values(deposits || {}).forEach(d => { if (d.uid === u.uid && d.status === 'approved') { const amt = Number(d.amount || 0); if (amt > highestDep) highestDep = amt; } });
+      maxSingleDeposit = highestDep;
       
-      if ($('topWalletBalance')) $('topWalletBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
-      if ($('depositPageBalance')) $('depositPageBalance').textContent = `₹${userWalletBalance.toFixed(2)}`;
-      document.querySelectorAll('.cur-wallet-bal').forEach(el => el.textContent = `₹${userWalletBalance.toFixed(2)}`);
+      if ($('topWalletBalance')) $('topWalletBalance').textContent = formatPrice(userWalletBalance); 
+      if ($('depositPageBalance')) $('depositPageBalance').textContent = formatPrice(userWalletBalance);
+      document.querySelectorAll('.cur-wallet-bal').forEach(el => el.textContent = formatPrice(userWalletBalance));
 
       const badge = $('activeRoleBadge');
       if (badge) {
@@ -1544,18 +1412,36 @@ onAuthStateChanged(auth, u => {
         badge.textContent = userRole === 'seller' ? '🏆 Seller Tier (Seller Rates)' : userRole === 'reseller' ? '🌟 Reseller Tier (Discounted Rates)' : 'Pricing: Standard User';
       }
 
+      const highlight = $('resellerActiveHighlight');
+      if (highlight) {
+        if (userRole === 'user') {
+          highlight.classList.remove('hidden');
+          if ($('highlightMinDepositText')) $('highlightMinDepositText').textContent = `₹${resellerMinDeposit}`;
+        } else if (userRole === 'reseller' && maxSingleDeposit >= resellerMinDeposit * 10) {
+          highlight.classList.remove('hidden');
+          if ($('highlightMinDepositText')) $('highlightMinDepositText').textContent = `₹${resellerMinDeposit * 10}`;
+        } else {
+          highlight.classList.add('hidden');
+        }
+      }
+      if ($('highlightMinDepositText') && userRole === 'user') $('highlightMinDepositText').textContent = `₹${resellerMinDeposit}`;
+
+      $('proResellerActiveBanner').classList.toggle('hidden', userRole !== 'reseller' && userRole !== 'seller');
+
       if (globalReferralEnabled && $('userReferralLinkInput')) {
         const refLink = `${window.location.origin}${window.location.pathname}?ref=${u.uid}`;
         $('userReferralLinkInput').value = refLink;
         if ($('userReferralCodeInput')) $('userReferralCodeInput').value = u.uid;
       }
       renderProducts();
+      updateAnalytics();
     });
 
     onValue(ref(db, 'users'), s => {
       const allUsers = s.val() || {};
       const referrals = Object.entries(allUsers).filter(([uid, usr]) => usr && usr.referredBy === u.uid && uid !== u.uid);
       if ($('userStatRefTotal')) $('userStatRefTotal').textContent = referrals.length;
+      if ($('analysisReferrals')) $('analysisReferrals').textContent = referrals.length;
       const list = $('referredUsersList');
       if (list) {
         if (!referrals.length) list.innerHTML = '<div class="empty">No referred users yet. Share your referral link to invite friends.</div>';
@@ -1583,7 +1469,7 @@ onAuthStateChanged(auth, u => {
           <b>Name:</b> ${window.esc(u.displayName || 'Customer')}<br><br>
           <b>Email:</b> ${window.esc(u.email)}<br><br>
           <b>Tier:</b> <span style="text-transform:uppercase;color:var(--cyan);font-weight:700">${userRole}</span><br><br>
-          <b>Wallet:</b> <span style="color:var(--green);font-weight:700">₹${userWalletBalance.toFixed(2)}</span><br><br>
+          <b>Wallet:</b> <span style="color:var(--green);font-weight:700">${formatPrice(userWalletBalance)}</span><br><br>
           <button class="btn secondary" style="width:100%" onclick="document.getElementById('signOut').click()">Sign Out</button>
         </div>`;
     }
@@ -1596,48 +1482,122 @@ onAuthStateChanged(auth, u => {
     renderOrders();
     renderKeys();
     renderProducts();
+    updateAnalytics();
+    $('resellerActiveHighlight')?.classList.add('hidden');
+    $('proResellerActiveBanner')?.classList.add('hidden');
   }
 });
 
+window.activateResellerRole = async () => {
+  if(!user) return toast('Login required');
+  
+  if (userRole === 'user' && maxSingleDeposit < resellerMinDeposit) {
+    return window.openSuccessPopup("Minimum Deposit Required", `Please deposit at least ₹${resellerMinDeposit} in a single transaction to activate Reseller role.`, "", () => navigateTo('view-deposit'));
+  }
+
+  try {
+    await update(ref(db, 'users/' + user.uid), { role: 'reseller', resellerUpgradedAt: Date.now(), resellerUpgradeSource: 'manual_click' });
+    toast('Reseller activated successfully!'); $('resellerActiveHighlight').classList.add('hidden');
+  } catch(e) { toast(e.message); }
+};
+
+// ✅ Currency Switch Logic (USDT <-> INR)
+const switchCurrencyBtnEl = $('switchCurrencyBtn');
+if (switchCurrencyBtnEl) {
+  switchCurrencyBtnEl.onclick = () => {
+    isUsdtMode = !isUsdtMode;
+    
+    if (isUsdtMode) {
+      if ($('currencyTitle')) $('currencyTitle').innerHTML = '👑 PRO RESELLER ACTIVE (USDT MODE)';
+      if ($('currencySubtitle')) $('currencySubtitle').textContent = 'You are enjoying Pro Reseller prices in USDT. You can switch back to INR Mode anytime.';
+      switchCurrencyBtnEl.textContent = '🔄 SWITCH TO INR MODE';
+      switchCurrencyBtnEl.style.background = '#5b8cff'; 
+    } else {
+      if ($('currencyTitle')) $('currencyTitle').innerHTML = '👑 PRO RESELLER ACTIVE (INR MODE)';
+      if ($('currencySubtitle')) $('currencySubtitle').textContent = 'You are enjoying Pro Reseller prices (INR).';
+      switchCurrencyBtnEl.textContent = '🔄 SWITCH TO USDT MODE';
+      switchCurrencyBtnEl.style.background = '#26a17b';
+    }
+    
+    if($('topWalletBalance')) $('topWalletBalance').textContent = formatPrice(userWalletBalance);
+    if($('depositPageBalance')) $('depositPageBalance').textContent = formatPrice(userWalletBalance);
+    document.querySelectorAll('.cur-wallet-bal').forEach(el => el.textContent = formatPrice(userWalletBalance));
+    
+    renderProducts(); 
+    if (selected) updateBuySummaryDisplay();
+    updateAnalytics();
+  };
+}
+
 function loadOrders(u){
-  onValue(ref(db, 'orders'), s => {
+  onValue(query(ref(db, 'orders'), orderByChild('uid'), equalTo(u.uid)), s => {
     userOrders = [];
-    let deliveredKeysCount = 0;
-    let commissionTotal = 0;
     s.forEach(c => {
       const val = c.val();
-      if (val && val.uid === u.uid) {
-        userOrders.push({ id: c.key, ...val });
-      }
-      if (val && val.referredBy === u.uid && val.status === 'delivered') {
-        deliveredKeysCount++;
-        commissionTotal += Number(val.commissionAwarded || 0);
-      }
+      if (val) userOrders.push({ id: c.key, ...val });
     });
     userOrders.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     if ($('statUserOrders')) $('statUserOrders').textContent = userOrders.length;
-    if ($('userStatRefKeys')) $('userStatRefKeys').textContent = deliveredKeysCount;
-    if ($('userStatRefCommission')) $('userStatRefCommission').textContent = `₹${commissionTotal.toFixed(2)}`;
     renderOrders();
     renderKeys();
+    updateAnalytics();
   });
+
+  onValue(query(ref(db, 'orders'), orderByChild('referredBy'), equalTo(u.uid)), refSnap => {
+    let dk = 0, ct = 0;
+    refSnap.forEach(c => {
+      const v = c.val();
+      if (v && v.status === 'delivered') { dk++; ct += Number(v.commissionAwarded || 0); }
+    });
+    if ($('userStatRefKeys')) $('userStatRefKeys').textContent = dk;
+    if ($('userStatRefCommission')) $('userStatRefCommission').textContent = formatPrice(ct);
+  }, { onlyOnce: true });
+}
+
+function updateAnalytics() {
+  const deliveredOrders = userOrders.filter(o => o.status === 'delivered');
+  const totalSpent = deliveredOrders.reduce((sum, o) => sum + Number(o.amount || 0), 0);
+  if($('analysisOrders')) $('analysisOrders').textContent = userOrders.length;
+  if($('analysisSpent')) $('analysisSpent').textContent = formatPrice(totalSpent);
+  if($('analysisKeys')) $('analysisKeys').textContent = deliveredOrders.length;
+  // Referral count is updated in users listener
 }
 
 function loadDeposits(u){
-  onValue(ref(db, 'deposits'), s => {
-    const list = [];
+  onValue(query(ref(db, 'deposits'), orderByChild('uid'), equalTo(u.uid)), s => {
+    deposits = []; // <-- FIXED: Clear and add deposits to global variable
     s.forEach(c => {
       const val = c.val();
-      if (val && val.uid === u.uid) list.push({ id: c.key, ...val });
+      if (val) deposits.push({ id: c.key, ...val });
     });
-    list.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+    deposits.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     
+    // Calculate max single deposit and update banner state
+    let highestDep = 0;
+    deposits.forEach(d => {
+      if (d.status === 'approved' && Number(d.amount) > highestDep) highestDep = Number(d.amount);
+    });
+    maxSingleDeposit = highestDep;
+
+    const highlight = $('resellerActiveHighlight');
+    if (highlight) {
+      if (userRole === 'user') {
+        highlight.classList.remove('hidden');
+        if ($('highlightMinDepositText')) $('highlightMinDepositText').textContent = `₹${resellerMinDeposit}`;
+      } else if (userRole === 'reseller' && maxSingleDeposit >= resellerMinDeposit * 10) {
+        highlight.classList.remove('hidden');
+        if ($('highlightMinDepositText')) $('highlightMinDepositText').textContent = `₹${resellerMinDeposit * 10}`;
+      } else {
+        highlight.classList.add('hidden');
+      }
+    }
+
     const fullContainer = $('depositHistoryListFull');
     if (fullContainer) {
-      if (!list.length) {
+      if (!deposits.length) {
         fullContainer.innerHTML = '<div class="empty">No deposit history found.</div>';
       } else {
-        fullContainer.innerHTML = list.map(d => `
+        fullContainer.innerHTML = deposits.map(d => `
           <div class="order-card">
             <div>
               <b>Auto Wallet Top-up</b>
@@ -1646,7 +1606,7 @@ function loadDeposits(u){
             </div>
             <div style="text-align:right">
               <span class="pill ${d.status==='approved'?'delivered':'pending'}">${window.esc(d.status||'pending')}</span>
-              <div style="font-weight:900;color:var(--cyan);margin-top:4px">+₹${Number(d.amount||0).toFixed(2)}</div>
+              <div style="font-weight:900;color:var(--cyan);margin-top:4px">+${formatPrice(d.amount||0)}</div>
             </div>
           </div>
         `).join('');
@@ -1677,13 +1637,13 @@ function renderOrders(){
         </div>
         <div style="text-align:right">
           <span class="pill ${o.status==='delivered'?'delivered':'pending'}">${window.esc(o.status||'pending')}</span>
-          <div style="font-weight:900;margin-top:4px">₹${Number(o.amount||0).toFixed(2)}</div>
+          <div style="font-weight:900;margin-top:4px">${formatPrice(o.amount||0)}</div>
         </div>
       </div>
       ${o.deliveryDetails && o.status==='delivered' ? `
         <div class="key-box-display">
           <span class="key-token-val">${window.esc(o.deliveryDetails)}</span>
-          <button class="btn-copy" onclick="window.copyKeyToken('${window.esc(o.deliveryDetails)}')">📋 Copy Key</button>
+          <button class="btn-copy" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(o.deliveryDetails)}">📋 Copy Key</button>
         </div>
       ` : ''}
     </div>
@@ -1721,6 +1681,7 @@ function renderKeys(){
   const keys = userOrders.filter(o => o.deliveryDetails && o.status==='delivered');
   
   if ($('statUserKeysCount')) $('statUserKeysCount').textContent = String(keys.length).padStart(2, '0');
+  if ($('statUserKeys')) $('statUserKeys').textContent = String(keys.length);
   
   const uniqueProducts = new Set(keys.map(k => k.productName));
   if ($('statUserProductsCount')) $('statUserProductsCount').textContent = String(uniqueProducts.size).padStart(2, '0');
@@ -1747,14 +1708,13 @@ function renderKeys(){
       
       <div style="background:#050811; border:1px dashed #283e5f; border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between; gap:10px">
         <span style="font-family:monospace; color:var(--cyan); font-weight:800; font-size:13.5px; word-break:break-all">${window.esc(o.deliveryDetails)}</span>
-        <button class="btn primary" style="padding:7px 14px; font-size:11.5px; flex-shrink:0" onclick="window.copyKeyToken('${window.esc(o.deliveryDetails)}')">📋 Copy</button>
+        <button class="btn primary" style="padding:7px 14px; font-size:11.5px; flex-shrink:0" onclick="window.copyKeyToken(this.dataset.key)" data-key="${window.esc(o.deliveryDetails)}">📋 Copy</button>
       </div>
     </div>
   `).join('');
 }
 
 function getPlans(p){
-  // Firebase can contain deleted/null product records or older plan formats.
   if (!p || typeof p !== 'object') return [];
   const r = p.plans;
   if (Array.isArray(r)) return r.filter(pl => pl && typeof pl === 'object').map((pl, i) => ({...pl, id: pl.id ?? String(i), name: String(pl.name || pl.title || `Plan ${i + 1}`), price: Number(pl.price || 0), resellerPrice: Number(pl.resellerPrice || 0), sellerPrice: Number(pl.sellerPrice || pl.resellerPrice || 0), keysPool: Array.isArray(pl.keysPool) ? pl.keysPool : []}));
@@ -1762,26 +1722,32 @@ function getPlans(p){
   return [];
 }
 
-function getActivePlanPrice(pl) {
-  if (userRole === 'seller' && pl.sellerPrice && Number(pl.sellerPrice) > 0) return Number(pl.sellerPrice);
-  if (userRole === 'reseller' && pl.resellerPrice && Number(pl.resellerPrice) > 0) return Number(pl.resellerPrice);
-  return Number(pl.price || 0);
+function getActivePlanPrice(pl, pId) {
+  let basePrice = userRole === 'seller' && pl.sellerPrice > 0 ? pl.sellerPrice : userRole === 'reseller' && pl.resellerPrice > 0 ? pl.resellerPrice : pl.price;
+  if (productDiscounts[pId]) {
+    const disc = productDiscounts[pId];
+    if (disc.type === 'percentage') basePrice = basePrice - (basePrice * Number(disc.value) / 100);
+    else basePrice = basePrice - Number(disc.value);
+  }
+  return Math.max(1, Math.round(basePrice));
 }
 
 function renderProducts(){
   const cat = $('category')?.value || 'all', search = $('search')?.value.toLowerCase().trim() || '';
   const safeProducts = (Array.isArray(products) ? products : []).filter(p => p && typeof p === 'object' && p.id != null && (p.name || p.title));
   const list = safeProducts.filter(p => p.active!==false && (!search || String(p.name || p.title || '').toLowerCase().includes(search)) && (cat==='all' || p.category===cat));
-  if ($('statCatalogCount')) $('statCatalogCount').textContent = safeProducts.filter(p => p.active!==false).length;
+  
+  list.sort((a,b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
 
+  if ($('statCatalogCount')) $('statCatalogCount').textContent = safeProducts.filter(p => p.active!==false).length;
   const prodContainer = $('products');
+  
   if (!prodContainer) return;
 
   prodContainer.innerHTML = list.length ? list.map(p => {
     const plans = getPlans(p), first = plans[0] || {name:'Default', price:0, resellerPrice:0, stock:0};
-    const firstPrice = getActivePlanPrice(first);
+    const firstPrice = getActivePlanPrice(first, p.id);
     const firstStock = (first.keysPool || []).length;
-
     let mediaHtml = '';
     if (p.mediaType === 'image' && p.mediaUrl) {
       mediaHtml = `<div class="product-media-container"><img src="${window.esc(p.mediaUrl)}" alt="${window.esc(p.name)}" loading="lazy"></div>`;
@@ -1802,20 +1768,29 @@ function renderProducts(){
       </div>
     `).join('');
 
+    const expandBtn = descLines.length > 3 ? `
+      <button type="button" class="expand-features-btn" onclick="window.toggleFeatures(this)">
+        <span>Show All Features</span> <span class="arrow">⬇️</span>
+      </button>
+    ` : '';
+
     const updateChannelBtn = p.updateChannelUrl ? `
       <a href="${window.esc(p.updateChannelUrl)}" target="_blank" class="btn secondary" style="width:100%; margin-top:8px; text-decoration:none; text-align:center; display:block; background:#142238; border-color:#2a4468; color:var(--cyan)">
         📥 Check Update File / Channel ↗
       </a>
     ` : '';
 
+    const disc = productDiscounts[p.id];
+    const discHtml = disc ? `<span class="pill discount" style="margin-left:8px;font-size:10px;vertical-align:middle;">${disc.value}${disc.type==='percentage'?'%':'₹'} OFF</span>` : '';
+
     return `
-      <article class="product" data-product="${window.esc(p.id)}">
+      <article class="product ${p.isPinned ? 'pinned' : ''}" data-product="${window.esc(p.id)}">
         ${mediaHtml}
         <div class="product-header-row">
           <div class="product-title-area">
-            <div class="product-icon">⚡</div>
+            <div class="product-icon">${p.isPinned ? '📌' : '⚡'}</div>
             <div>
-              <h3 style="margin:0;font-size:18px;font-weight:900;color:#fff">${window.esc(p.name)}</h3>
+              <h3 style="margin:0;font-size:18px;font-weight:900;color:#fff">${window.esc(p.name)} ${discHtml}</h3>
               <div style="font-size:12px;color:var(--muted);margin-top:2px">${window.esc(p.category || 'Premium Panel')}</div>
             </div>
           </div>
@@ -1825,6 +1800,7 @@ function renderProducts(){
         <div class="feature-list" tabindex="0" role="region" aria-label="Product features; scroll to view all features">
           ${featuresHtml}
         </div>
+        ${expandBtn}
 
         <div class="plan-picker-box">
           <div class="plan-picker-label">CHOOSE YOUR PLAN</div>
@@ -1832,7 +1808,7 @@ function renderProducts(){
             <select class="field plan-select" style="background:#04070e;border-color:#1c2d4a;font-weight:700">
               ${plans.map((pl,i)=>{
                 const stk = (pl.keysPool||[]).length;
-                return `<option value="${i}">${window.esc(pl.name)} — ₹${getActivePlanPrice(pl)} (${stk > 0 ? stk + ' in stock' : 'Out of stock'})</option>`;
+                return `<option value="${i}">${window.esc(pl.name)} — ${formatPrice(getActivePlanPrice(pl, p.id))} (${stk > 0 ? stk + ' in stock' : 'Out of stock'})</option>`;
               }).join('')}
             </select>
           </div>
@@ -1843,7 +1819,7 @@ function renderProducts(){
         <div class="product-bottom" style="margin-top:12px">
           <div>
             <div style="font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:800">TOTAL PRICE</div>
-            <div class="price" style="color:var(--green)">₹<span class="price-num">${firstPrice}</span></div>
+            <div class="price" style="color:var(--green)"><span class="price-num">${formatPrice(firstPrice)}</span></div>
           </div>
           <button class="btn primary buy-btn" ${firstStock===0?'disabled':''} style="padding:11px 22px;font-size:14px;box-shadow:0 6px 20px rgba(91,140,255,0.3)">
             Buy Now ➔
@@ -1863,7 +1839,7 @@ function renderProducts(){
         const stk = Array.isArray(pl.keysPool) ? pl.keysPool.length : 0;
         const priceEl = card.querySelector('.price-num');
         const buttonEl = card.querySelector('.buy-btn');
-        if (priceEl) priceEl.textContent = getActivePlanPrice(pl);
+        if (priceEl) priceEl.textContent = formatPrice(getActivePlanPrice(pl, p.id));
         if (buttonEl) buttonEl.disabled = (stk === 0 || plans.length === 0);
       };
     }
@@ -1872,7 +1848,7 @@ function renderProducts(){
       buyBtn.onclick = () => {
         const pl = plans[Number(sel?.value)] || plans[0];
         if (!pl) { toast('This product has no valid plans. Please contact support.'); return; }
-        selected = { product: p, plan: pl, activePrice: getActivePlanPrice(pl) };
+        selected = { product: p, plan: pl, activePrice: getActivePlanPrice(pl, p.id) };
         if(!user){ $('authNav').click(); toast('Please sign in first'); return; }
         
         const savedPhone = localStorage.getItem('tg_saved_phone') || '';
@@ -1902,7 +1878,7 @@ function updateBuySummaryDisplay() {
   $('summaryProdName').textContent = selected.product.name;
   $('summaryCatSub').textContent = selected.product.category || 'Panel License';
   $('summaryPlanNameText').textContent = `Plan: ${selected.plan.name}`;
-  $('summaryPayableVal').textContent = `₹${finalPrice.toFixed(2)}`;
+  $('summaryPayableVal').textContent = formatPrice(finalPrice);
 }
 
 const applyCouponBtnEl = $('applyCouponBtn');
@@ -1929,7 +1905,7 @@ if (applyCouponBtnEl) applyCouponBtnEl.onclick = () => {
 
   appliedDiscount = { code: code, amount: discVal };
   msgEl.style.color = 'var(--green)';
-  msgEl.textContent = `Success! Saved ₹${discVal}`;
+  msgEl.textContent = `Success! Saved ${formatPrice(discVal)}`;
   updateBuySummaryDisplay();
 };
 
@@ -1961,8 +1937,8 @@ onValue(ref(db, 'siteNotice'), s => {
   const val = s.val();
   const bar = $('liveAnnouncementBar');
   if(val && val.trim()){
-    $('announcementText').textContent = val;
-    bar.style.display = 'block';
+    if ($('announcementText')) $('announcementText').textContent = val;
+    if (bar) bar.style.display = 'block';
   } else {
     if (bar) bar.style.display = 'none';
   }
@@ -1970,24 +1946,21 @@ onValue(ref(db, 'siteNotice'), s => {
 
 async function processReferralRewards(buyerUid, orderAmount, orderDbId) {
   if (!globalReferralEnabled) return;
-  onValue(ref(db, 'users/' + buyerUid), async snap => {
-    const buyerData = snap.val() || {};
+  try {
+    const buyerSnap = await get(ref(db, 'users/' + buyerUid));
+    const buyerData = buyerSnap.val() || {};
     const sponsorUid = buyerData.referredBy;
-    if (sponsorUid && sponsorUid !== buyerUid) {
-      const commissionAmt = Number(((orderAmount * globalReferralPercentage) / 100).toFixed(2));
-      
-      onValue(ref(db, 'users/' + sponsorUid), async sSpnsr => {
-        const sponsorData = sSpnsr.val() || {};
-        const newSponsorBal = Number(sponsorData.walletBalance || 0) + commissionAmt;
-        await update(ref(db, 'users/' + sponsorUid), { walletBalance: newSponsorBal });
-        
-        await update(ref(db, 'orders/' + orderDbId), {
-          referredBy: sponsorUid,
-          commissionAwarded: commissionAmt
-        });
-      }, {onlyOnce: true});
-    }
-  }, {onlyOnce: true});
+    if (!sponsorUid || sponsorUid === buyerUid) return;
+
+    const commissionAmt = Number(((orderAmount * globalReferralPercentage) / 100).toFixed(2));
+    if (!Number.isFinite(commissionAmt) || commissionAmt <= 0) return;
+
+    await runTransaction(ref(db, 'users/' + sponsorUid + '/walletBalance'), cur => Number(cur || 0) + commissionAmt);
+    await update(ref(db, 'orders/' + orderDbId), {
+      referredBy: sponsorUid,
+      commissionAwarded: commissionAmt
+    });
+  } catch (e) { console.warn('Referral reward error:', e); }
 }
 
 const payViaWalletBtnEl = $('payViaWalletBtn');
@@ -1999,22 +1972,75 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
   if (appliedDiscount.amount > 0) finalPayable = Math.max(1, selected.activePrice - appliedDiscount.amount);
 
   if (userWalletBalance < finalPayable) {
-    return toast(`Insufficient Balance! Required: ₹${finalPayable}, Available: ₹${userWalletBalance.toFixed(2)}`);
+    return toast(`Insufficient Balance! Required: ${formatPrice(finalPayable)}, Available: ${formatPrice(userWalletBalance)}`);
   }
 
   const currentStock = (selected.plan.keysPool || []).length;
-  if(currentStock <= 0) return toast('Selected plan is out of stock!');
+  
+  // ✅ CHECK SUPPLIER STOCK
+  if(currentStock <= 0 && selected.product.supplierType === 'manual') {
+    return toast('Selected plan is out of stock!');
+  }
+  if(currentStock <= 0 && !selected.product.supplierType) {
+    return toast('Selected plan is out of stock!');
+  }
 
   const remCheckbox = $('rememberPhoneCheckbox');
   if (remCheckbox && remCheckbox.checked) localStorage.setItem('tg_saved_phone', phone);
 
   try {
-    const keyDispatched = await popKeyFromPlanInventory(selected.product.id, selected.plan.name);
-    if (!keyDispatched) return toast('Stock exhausted just now!');
+    let keyDispatched = null;
 
+    // ✅ AGAR MANUAL SUPPLIER HAI TOH LOCAL STOCK SE KEY NIKALO
+    if (selected.product.supplierType === 'manual' || !selected.product.supplierType) {
+      keyDispatched = await popKeyFromPlanInventory(selected.product.id, selected.plan.name);
+      if (!keyDispatched) return toast('Stock exhausted just now!');
+    } 
+    // ✅ AGAR BANTI BHAIYA HAI TOH API SE KEY MANGWAO
+    else if (selected.product.supplierType === 'bantibhaiya') {
+      const res = await fetch(`${PROXY_URL}/api/supplier/bantibhaiya`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          api_key: '83a38a73012ac3e788486cf530d0e42b', // Worker me bhi hai, yahan fallback
+          product_id: selected.product.bantiPid,
+          duration: selected.plan.name, // Banti API duration accept karta hai
+          quantity: 1
+        })
+      });
+      const data = await res.json();
+      if(!data.success) throw new Error(data.message || data.error || 'Banti Bhaiya API Error');
+      
+      // Banti se key extract karo
+      keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
+      if(!keyDispatched) throw new Error('Banti se valid key nahi mili');
+    }
+    // ✅ AGAR VipSeller HAI TOH API SE KEY MANGWAO
+    else if (selected.product.supplierType === 'vipseller') {
+      const res = await fetch(`${PROXY_URL}/api/supplier/vipseller`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          variant_id: selected.plan.vipVariantId,
+          quantity: 1,
+          api_version: selected.plan.vipApiVersion || 'v2'
+        })
+      });
+      const data = await res.json();
+      if(!data.success) throw new Error(data.message || data.error || 'VipSeller API Error');
+
+      // VipSeller se key extract karo
+      keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
+      if(!keyDispatched) throw new Error('VipSeller se valid key nahi mili');
+    }
+
+    if (!keyDispatched) throw new Error('Key generation failed from supplier');
+
+    // Update User Balance
     const newBal = userWalletBalance - finalPayable;
     await update(ref(db, 'users/' + user.uid), { walletBalance: newBal });
 
+    // Save Order
     const r = push(ref(db, 'orders'));
     const orderDbId = r.key;
     await set(r, {
@@ -2052,54 +2078,72 @@ if (payViaWalletBtnEl) payViaWalletBtnEl.onclick = async () => {
 };
 
 async function createFamGatewayOrder({ amount, customerName = 'Customer', customerEmail = '', customerPhone = '' }) {
-  // FamGateway documents /api/qr.php as its GET order-creation endpoint.
-  // This avoids the JSON/X-Api-Key preflight that can fail on static GitHub Pages.
-  const params = new URLSearchParams({ api_key: dynamicGatewayKey, amount: String(amount), customer_name: customerName || 'Customer' });
-  if (customerEmail) params.set('customer_email', customerEmail);
-  if (customerPhone) params.set('customer_phone', customerPhone);
-  params.set('redirect_url', window.location.href);
+  const targetUrl = `https://famgateway.in/api/create-order`;
+  
+  const bodyData = {
+    amount: amount
+  };
+  if (customerName) bodyData.customer_name = customerName;
+  if (customerEmail) bodyData.customer_email = customerEmail;
+  if (customerPhone) bodyData.customer_phone = customerPhone;
+
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  
   try {
-    const res = await fetch(`https://famgateway.in/api/qr.php?${params.toString()}`, { method:'GET', headers:{Accept:'application/json'}, cache:'no-store', signal:controller.signal });
-    if (!res.ok) throw new Error(`Gateway order HTTP ${res.status}`);
+    const res = await fetch(`${PROXY_URL}?url=${encodeURIComponent(targetUrl)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      cache: 'no-store',
+      signal: controller.signal,
+      body: JSON.stringify(bodyData)
+    });
+    
+    if (!res.ok) {
+       let errMsg = `Gateway HTTP ${res.status}`;
+       try { const errJson = await res.json(); if (errJson.message) errMsg = errJson.message; } catch(e){}
+       throw new Error(errMsg);
+    }
     const result = await res.json();
-    if (result.status !== 'success' || !result.data || !result.data.order_id) throw new Error(result.message || result.error || 'Gateway did not create a payment order.');
+    if (result.status !== 'success' || !result.data || !result.data.order_id) {
+      throw new Error(result.message || result.error || 'Gateway did not create a payment order.');
+    }
     return result;
   } catch (err) {
     if (err.name === 'AbortError') throw new Error('Payment gateway timed out. Please try again.');
-    if (err instanceof TypeError) throw new Error('FamGateway request blocked by browser/network (CORS). Static GitHub Pages cannot bypass this safely. Gateway provider must enable CORS for this domain, or the API call must go through a secure backend proxy. Payment was NOT verified.');
+    if (err instanceof TypeError) throw new Error('Network error or CORS blocked.');
     throw err;
-  } finally { clearTimeout(timeout); }
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
-function configureUpiPaymentButton(button, orderData, label) {
+function configureUpiPaymentButton(button, orderData) {
   if (!button) return;
-  const intent = typeof orderData.upi_intent === 'string' ? orderData.upi_intent.trim() : '';
-  const checkout = typeof orderData.checkout_url === 'string' ? orderData.checkout_url.trim() : '';
-  const useIntent = intent.startsWith('upi://pay?');
-  const target = useIntent ? intent : checkout;
-  if (!target) { button.style.display = 'none'; return; }
-  // Direct anchor navigation preserves Android's user gesture for UPI app launch.
-  button.href = target;
-  button.removeAttribute('target');
-  button.setAttribute('rel', 'noopener');
-  button.textContent = useIntent ? label : 'Open Secure Payment Page';
-  button.onclick = null;
-  button.style.display = 'flex';
+  if (orderData.upi_intent && String(orderData.upi_intent).startsWith('upi://pay?')) {
+    button.href = orderData.upi_intent;
+    button.textContent = 'Pay via UPI App';
+    button.style.display = 'flex';
+    return;
+  }
+  if (orderData.checkout_url) {
+    button.href = orderData.checkout_url;
+    button.textContent = 'Open Secure Payment Page';
+    button.style.display = 'flex';
+    return;
+  }
+  button.style.display = 'none';
 }
 
 async function fetchSafeOrderStatus(orderId) {
   if (!orderId) throw new Error('Missing gateway order ID.');
-  const primaryUrl = `https://famgateway.in/api/checkout-status.php?order_id=${encodeURIComponent(orderId)}`;
+  
+  const targetUrl = `https://famgateway.in/api/checkout-status.php?order_id=${encodeURIComponent(orderId)}`;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 9000);
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  
   try {
-    // FamGateway's status polling endpoint is intended for public order-status checks.
-    // Do not send X-Api-Key here: a custom header can trigger a browser CORS preflight,
-    // which is a common cause of 'Fetch failed' on static GitHub Pages sites.
-    // Every invocation makes a fresh network request; no cached status is reused.
-    const res = await fetch(primaryUrl, {
+    const res = await fetch(`${PROXY_URL}?url=${encodeURIComponent(targetUrl)}`, {
       method: 'GET',
       headers: { 'Accept': 'application/json' },
       signal: controller.signal,
@@ -2107,16 +2151,17 @@ async function fetchSafeOrderStatus(orderId) {
     });
     if (!res.ok) throw new Error(`Gateway status HTTP ${res.status}`);
     const data = await res.json();
-    const nested = data && (data.data || data.result || data);
-    if (!nested || typeof nested !== 'object') throw new Error('Invalid gateway status response.');
-    return { ...nested, status: String(nested.status || nested.payment_status || nested.order_status || '').toLowerCase() };
+    
+    if (!data || typeof data !== 'object') throw new Error('Invalid gateway status response.');
+    
+    return {
+      ...data,
+      status: String(data.status || '').toLowerCase(),
+      utr: data.utr || data.transaction_id || null
+    };
   } catch (err) {
-    // Public CORS proxies are not reliable payment-verification infrastructure.
-    // Only use this fallback for CORS/network failures; never treat its response as payment proof.
-    if (err.name === 'AbortError') throw new Error('Payment gateway status request timed out. Retry shortly.');
-    if (err instanceof TypeError && /fetch/i.test(err.message || '')) {
-      throw new Error('FamGateway status request blocked by browser/network (CORS). Payment was NOT verified or credited. The gateway must allow this website origin or status checks must use a secure backend proxy.');
-    }
+    if (err.name === 'AbortError') throw new Error('Payment status request timed out.');
+    if (err instanceof TypeError) throw new Error('Gateway status request blocked by network.');
     throw err;
   } finally {
     clearTimeout(timeout);
@@ -2125,21 +2170,18 @@ async function fetchSafeOrderStatus(orderId) {
 
 let activePollInterval = null;
 
-function startCountdownTimer(displayElementId, onExpire) {
-  if (countdownTimerRef) clearInterval(countdownTimerRef);
+function startCountdownTimer(displayElementId, onExpire, kind = 'order') {
+  const refName = kind === 'deposit' ? 'depositCountdownRef' : 'orderCountdownRef';
+  if (window[refName]) clearInterval(window[refName]);
   let duration = 300;
   const disp = $(displayElementId);
-  
-  countdownTimerRef = setInterval(() => {
-    let minutes = Math.floor(duration / 60);
-    let seconds = duration % 60;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-    
-    if (disp) disp.textContent = `QR Expires in: ${minutes}:${seconds}`;
-
+  window[refName] = setInterval(() => {
+    let m = Math.floor(duration / 60), s = duration % 60;
+    m = m < 10 ? '0' + m : m; s = s < 10 ? '0' + s : s;
+    if (disp) disp.textContent = `QR Expires in: ${m}:${s}`;
     if (--duration < 0) {
-      clearInterval(countdownTimerRef);
+      clearInterval(window[refName]);
+      window[refName] = null;
       if (onExpire) onExpire();
     }
   }, 1000);
@@ -2151,7 +2193,11 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
   if(!phone || phone.length < 10) return toast('Please enter a valid 10-digit Phone Number');
 
   const currentStock = (selected.plan.keysPool || []).length;
-  if(currentStock <= 0) return toast('Selected plan is out of stock!');
+  
+  // ✅ CHECK SUPPLIER STOCK
+  if(currentStock <= 0 && selected.product.supplierType === 'manual') {
+    return toast('Selected plan is out of stock!');
+  }
 
   const remCheckbox = $('rememberPhoneCheckbox');
   if (remCheckbox && remCheckbox.checked) localStorage.setItem('tg_saved_phone', phone);
@@ -2202,18 +2248,18 @@ if (generateUpiQrBtnEl) generateUpiQrBtnEl.onclick = async () => {
       $('orderLoaderAnim').style.display = 'none';
       $('qrCheckoutBox').style.display = 'block';
       $('liveQrImage').src = orderData.qr_url;
-      $('qrPayableAmount').textContent = `₹${orderData.payable_amount}`;
+      const displayAmount = orderData.amount ?? orderData.payable_amount ?? finalPayable;
+      $('qrPayableAmount').textContent = formatPrice(displayAmount);
       if ($('orderStatusPillText')) $('orderStatusPillText').textContent = 'Waiting for payment confirmation...';
       
-      configureUpiPaymentButton($('directUpiAppBtn'), orderData, 'Pay via UPI App');
+      configureUpiPaymentButton($('directUpiAppBtn'), orderData);
 
       startAutoOrderFulfillmentPolling();
       startCountdownTimer('orderTimerDisplay', () => {
-        // QR countdown ending must not stop verification: the bank may confirm late.
         toast('QR timer ended. Payment status checks will continue every 30 seconds.');
         const timer = $('orderTimerDisplay');
         if (timer) timer.textContent = 'QR timer ended · Checking payment status…';
-      });
+      }, 'order');
     } else {
       $('orderLoaderAnim').style.display = 'none';
       $('buyInitialState').style.display = 'block';
@@ -2230,77 +2276,133 @@ async function checkOrderStatusExecution() {
   if (!activeOrderSession || orderStatusCheckInFlight) return false;
   orderStatusCheckInFlight = true;
   try {
-  const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode, sellerMembership } = activeOrderSession;
+    const { gatewayOrderId, dbOrderId, productId, planName, productName, amount, couponCode } = activeOrderSession;
 
-  const statusData = await fetchSafeOrderStatus(gatewayOrderId);
-  if (!statusData) return false;
+    const statusData = await fetchSafeOrderStatus(gatewayOrderId);
+    if (!statusData) return false;
 
-  const normalizedStatus = String(statusData.status || '').toLowerCase();
-  const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus) ||
-    statusData.success === true || statusData.payment_success === true;
+    const normalizedStatus = String(statusData.status || '').toLowerCase();
+    const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus);
 
-  if (isSuccess) {
-    // Claim this order atomically so concurrent tabs cannot dispatch multiple keys.
-    const claim = await runTransaction(ref(db, 'orders/' + dbOrderId), current => {
-      if (!current || !['payment_pending','pending'].includes(String(current.status || '').toLowerCase())) return;
-      return { ...current, status: 'fulfillment_processing', processingStartedAt: Date.now() };
-    });
-    if (!claim.committed) {
-      activeOrderSession = null;
-      if (activePollInterval) clearInterval(activePollInterval);
-      return true; // Another tab/device already processed this payment.
-    }
-    if (activePollInterval) clearInterval(activePollInterval);
-    if (countdownTimerRef) clearInterval(countdownTimerRef);
-
-    const keyDispatched = await popKeyFromPlanInventory(productId, planName);
-    if (!keyDispatched) {
-      await update(ref(db, 'orders/' + dbOrderId), {
-        status: 'paid_stock_review',
-        utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
-        verifiedAt: Date.now(),
-        deliveryDetails: ''
+    if (isSuccess) {
+      const claim = await runTransaction(ref(db, 'orders/' + dbOrderId), current => {
+        if (!current || !['payment_pending','pending'].includes(String(current.status || '').toLowerCase())) return;
+        return { ...current, status: 'fulfillment_processing', processingStartedAt: Date.now() };
       });
-      activeOrderSession = null;
+      if (!claim.committed) {
+        activeOrderSession = null;
+        if (activePollInterval) clearInterval(activePollInterval);
+        return true;
+      }
       if (activePollInterval) clearInterval(activePollInterval);
+      if (window.orderCountdownRef) clearInterval(window.orderCountdownRef);
+
+      let keyDispatched = null;
+      const p = products.find(x => String(x.id) === String(productId));
+      
+      // ✅ AGAR MANUAL SUPPLIER HAI TOH LOCAL STOCK SE KEY NIKALO
+      if (p && (p.supplierType === 'manual' || !p.supplierType)) {
+        keyDispatched = await popKeyFromPlanInventory(productId, planName);
+        if (!keyDispatched) {
+          await update(ref(db, 'orders/' + dbOrderId), {
+            status: 'paid_stock_review',
+            utr: statusData.utr || 'Bank-Verified',
+            verifiedAt: Date.now(),
+            deliveryDetails: ''
+          });
+          activeOrderSession = null;
+          if (activePollInterval) clearInterval(activePollInterval);
+          closeModal('buyModal');
+          toast('Payment verified, but stock is unavailable. Please contact support.');
+          return true;
+        }
+      } 
+      // ✅ AGAR BANTI BHAIYA HAI TOH API SE KEY MANGWAO
+      else if (p && p.supplierType === 'bantibhaiya') {
+        const res = await fetch(`${PROXY_URL}/api/supplier/bantibhaiya`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            product_id: p.bantiPid,
+            duration: planName,
+            quantity: 1
+          })
+        });
+        const data = await res.json();
+        if(!data.success) {
+          await update(ref(db, 'orders/' + dbOrderId), { status: 'paid_stock_review', utr: statusData.utr || 'Bank-Verified', verifiedAt: Date.now(), deliveryDetails: '' });
+          activeOrderSession = null;
+          closeModal('buyModal');
+          toast('Payment verified, but Banti API failed. Contact support.');
+          return true;
+        }
+        keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
+      }
+      // ✅ AGAR VIPSELLER HAI TOH API SE KEY MANGWAO
+      else if (p && p.supplierType === 'vipseller') {
+        const pl = p.plans.find(x => x.name === planName);
+        const res = await fetch(`${PROXY_URL}/api/supplier/vipseller`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            variant_id: pl?.vipVariantId || '',
+            quantity: 1,
+            api_version: pl?.vipApiVersion || 'v2'
+          })
+        });
+        const data = await res.json();
+        if(!data.success) {
+          await update(ref(db, 'orders/' + dbOrderId), { status: 'paid_stock_review', utr: statusData.utr || 'Bank-Verified', verifiedAt: Date.now(), deliveryDetails: '' });
+          activeOrderSession = null;
+          closeModal('buyModal');
+          toast('Payment verified, but VipSeller API failed. Contact support.');
+          return true;
+        }
+        keyDispatched = Array.isArray(data.keys) ? data.keys[0] : (data.key || data.data?.key);
+      }
+
+      if (!keyDispatched) {
+        await update(ref(db, 'orders/' + dbOrderId), { status: 'paid_stock_review', utr: statusData.utr || 'Bank-Verified', verifiedAt: Date.now(), deliveryDetails: '' });
+        activeOrderSession = null;
+        if (activePollInterval) clearInterval(activePollInterval);
+        closeModal('buyModal');
+        toast('Payment verified, but key delivery failed. Contact support.');
+        return true;
+      }
+
+      await update(ref(db, 'orders/' + dbOrderId), {
+        status: 'delivered',
+        deliveryDetails: keyDispatched,
+        utr: statusData.utr || 'Bank-Verified',
+        verifiedAt: Date.now(),
+        deliveredAt: Date.now()
+      });
+
+      await processReferralRewards(user.uid, amount, dbOrderId);
+
+      if (couponCode && allCoupons[couponCode]) {
+        const cObj = allCoupons[couponCode];
+        await update(ref(db, 'coupons/' + couponCode), { usedCount: Number(cObj.usedCount || 0) + 1 });
+      }
+
+      activeOrderSession = null;
       closeModal('buyModal');
-      toast('Payment verified, but stock is unavailable. Please contact support for delivery/refund.');
+      window.openSuccessPopup(
+        'Payment Verified & Key Dispatched!',
+        `Product: ${productName} (${planName})`,
+        `<b>UTR:</b> ${window.esc(statusData.utr || 'Verified')}<div class="key-box-display"><code class="key-token-val" id="successDeliveredKey">${window.esc(keyDispatched)}</code><button class="btn-copy" onclick="window.copyKeyToken(document.getElementById('successDeliveredKey').textContent)">📋 Copy Key</button></div>`,
+        () => navigateTo('view-keys')
+      );
+      return true;
+    } else if (normalizedStatus === 'expired') {
+      if (activePollInterval) clearInterval(activePollInterval);
+      if (window.orderCountdownRef) clearInterval(window.orderCountdownRef);
+      activeOrderSession = null;
+      toast('Payment window expired.');
+      closeModal('buyModal');
       return true;
     }
-
-    await update(ref(db, 'orders/' + dbOrderId), {
-      status: 'delivered',
-      deliveryDetails: keyDispatched,
-      utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
-      verifiedAt: Date.now(),
-      deliveredAt: Date.now()
-    });
-
-    await processReferralRewards(user.uid, amount, dbOrderId);
-
-    if (couponCode && allCoupons[couponCode]) {
-      const cObj = allCoupons[couponCode];
-      await update(ref(db, 'coupons/' + couponCode), { usedCount: Number(cObj.usedCount || 0) + 1 });
-    }
-
-    activeOrderSession = null;
-    closeModal('buyModal');
-    window.openSuccessPopup(
-      'Payment Verified & Key Dispatched!',
-      `Product: ${productName} (${planName})`,
-      `<b>UTR:</b> ${window.esc(statusData.utr || statusData.payment_id || 'Verified')}<div class="key-box-display"><code class="key-token-val" id="successDeliveredKey">${window.esc(keyDispatched)}</code><button class="btn-copy" onclick="window.copyKeyToken(document.getElementById('successDeliveredKey').textContent)">📋 Copy Key</button></div>`,
-      () => navigateTo('view-keys')
-    );
-    return true;
-  } else if (statusData.status === 'expired') {
-    if (activePollInterval) clearInterval(activePollInterval);
-    if (countdownTimerRef) clearInterval(countdownTimerRef);
-    activeOrderSession = null;
-    toast('Payment window expired.');
-    closeModal('buyModal');
-    return true;
-  }
-  return false;
+    return false;
   } finally {
     orderStatusCheckInFlight = false;
   }
@@ -2308,7 +2410,6 @@ async function checkOrderStatusExecution() {
 
 function startAutoOrderFulfillmentPolling() {
   if (activePollInterval) clearInterval(activePollInterval);
-  // Check every 30 seconds; manual check always invokes the gateway immediately.
   activePollInterval = setInterval(async () => {
     try { await checkOrderStatusExecution(); } catch (e) { console.warn('Auto payment check:', e); }
   }, 5000);
@@ -2324,7 +2425,7 @@ if (checkOrderStatusManualBtnEl) checkOrderStatusManualBtnEl.onclick = async () 
 
   try {
     const verified = await checkOrderStatusExecution();
-    if (!verified) toast('Payment abhi confirm nahi hua. Gateway status kuch der baad update ho sakta hai.');
+    if (!verified) toast('Payment abhi confirm nahi hua. Gateway status update hone par phir check karein.');
   } catch(e) {
     toast('Payment check failed: ' + e.message);
   } finally {
@@ -2339,8 +2440,9 @@ let depositPollInterval = null;
 const generateDepositQrBtnEl = $('generateDepositQrBtn');
 if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
   if(!user){ $('authNav').click(); return; }
-  const amount = Number($('depositAmountInput').value);
-  if(!amount || amount < 1) return toast('Enter a valid deposit amount');
+  const amount = parseFloat($('depositAmountInput').value);
+  if (!Number.isFinite(amount) || amount < 1) return toast('Enter a valid deposit amount (min ₹1)');
+  if (amount > 100000) return toast('Maximum deposit is ₹1,00,000 per transaction');
 
   $('depositQrBox').style.display = 'none';
   $('depositLoaderAnim').style.display = 'block';
@@ -2375,18 +2477,18 @@ if (generateDepositQrBtnEl) generateDepositQrBtnEl.onclick = async () => {
       $('depositLoaderAnim').style.display = 'none';
       $('depositQrBox').style.display = 'block';
       $('liveDepositQrImage').src = orderData.qr_url;
-      $('depositPayableAmount').textContent = `₹${orderData.payable_amount}`;
+      const displayAmount = orderData.amount ?? orderData.payable_amount ?? amount;
+      $('depositPayableAmount').textContent = formatPrice(displayAmount);
       if ($('depositStatusPillText')) $('depositStatusPillText').textContent = 'Waiting for payment confirmation...';
       
-      configureUpiPaymentButton($('directDepositUpiBtn'), orderData, 'Open in UPI App');
+      configureUpiPaymentButton($('directDepositUpiBtn'), orderData);
 
       startAutoDepositCreditPolling();
       startCountdownTimer('depositTimerDisplay', () => {
-        // Continue checking after the displayed QR timer ends, in case confirmation is delayed.
         toast('QR timer ended. Payment status checks will continue every 30 seconds.');
         const timer = $('depositTimerDisplay');
         if (timer) timer.textContent = 'QR timer ended · Checking payment status…';
-      });
+      }, 'deposit');
     } else {
       $('depositLoaderAnim').style.display = 'none';
       toast(result.message || 'Deposit initiation failed');
@@ -2401,69 +2503,59 @@ async function checkDepositStatusExecution() {
   if (!activeDepositSession || depositStatusCheckInFlight) return false;
   depositStatusCheckInFlight = true;
   try {
-  const { gatewayOrderId, depositDbId, amount } = activeDepositSession;
+    const { gatewayOrderId, depositDbId, amount } = activeDepositSession;
 
-  const statusData = await fetchSafeOrderStatus(gatewayOrderId);
-  if (!statusData) return false;
+    const statusData = await fetchSafeOrderStatus(gatewayOrderId);
+    if (!statusData) return false;
 
-  const normalizedStatus = String(statusData.status || '').toLowerCase();
-  const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus) ||
-    statusData.success === true || statusData.payment_success === true;
+    const normalizedStatus = String(statusData.status || '').toLowerCase();
+    const isSuccess = ['success','completed','paid','successful','captured','approved'].includes(normalizedStatus);
 
-  if (isSuccess) {
-    // Atomically claim the deposit to prevent double wallet credit from parallel tabs.
-    const claim = await runTransaction(ref(db, 'deposits/' + depositDbId), current => {
-      if (!current || !['pending','processing'].includes(String(current.status || '').toLowerCase())) return;
-      if (current.status === 'processing') return;
-      return { ...current, status: 'processing', processingStartedAt: Date.now() };
-    });
-    if (!claim.committed) {
-      activeDepositSession = null;
+    if (isSuccess) {
+      const claim = await runTransaction(ref(db, 'deposits/' + depositDbId), current => {
+        if (!current || !['pending','processing'].includes(String(current.status || '').toLowerCase())) return;
+        if (current.status === 'processing') return;
+        return { ...current, status: 'processing', processingStartedAt: Date.now() };
+      });
+      if (!claim.committed) {
+        activeDepositSession = null;
+        if (depositPollInterval) clearInterval(depositPollInterval);
+        return true;
+      }
       if (depositPollInterval) clearInterval(depositPollInterval);
+      if (window.depositCountdownRef) clearInterval(window.depositCountdownRef);
+
+      const updatedBal = userWalletBalance + amount;
+      const userPatch = { walletBalance: updatedBal };
+      
+      await update(ref(db, 'users/' + user.uid), userPatch);
+
+      await update(ref(db, 'deposits/' + depositDbId), {
+        status: 'approved',
+        utr: statusData.utr || 'Bank-Verified',
+        approvedAt: Date.now()
+      });
+
+      activeDepositSession = null;
+      $('depositQrBox').style.display = 'none';
+      $('depositAmountInput').value = '';
+
+      window.openSuccessPopup(
+        'Wallet Credited Successfully!',
+        `${formatPrice(amount)} has been verified and added to your wallet balance.`,
+        `<b>New Balance:</b> ${formatPrice(updatedBal)}`,
+        () => navigateTo('view-home')
+      );
+      return true;
+    } else if (normalizedStatus === 'expired') {
+      if (depositPollInterval) clearInterval(depositPollInterval);
+      if (window.depositCountdownRef) clearInterval(window.depositCountdownRef);
+      activeDepositSession = null;
+      $('depositQrBox').style.display = 'none';
+      toast('Payment expired. Please retry.');
       return true;
     }
-    if (depositPollInterval) clearInterval(depositPollInterval);
-    if (countdownTimerRef) clearInterval(countdownTimerRef);
-
-    const updatedBal = userWalletBalance + amount;
-    const userPatch = { walletBalance: updatedBal };
-    // Upgrade only when this single verified deposit reaches the admin-set threshold.
-    const cfgSnap = await new Promise((resolve, reject) => onValue(ref(db, 'appConfig'), snap => { resolve(snap); }, { onlyOnce: true }));
-    const cfg = cfgSnap.val() || {};
-    if (cfg.autoResellerEnabled && amount >= Number(cfg.autoResellerAmount || 0)) {
-      userPatch.role = 'reseller';
-      userPatch.resellerUpgradedAt = Date.now();
-      userPatch.resellerUpgradeSource = 'single_deposit';
-    }
-    await update(ref(db, 'users/' + user.uid), userPatch);
-
-    await update(ref(db, 'deposits/' + depositDbId), {
-      status: 'approved',
-      utr: statusData.utr || statusData.payment_id || 'Bank-Verified',
-      approvedAt: Date.now(),
-      resellerUpgradeApplied: !!userPatch.role
-    });
-
-    activeDepositSession = null;
-    $('depositQrBox').style.display = 'none';
-    $('depositAmountInput').value = '';
-
-    window.openSuccessPopup(
-      'Wallet Credited Successfully!',
-      `₹${amount} has been verified and added to your wallet balance.`,
-      `<b>New Balance:</b> ₹${updatedBal.toFixed(2)}`,
-      () => navigateTo('view-home')
-    );
-    return true;
-  } else if (statusData.status === 'expired') {
-    if (depositPollInterval) clearInterval(depositPollInterval);
-    if (countdownTimerRef) clearInterval(countdownTimerRef);
-    activeDepositSession = null;
-    $('depositQrBox').style.display = 'none';
-    toast('Payment expired. Please retry.');
-    return true;
-  }
-  return false;
+    return false;
   } finally {
     depositStatusCheckInFlight = false;
   }
@@ -2500,10 +2592,135 @@ if (searchInputEl) searchInputEl.oninput = renderProducts;
 
 const categorySelectEl = $('category');
 if (categorySelectEl) categorySelectEl.onchange = renderProducts;
+
+function renderSellerMembershipChoices() {
+  const host = $('sellerMembershipPlansList');
+  if (!host) return;
+
+  const raw = availableSellerMembershipPlans || {};
+  const entries = Object.entries(raw).filter(([, p]) => {
+    if (!p || typeof p !== 'object') return false;
+    if (p.active === false || p.active === 0 || String(p.active).toLowerCase() === 'false') return false;
+    return Number(p.price) > 0;
+  });
+
+  if (!entries.length) {
+    host.innerHTML = '<div class="empty">No Seller Membership plans are available right now. Please check again later.</div>';
+    return;
+  }
+
+  host.innerHTML = entries.map(([id, p]) => `
+    <article class="product" style="box-shadow:none">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <h3 style="margin:0 0 6px">🏆 ${window.esc(p.name || 'Seller Membership')}</h3>
+          <div class="sub">${window.esc(p.description || 'Seller-tier pricing on eligible products.')}</div>
+          <div style="color:var(--muted);font-size:12px;margin-top:8px">Validity: ${window.esc(p.duration || 'N/A')}</div>
+        </div>
+        <strong style="font-size:21px;color:var(--cyan);white-space:nowrap">${formatPrice(p.price)}</strong>
+      </div>
+      <button class="btn primary" style="width:100%;margin-top:14px" data-seller-plan-id="${window.esc(id)}">Purchase Membership</button>
+    </article>
+  `).join('');
+
+  host.querySelectorAll('[data-seller-plan-id]').forEach(btn => {
+    btn.onclick = () => window.purchaseSellerMembership(btn.dataset.sellerPlanId);
+  });
+}
+
+let sellerMembershipPurchaseInFlight = false;
+window.purchaseSellerMembership = async function (id) {
+  if (sellerMembershipPurchaseInFlight) return;
+  if (!user) { toast('Please login to purchase Seller Membership'); return; }
+  const plan = availableSellerMembershipPlans[id];
+  if (!plan || plan.active === false) return toast('This membership plan is unavailable');
+
+  if (userRole === 'seller') { toast('Your Seller role is already active'); return; }
+
+  const price = Number(plan.price || 0);
+  if (!Number.isFinite(price) || price <= 0) return toast('Invalid membership price');
+
+  const ok = await new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'logout-confirm-overlay open';
+    overlay.innerHTML = `
+      <div class="logout-confirm-card">
+        <div class="logout-confirm-icon">🏆</div>
+        <h3>Confirm Purchase</h3>
+        <p>Buy <b>${window.esc(plan.name)}</b> for <b>${formatPrice(price)}</b> using wallet balance?</p>
+        <div class="logout-confirm-actions">
+          <button type="button" class="logout-cancel">Cancel</button>
+          <button type="button" class="logout-yes" style="background:#22c55e;border-color:#4ade80">Buy Now</button>
+        </div>
+      </div>`;
+    overlay.querySelector('.logout-cancel').onclick = () => { overlay.remove(); resolve(false); };
+    overlay.querySelector('.logout-yes').onclick = () => { overlay.remove(); resolve(true); };
+    overlay.onclick = e => { if (e.target === overlay) { overlay.remove(); resolve(false); } };
+    document.body.appendChild(overlay);
+  });
+  if (!ok) return;
+
+  sellerMembershipPurchaseInFlight = true;
+  try {
+    const userRef = ref(db, 'users/' + user.uid);
+    const result = await runTransaction(userRef, current => {
+      if (!current) return;
+      const bal = Number(current.walletBalance || 0);
+      if (bal < price) return;
+      return {
+        ...current,
+        walletBalance: bal - price,
+        role: 'seller',
+        sellerActivatedAt: Date.now(),
+        sellerMembershipPlanId: id,
+        sellerMembershipPlanName: plan.name,
+        sellerMembershipValidFor: plan.duration
+      };
+    });
+
+    if (!result.committed) {
+      const latest = Number((result.snapshot.val() || {}).walletBalance || 0);
+      toast(latest < price ? `Insufficient wallet balance. Need ${formatPrice(price)}.` : 'Unable to complete membership purchase. Please retry.');
+      return;
+    }
+
+    const orderRef = push(ref(db, 'orders'));
+    await set(orderRef, {
+      uid: user.uid,
+      email: user.email || '',
+      productName: 'Seller Membership',
+      planName: plan.name,
+      membershipPlanId: id,
+      amount: price,
+      paymentMethod: 'wallet',
+      status: 'delivered',
+      orderType: 'seller_membership',
+      createdAt: Date.now(),
+      deliveredAt: Date.now(),
+      validity: plan.duration
+    });
+
+    userRole = 'seller';
+    userWalletBalance = Number(result.snapshot.val().walletBalance || 0);
+    if ($('topWalletBalance')) $('topWalletBalance').textContent = formatPrice(userWalletBalance);
+    if ($('depositPageBalance')) $('depositPageBalance').textContent = formatPrice(userWalletBalance);
+    document.querySelectorAll('.cur-wallet-bal').forEach(el => el.textContent = formatPrice(userWalletBalance));
+
+    toast('Seller Membership purchased. Your Seller role is now active!');
+    navigateTo('view-home');
+  } catch (err) {
+    toast(err.message || 'Membership purchase failed');
+  } finally {
+    sellerMembershipPurchaseInFlight = false;
+  }
+};
+
+onValue(ref(db, 'sellerMembershipPlans'), snap => {
+  availableSellerMembershipPlans = snap.val() || {};
+  renderSellerMembershipChoices();
+});
 </script>
 <script>
-
-/* Add entrance motion to newly rendered content without changing app logic. */
 (function unionMotionLayer(){
  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(reduce)return;
@@ -2516,45 +2733,8 @@ if (categorySelectEl) categorySelectEl.onchange = renderProducts;
  }
  function startMotionObserver(){enhance(document.body);if(!document.body||!window.MutationObserver)return;new MutationObserver(records=>records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)enhance(n)}))).observe(document.body,{childList:true,subtree:true});} if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startMotionObserver,{once:true});else startMotionObserver();
 })();
-
 </script>
 <script>
-/* TG CHEATS runtime guard: remove accidentally rendered JavaScript snippets, never app UI. */
-(function(){
-  const marker = 'Optional local-only click sound';
-  const codeHints = ['initClickSounds()', "document.addEventListener('click',e=>", 'const key=\'tgCheatsClickSounds\''];
-  function isLeakedCode(text){
-    if(!text) return false;
-    return text.includes(marker) || (text.includes('tgCheatsClickSounds') && text.includes('AudioContext') && text.includes('playTap')) || (text.includes('initClickSounds') && text.includes('localStorage'));
-  }
-  function clean(root){
-    if(!root) return;
-    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
-    const bad=[]; let n;
-    while((n=walker.nextNode())){
-      const parent=n.parentElement;
-      if(!parent || parent.closest('script,style,textarea,pre,code')) continue;
-      if(isLeakedCode(n.nodeValue)) bad.push(n);
-    }
-    bad.forEach(n=>{
-      const p=n.parentElement;
-      if(p && p!==document.body && p.children.length===0) p.remove();
-      else n.remove();
-    });
-  }
-  function boot(){
-    clean(document.body);
-    if(window.MutationObserver && document.body){
-      new MutationObserver(records=>records.forEach(r=>{
-        r.addedNodes.forEach(node=>{if(node.nodeType===Node.TEXT_NODE){if(isLeakedCode(node.nodeValue) && node.parentElement && !node.parentElement.closest('script,style,textarea,pre,code')) node.remove();} else if(node.nodeType===Node.ELEMENT_NODE && !['SCRIPT','STYLE','TEXTAREA','PRE','CODE'].includes(node.tagName)) clean(node);});
-      })).observe(document.body,{childList:true,subtree:true});
-    }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
-})();
-</script>
-<script>
-/* Click sound is local-only, opt-in, and safe when the toggle is not present. */
 (function initClickSounds(){
   const key='tgCheatsClickSounds';
   let enabled=false;
@@ -2566,57 +2746,20 @@ if (categorySelectEl) categorySelectEl.onchange = renderProducts;
       o.type='sine';o.frequency.value=740;
       g.gain.setValueAtTime(.025,c.currentTime);
       g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.04);
-      o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.045);o.onended=()=>c.close();
+      o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.045);o.onended=() => c.close();
     }catch(_){}
   }
   function bindToggle(){
-    const toggle=document.getElementById('clickSoundToggle');
+    const toggle=document.getElementById('clickSoundTrackingToggle');
     const label=document.getElementById('clickSoundLabel');
     const sync=()=>{if(toggle)toggle.checked=enabled;if(label)label.textContent=enabled?'On':'Off'};
     sync();
     if(toggle && !toggle.dataset.soundBound){toggle.dataset.soundBound='1';toggle.addEventListener('change',()=>{enabled=toggle.checked;try{localStorage.setItem(key,enabled?'on':'off')}catch(_){}sync();if(enabled)playTap()})}
   }
-  document.addEventListener('click',e=>{if(enabled && e.target.closest('button,.btn,.bottom-item,.drawer-item,a,[role="button"]'))playTap()});
+  document.addEventListener('click',e=>{if(enabled && e.target.closest('button,.btn,.bottom-item,.drawer-item,a,[role="button"]'))playTap();});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindToggle,{once:true});else bindToggle();
   new MutationObserver(bindToggle).observe(document.documentElement,{childList:true,subtree:true});
 })();
-
-
-// Independent Seller Membership checkout. Memberships are stored separately from products.
-let availableSellerMembershipPlans = {};
-function renderSellerMembershipChoices(){
-  const host=$('sellerMembershipPlansList'); if(!host)return;
-  const plans=Object.entries(availableSellerMembershipPlans||{}).filter(([,p])=>p && p.active!==false && Number(p.price)>0);
-  if(!plans.length){host.innerHTML='<div class="empty">No Seller Membership plans are available right now. Please check again later.</div>';return;}
-  host.innerHTML=plans.map(([id,p])=>`<article class="product" style="box-shadow:none"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="flex:1;min-width:0"><h3 style="margin:0 0 6px">🏆 ${window.esc(p.name||'Seller Membership')}</h3><div class="sub">${window.esc(p.description||'Seller-tier pricing on eligible products.')}</div><div style="color:var(--muted);font-size:12px;margin-top:8px">Validity: ${window.esc(p.duration||'')}</div></div><strong style="font-size:21px;color:var(--cyan);white-space:nowrap">₹${Number(p.price).toFixed(0)}</strong></div><button class="btn primary" style="width:100%;margin-top:14px" onclick="purchaseSellerMembership('${id}')">Purchase Membership</button></article>`).join('');
-}
-let sellerMembershipPurchaseInFlight = false;
-window.purchaseSellerMembership = async id => {
-  if(sellerMembershipPurchaseInFlight)return;
-  if(!user){toast('Please login to purchase Seller Membership');return;}
-  const plan=availableSellerMembershipPlans[id]; if(!plan||plan.active===false)return toast('This membership plan is unavailable');
-  if(userRole==='seller'){toast('Your Seller role is already active');return;}
-  const price=Number(plan.price||0); if(!Number.isFinite(price)||price<=0)return toast('Invalid membership price');
-  if(!confirm(`Purchase ${plan.name} for ₹${price.toFixed(2)}?`))return;
-  try{
-    const userRef=ref(db,'users/'+user.uid);
-    const result=await runTransaction(userRef,current=>{
-      if(!current)return;
-      const bal=Number(current.walletBalance||0); if(bal<price)return;
-      return {...current,walletBalance:bal-price,role:'seller',sellerActivatedAt:Date.now(),sellerMembershipPlanId:id,sellerMembershipPlanName:plan.name,sellerMembershipValidFor:plan.duration};
-    });
-    if(!result.committed){const latest=Number((result.snapshot.val()||{}).walletBalance||0);return toast(latest<price?`Insufficient wallet balance. Need ₹${price.toFixed(2)}.`:'Unable to complete membership purchase. Please retry.');}
-    const orderRef=push(ref(db,'orders'));
-    await set(orderRef,{uid:user.uid,email:user.email||'',productName:'Seller Membership',planName:plan.name,membershipPlanId:id,amount:price,paymentMethod:'wallet',status:'delivered',orderType:'seller_membership',createdAt:Date.now(),deliveredAt:Date.now(),validity:plan.duration});
-    userRole='seller'; userWalletBalance=Number(result.snapshot.val().walletBalance||0);
-    if($('topWalletBalance'))$('topWalletBalance').textContent=`₹${userWalletBalance.toFixed(2)}`;
-    if($('depositPageBalance'))$('depositPageBalance').textContent=`₹${userWalletBalance.toFixed(2)}`;
-    document.querySelectorAll('.cur-wallet-bal').forEach(el=>el.textContent=`₹${userWalletBalance.toFixed(2)}`);
-    toast('Seller Membership purchased. Your Seller role is now active!');
-    navigateTo('view-home');
-  }catch(err){toast(err.message||'Membership purchase failed');}
-};
-onValue(ref(db,'sellerMembershipPlans'),snap=>{availableSellerMembershipPlans=snap.val()||{};renderSellerMembershipChoices();});
 </script>
 
 </body>
